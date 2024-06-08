@@ -12,6 +12,8 @@ function MatchManagement() {
     const [scoreB,setScoreB] = useState('');
     const [date,setDate] = useState('');
     const [location,setLocation] = useState('');
+    const [selectedMatch,setSelectedMatch] = useState(null);
+    const [isModalOpen,setIsModalOpen] = useState(false);
     const locationHook = useLocation();
 
     useEffect(() => {
@@ -43,7 +45,7 @@ function MatchManagement() {
         };
         axios.post('/api/matches',match)
             .then(response => {
-                setMatches([...matches,response.data]); // Update state with new match
+                setMatches([...matches,response.data]);
                 setTeamA([]);
                 setTeamB([]);
                 setScoreA('');
@@ -63,6 +65,28 @@ function MatchManagement() {
         const options = { year: 'numeric',month: 'long',day: 'numeric' };
         const date = new Date(dateString);
         return date.toLocaleDateString(undefined,options);
+    };
+
+    const getWinners = (match) => {
+        return parseInt(match.scores[0]) > parseInt(match.scores[1])
+            ? match.teams[0].map(id => getPlayerName(id)).join(', ')
+            : match.teams[1].map(id => getPlayerName(id)).join(', ');
+    };
+
+    const getLosers = (match) => {
+        return parseInt(match.scores[0]) > parseInt(match.scores[1])
+            ? match.teams[1].map(id => getPlayerName(id)).join(', ')
+            : match.teams[0].map(id => getPlayerName(id)).join(', ');
+    };
+
+    const openModal = (match) => {
+        setSelectedMatch(match);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedMatch(null);
     };
 
     return (
@@ -96,8 +120,9 @@ function MatchManagement() {
                                     checked={teamA.includes(player._id)}
                                     onChange={(e) => handlePlayerSelection(e,'A')}
                                     disabled={teamB.includes(player._id)}
+                                    id={`teamA-${player._id}`}
                                 />
-                                {player.name}
+                                <label htmlFor={`teamA-${player._id}`}>{player.name}</label>
                             </div>
                         ))}
                     </div>
@@ -111,8 +136,9 @@ function MatchManagement() {
                                     checked={teamB.includes(player._id)}
                                     onChange={(e) => handlePlayerSelection(e,'B')}
                                     disabled={teamA.includes(player._id)}
+                                    id={`teamB-${player._id}`}
                                 />
-                                {player.name}
+                                <label htmlFor={`teamB-${player._id}`}>{player.name}</label>
                             </div>
                         ))}
                     </div>
@@ -153,13 +179,30 @@ function MatchManagement() {
                     <button type="submit">Add Match</button>
                 </div>
             </form>
-            <ul>
+            <div className="match-grid">
                 {matches.map(match => (
-                    <li key={match._id}>
-                        {match.teams[0].map(id => getPlayerName(id)).join(', ')} vs. {match.teams[1].map(id => getPlayerName(id)).join(', ')} - {match.scores[0]}:{match.scores[1]} - {formatDate(match.date)} - {match.location}
-                    </li>
+                    <div key={match._id} className="match-card">
+                        <div>Winners: {getWinners(match)}</div>
+                        <div>Losers: {getLosers(match)}</div>
+                        <div>Date: {formatDate(match.date)}</div>
+                        <button onClick={() => openModal(match)}>Details</button>
+                    </div>
                 ))}
-            </ul>
+            </div>
+
+            {isModalOpen && selectedMatch && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={closeModal}>&times;</span>
+                        <h2>Match Details</h2>
+                        <p><strong>Date:</strong> {formatDate(selectedMatch.date)}</p>
+                        <p><strong>Location:</strong> {selectedMatch.location}</p>
+                        <p><strong>Team A:</strong> {selectedMatch.teams[0].map(id => getPlayerName(id)).join(', ')}</p>
+                        <p><strong>Team B:</strong> {selectedMatch.teams[1].map(id => getPlayerName(id)).join(', ')}</p>
+                        <p><strong>Score:</strong> {selectedMatch.scores[0]}:{selectedMatch.scores[1]}</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

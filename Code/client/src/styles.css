@@ -267,9 +267,12 @@ li button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: -50px;
     padding: 10px;
-    border-bottom: 2px solid #E7552B;
+    position: sticky;
+    top: 0;
+    background-color: #fff5d6;
+    z-index: 2;
 }
 
 .table-header h2 {
@@ -286,19 +289,117 @@ li button {
 .search-container {
     display: inline-block;
     margin-left: 20px;
+    height: 0; /* Adjust the height */
+    overflow: hidden; /* Hide the content */
+    transition: height 0.3s ease; /* Smooth transition */
 }
 
-/* may need to edit this 
-.search-container label {
-    margin-right: 10px;
+.search-container.visible {
+    height: auto; /* Show the content when visible */
+    padding-top: 0px; /* Add some spacing for visibility */
+    margin-bottom: -10px;
 }
-*/
+
+.search-container.hidden {
+    height: 0; /* Hide the content when hidden */
+    padding-top: 0; /* Remove the spacing */
+}
 
 .search-container input {
     padding: 10px;
     width: 200px;
     border-radius: 5px;
+    border: 1px solid #E7552B;
+}
+
+.sticky-header th {
+    position: sticky;
+    top: 54px; /* Adjust this value to match the height of your table header */
+    background-color: #E7552B;
+    z-index: 1;
+}
+
+/* Add this to your styles.css */
+
+input[type="checkbox"]:disabled + label {
+    color: #999; /* Gray out the label */
+    cursor: not-allowed;
+    text-decoration: line-through; /* Optional: add strikethrough */
+}
+
+/* styles.css */
+
+/* Modal Styles */
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* styles.css */
+
+/* Grid layout for matches */
+.match-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.match-card {
+    background-color: #fff;
+    padding: 10px;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.match-card div {
+    margin-bottom: 10px;
+}
+
+.match-card button {
+    background-color: #E7552B;
+    color: #fff5d6;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.match-card button:hover {
+    background-color: #e03e00;
 }
 
 @media (max-width: 768px) {

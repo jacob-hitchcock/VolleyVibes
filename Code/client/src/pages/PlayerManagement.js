@@ -116,30 +116,24 @@ function PlayerManagement() {
                     <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
                 </nav>
             </header>
-            <div className="table-header">
+            <div className="table-header sticky-header">
                 <h2>Players</h2>
                 <FaSearch className="search-icon" onClick={toggleSearchVisibility} />
-                {searchVisible && (
-                    <div className="search-container">
-                        <input
-                            type="text"
-                            value={search}
-                            onChange={handleSearchChange}
-                            placeholder="Search by name"
-                        />
-                    </div>
-                )}
+                <div className={`search-container ${searchVisible ? 'visible' : 'hidden'}`}>
+                    <input
+                        type="text"
+                        value={search}
+                        onChange={handleSearchChange}
+                        placeholder="Search by name"
+                    />
+                </div>
             </div>
             <table className="playerlist">
-                <thead>
+                <thead className="sticky-header">
                     <tr>
                         <th>Name</th>
                         <th>Age</th>
                         <th>Gender</th>
-                        <th>Wins</th>
-                        <th>Points For</th>
-                        <th>Points Against</th>
-                        <th>Point Differential</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -149,10 +143,6 @@ function PlayerManagement() {
                             <td>{player.name}</td>
                             <td>{player.age}</td>
                             <td>{player.gender}</td>
-                            <td>{player.wins}</td>
-                            <td>{player.pointsFor}</td>
-                            <td>{player.pointsAgainst}</td>
-                            <td>{player.pointDifferential}</td>
                             <td>
                                 <button onClick={() => handleEdit(player)}>Edit</button>
                                 <button onClick={() => handleDelete(player._id)}>Delete</button>
