@@ -33,6 +33,17 @@ body {
     position: relative;
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+.header-text {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 2px;
+}
+
 .logo {
     height: 90px;
     width: auto;
@@ -140,6 +151,7 @@ th, td {
 th {
     background-color: #E7552B;
     color: #fff5d6;
+    cursor: pointer;
 }
 
 footer {
@@ -244,6 +256,11 @@ li button {
 
 .match-details button:hover {
     background-color: #e03e00;
+}
+
+.sort-indicator {
+    font-size: 12px;
+    margin-left: 5px;
 }
 
 @media (max-width: 768px) {

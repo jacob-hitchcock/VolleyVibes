@@ -1,4 +1,3 @@
-// src/pages/HomePage.js
 import React,{ useState,useEffect } from 'react';
 import { Link,useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -6,21 +5,45 @@ import '../styles.css';
 
 function HomePage() {
     const [players,setPlayers] = useState([]);
+    const [sortConfig,setSortConfig] = useState({ key: 'wins',direction: 'descending' });
     const location = useLocation();
 
     useEffect(() => {
         axios.get('/api/players')
             .then(response => {
-                const sortedPlayers = response.data.sort((a,b) => {
-                    if(b.wins === a.wins) {
-                        return b.pointDifferential - a.pointDifferential;
-                    }
-                    return b.wins - a.wins;
-                });
-                setPlayers(sortedPlayers);
+                setPlayers(response.data);
             })
             .catch(error => console.error('Error fetching leaderboard:',error));
     },[]);
+
+    const sortedPlayers = [...players].sort((a,b) => {
+        if(a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if(a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+    });
+
+    const requestSort = key => {
+        let direction = 'descending';
+        if(sortConfig.key === key) {
+            direction = sortConfig.direction === 'descending' ? 'ascending' : 'descending';
+        } else if(key === 'name') {
+            direction = 'ascending';
+        } else if(key === 'pointsAgainst') {
+            direction = 'ascending';
+        }
+        setSortConfig({ key,direction });
+    };
+
+    const getSortIndicator = key => {
+        if(sortConfig.key === key) {
+            return sortConfig.direction === 'ascending' ? '▲' : '▼';
+        }
+        return '';
+    };
 
     return (
         <div>
@@ -49,15 +72,40 @@ function HomePage() {
                 <table>
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Wins</th>
-                            <th>Points For</th>
-                            <th>Points Against</th>
-                            <th>Point Differential</th>
+                            <th style={{ width: '20%' }} onClick={() => requestSort('name')}>
+                                <div className="header-content">
+                                    <span className="header-text">Name</span>
+                                    <span className="sort-indicator">{getSortIndicator('name')}</span>
+                                </div>
+                            </th>
+                            <th style={{ width: '15%' }} onClick={() => requestSort('wins')}>
+                                <div className="header-content">
+                                    <span className="header-text">Wins</span>
+                                    <span className="sort-indicator">{getSortIndicator('wins')}</span>
+                                </div>
+                            </th>
+                            <th style={{ width: '20%' }} onClick={() => requestSort('pointsFor')}>
+                                <div className="header-content">
+                                    <span className="header-text">Points For</span>
+                                    <span className="sort-indicator">{getSortIndicator('pointsFor')}</span>
+                                </div>
+                            </th>
+                            <th style={{ width: '20%' }} onClick={() => requestSort('pointsAgainst')}>
+                                <div className="header-content">
+                                    <span className="header-text">Points Against</span>
+                                    <span className="sort-indicator">{getSortIndicator('pointsAgainst')}</span>
+                                </div>
+                            </th>
+                            <th style={{ width: '25%' }} onClick={() => requestSort('pointDifferential')}>
+                                <div className="header-content">
+                                    <span className="header-text">Point Differential</span>
+                                    <span className="sort-indicator">{getSortIndicator('pointDifferential')}</span>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {players.map(player => (
+                        {sortedPlayers.map(player => (
                             <tr key={player._id}>
                                 <td>{player.name}</td>
                                 <td>{player.wins}</td>

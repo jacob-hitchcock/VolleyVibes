@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route exact path="/" element={<HomePage />} />
         <Route path="/players" element={<PlayerManagement />} />
         <Route path="/matches" element={<MatchManagement />} />
         <Route path="/profile" element={<UserProfile />} />
