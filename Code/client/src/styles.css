@@ -1,0 +1,267 @@
+/* styles.css */
+@font-face {
+    font-family: 'Mahoda Display';
+    src: url('../../fonts/mahoda_display/Mahoda\ Display\ Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Coolvetica';
+    src: url('../../fonts/coolvetica/coolvetica\ rg.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Coolvetica', Arial, sans-serif;
+    background-color: #fff5d6;
+    color: #333;
+    margin: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    height: 90px;
+    width: auto;
+    margin-top: -20px;
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.volley, .vibe {
+    font-family: 'Mahoda Display', sans-serif;
+    color: #e7552b;
+    font-size: 48px;
+    line-height: 1;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    margin-top: -10px;
+    gap: 20px;
+}
+
+.nav-left {
+    position: absolute;
+    left: 0;
+}
+
+.nav-right {
+    position: absolute;
+    right: 0;
+}
+
+.nav-left a, .nav-right a {
+    text-decoration: none;
+    color: #E7552B;
+    font-family: 'Coolvetica', Arial, sans-serif;
+    font-size: 20px;
+    padding: 5px 20px;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.nav-left a.active, .nav-right a.active {
+    background-color: #E7552B;
+    color: #fff5d6;
+    border-radius: 20px;
+}
+
+.nav-left a.active:hover, .nav-right a.active:hover {
+    background-color: #e03e00;
+}
+
+.bodycontent {
+    margin-top: 50px;
+}
+
+.playerlist {
+    margin-top: 50px;
+}
+
+h1, h2, h3 {
+    font-family: 'Mahoda Display', 'Coolvetica', sans-serif;
+    color: #E7552B;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #E7552B;
+    color: #fff5d6;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Coolvetica', Arial, sans-serif;
+    margin: 10px 0;
+}
+
+button:hover {
+    background-color: #e03e00;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 2px solid #E7552B;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #E7552B;
+    color: #fff5d6;
+}
+
+footer {
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+footer img {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+form div {
+    margin-bottom: 10px;
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+li button {
+    margin-left: 10px;
+}
+
+/* Additional Styles for MatchManagement */
+
+.teams {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.team {
+    width: 45%;
+    padding: 15px;
+    border: 2px solid #E7552B;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team h3 {
+    font-family: 'Mahoda Display', sans-serif;
+    color: #e7552b;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.match-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.match-details input,
+.match-details button {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px;
+    margin: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.match-details input {
+    border: 2px solid #E7552B;
+}
+
+.match-details button {
+    background-color: #E7552B;
+    color: #fff5d6;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Coolvetica', Arial, sans-serif;
+}
+
+.match-details button:hover {
+    background-color: #e03e00;
+}
+
+@media (max-width: 768px) {
+    .teams {
+        flex-direction: column;
+    }
+
+    .team {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .match-details {
+        flex-direction: column;
+    }
+
+    .match-details input,
+    .match-details button {
+        width: 100%;
+    }
+}
