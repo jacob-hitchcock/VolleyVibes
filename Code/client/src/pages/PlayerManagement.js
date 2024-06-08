@@ -2,6 +2,7 @@ import React,{ useState,useEffect } from 'react';
 import axios from 'axios';
 import { Link,useLocation } from 'react-router-dom';
 import '../styles.css';
+import { FaSearch } from 'react-icons/fa';
 
 function PlayerManagement() {
     const [players,setPlayers] = useState([]);
@@ -9,6 +10,8 @@ function PlayerManagement() {
     const [editMode,setEditMode] = useState(false);
     const [currentPlayerId,setCurrentPlayerId] = useState(null);
     const [errors,setErrors] = useState({});
+    const [search,setSearch] = useState('');
+    const [searchVisible,setSearchVisible] = useState(false);
     const location = useLocation();
 
     useEffect(() => {
@@ -83,6 +86,17 @@ function PlayerManagement() {
         }
     };
 
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value);
+    };
+
+    const toggleSearchVisibility = () => {
+        setSearchVisible(!searchVisible);
+        setSearch('');
+    };
+
+    const filteredPlayers = players.filter(player => player.name.toLowerCase().includes(search.toLowerCase()));
+
     return (
         <div>
             <header className="header">
@@ -102,6 +116,20 @@ function PlayerManagement() {
                     <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
                 </nav>
             </header>
+            <div className="table-header">
+                <h2>Players</h2>
+                <FaSearch className="search-icon" onClick={toggleSearchVisibility} />
+                {searchVisible && (
+                    <div className="search-container">
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={handleSearchChange}
+                            placeholder="Search by name"
+                        />
+                    </div>
+                )}
+            </div>
             <table className="playerlist">
                 <thead>
                     <tr>
@@ -116,7 +144,7 @@ function PlayerManagement() {
                     </tr>
                 </thead>
                 <tbody>
-                    {players.map(player => (
+                    {filteredPlayers.map(player => (
                         <tr key={player._id}>
                             <td>{player.name}</td>
                             <td>{player.age}</td>

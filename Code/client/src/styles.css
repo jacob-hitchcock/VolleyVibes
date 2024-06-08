@@ -263,6 +263,44 @@ li button {
     margin-left: 5px;
 }
 
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 2px solid #E7552B;
+}
+
+.table-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #E7552B;
+}
+
+.search-icon {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.search-container {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+/* may need to edit this 
+.search-container label {
+    margin-right: 10px;
+}
+*/
+
+.search-container input {
+    padding: 10px;
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
 @media (max-width: 768px) {
     .teams {
         flex-direction: column;
