@@ -1,4 +1,3 @@
-// MatchManagement.js
 import React,{ useState,useEffect } from 'react';
 import axios from 'axios';
 import { Link,useLocation } from 'react-router-dom';
@@ -233,7 +232,7 @@ function MatchManagement() {
 
     const filteredMatches = matches.filter(match => {
         const matchDate = new Date(match.date);
-        const matchLocation = match.location.toLowerCase();
+        const matchLocation = match.location.toLowerCase(); // Ensure case insensitivity
 
         const winningTeam = parseInt(match.scores[0]) > parseInt(match.scores[1]) ? match.teams[0] : match.teams[1];
         const allWinnersPresent = filterWinners.every(winner => winningTeam.includes(winner));
@@ -245,7 +244,7 @@ function MatchManagement() {
             (!filterWinners.length || allWinnersPresent) &&
             (!filterLosers.length || allLosersPresent) &&
             (!filterDate || doesDateMatchFilter(matchDate,filterDate)) &&
-            (!filterLocations.length || filterLocations.includes(matchLocation))
+            (!filterLocations.length || filterLocations.includes(match.location))
         );
     });
 
@@ -343,6 +342,7 @@ function MatchManagement() {
 }
 
 export default MatchManagement;
+
 
 /*
 <form onSubmit={handleSubmit} className="bodycontent">
