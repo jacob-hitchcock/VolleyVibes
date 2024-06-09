@@ -37,7 +37,6 @@ const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive }) => {
     );
 };
 
-
 const FilterBar = ({
     winners,
     losers,
@@ -52,7 +51,6 @@ const FilterBar = ({
     setFilterLocations,
     resetFilters,
 }) => {
-    const [showFilterSummary,setShowFilterSummary] = useState(false);
 
     const hasActiveFilters = (filters) => filters.length > 0;
     const isDateFilterActive = filterDate !== '';
@@ -63,6 +61,13 @@ const FilterBar = ({
         ...(filterDate ? [`Date: ${filterDate}`] : []),
         ...filterLocations.map(location => location),
     ];
+
+    useEffect(() => {
+        const dateInput = document.getElementById('filter-date');
+        if(dateInput) {
+            dateInput.placeholder = 'Date';
+        }
+    },[]);
 
     return (
         <div className="filter-bar">
@@ -102,25 +107,10 @@ const FilterBar = ({
             </div>
             <div className="filter-controls">
                 <button className="reset-button" onClick={resetFilters}>Reset Filters</button>
-                {showFilterSummary && (
-                    <div className="filter-summary">
-                        {activeFilters.length > 0 ? (
-                            <ul>
-                                {activeFilters.map((filter,index) => (
-                                    <li key={index}>{filter}</li>
-                                ))}
-                            </ul>
-                        ) : (
-                                <p>No filters applied.</p>
-                            )}
-                    </div>
-                )}
             </div>
         </div>
     );
 };
-
-
 
 function MatchManagement() {
     const [matches,setMatches] = useState([]);
@@ -232,7 +222,6 @@ function MatchManagement() {
 
     const filteredMatches = matches.filter(match => {
         const matchDate = new Date(match.date);
-        const matchLocation = match.location.toLowerCase(); // Ensure case insensitivity
 
         const winningTeam = parseInt(match.scores[0]) > parseInt(match.scores[1]) ? match.teams[0] : match.teams[1];
         const allWinnersPresent = filterWinners.every(winner => winningTeam.includes(winner));
@@ -247,14 +236,6 @@ function MatchManagement() {
             (!filterLocations.length || filterLocations.includes(match.location))
         );
     });
-
-    const toggleLocationFilter = (location) => {
-        setFilterLocations(prevFilters =>
-            prevFilters.includes(location)
-                ? prevFilters.filter(loc => loc !== location)
-                : [...prevFilters,location]
-        );
-    };
 
     const resetFilters = () => {
         setFilterWinners([]);
@@ -342,6 +323,7 @@ function MatchManagement() {
 }
 
 export default MatchManagement;
+
 
 
 /*

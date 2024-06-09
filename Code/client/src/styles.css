@@ -523,6 +523,19 @@ input[type="checkbox"]:disabled + label {
     border: 1px solid #ccc;
     border-radius: 4px;
     margin: 5px 0; /* Adjust margin to ensure proper spacing */
+    color: #E7552B; /* Ensure the text color matches other filters */
+    background-color: #fff5d6; /* Ensure the background color matches other filters */
+}
+
+.date-input:hover {
+    background-color: #E7552B; /* Ensure the background color matches the hover state of other filters */
+    color: #fff5d6; /* Ensure the text color matches the hover state of other filters */
+    border: 2px solid #fff5d6; /* Ensure the border color matches the hover state of other filters */
+}
+
+.date-input::placeholder {
+    color: #E7552B; /* Ensure the placeholder text color matches other filters */
+    opacity: 1; /* Ensures the color is fully applied */
 }
 
 .filter-group {
@@ -550,6 +563,10 @@ input[type="checkbox"]:disabled + label {
     background-color: #E7552B;
     color: rgb(255, 255, 255);
     border: 2px solid #fff5d6;
+}
+
+.filter-date input::placeholder {
+    color: #E7552B; /* Ensure the placeholder text color matches other filters */
 }
 
 .reset-button {
