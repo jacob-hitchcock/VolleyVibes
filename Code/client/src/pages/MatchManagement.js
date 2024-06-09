@@ -3,9 +3,7 @@ import axios from 'axios';
 import { Link,useLocation } from 'react-router-dom';
 import '../styles.css';
 
-const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive }) => {
-    const [isOpen,setIsOpen] = useState(false);
-
+const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive,isOpen,onToggle }) => {
     const handleCheckboxChange = (e) => {
         const { value,checked } = e.target;
         setSelectedItems(prevItems =>
@@ -14,8 +12,8 @@ const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive }) => {
     };
 
     return (
-        <div className={`dropdown ${isActive ? 'active' : ''}`}>
-            <button onClick={() => setIsOpen(!isOpen)} className="dropdown-button">
+        <div className={`dropdown ${isActive ? 'active' : ''} ${isOpen ? 'open' : ''}`}>
+            <button onClick={onToggle} className="dropdown-button">
                 {label} <span className="dropdown-icon">{isOpen ? '▲' : '▼'}</span>
             </button>
             {isOpen && (
@@ -51,6 +49,7 @@ const FilterBar = ({
     setFilterLocations,
     resetFilters,
 }) => {
+    const [openDropdown,setOpenDropdown] = useState(null);
 
     const hasActiveFilters = (filters) => filters.length > 0;
     const isDateFilterActive = filterDate !== '';
@@ -62,12 +61,13 @@ const FilterBar = ({
         ...filterLocations.map(location => location),
     ];
 
-    useEffect(() => {
-        const dateInput = document.getElementById('filter-date');
-        if(dateInput) {
-            dateInput.placeholder = 'Date';
-        }
-    },[]);
+    const handleToggle = (dropdown) => {
+        setOpenDropdown(openDropdown === dropdown ? null : dropdown);
+    };
+
+    const closeAllDropdowns = () => {
+        setOpenDropdown(null);
+    };
 
     return (
         <div className="filter-bar">
@@ -77,14 +77,18 @@ const FilterBar = ({
                     items={winners}
                     selectedItems={filterWinners}
                     setSelectedItems={setFilterWinners}
-                    isActive={hasActiveFilters(filterWinners)} // New prop
+                    isActive={hasActiveFilters(filterWinners)}
+                    isOpen={openDropdown === 'winners'}
+                    onToggle={() => handleToggle('winners')}
                 />
                 <Dropdown
                     label="Losers"
                     items={losers}
                     selectedItems={filterLosers}
                     setSelectedItems={setFilterLosers}
-                    isActive={hasActiveFilters(filterLosers)} // New prop
+                    isActive={hasActiveFilters(filterLosers)}
+                    isOpen={openDropdown === 'losers'}
+                    onToggle={() => handleToggle('losers')}
                 />
                 <div className={'loco'}>
                     <Dropdown
@@ -92,7 +96,9 @@ const FilterBar = ({
                         items={availableLocations.map(location => ({ _id: location,name: location }))}
                         selectedItems={filterLocations}
                         setSelectedItems={setFilterLocations}
-                        isActive={hasActiveFilters(filterLocations)} // New prop
+                        isActive={hasActiveFilters(filterLocations)}
+                        isOpen={openDropdown === 'locations'}
+                        onToggle={() => handleToggle('locations')}
                     />
                 </div>
                 <div className={`filter-date ${isDateFilterActive ? 'active' : ''}`}>
@@ -101,12 +107,18 @@ const FilterBar = ({
                         type="date"
                         className="date-input"
                         value={filterDate}
-                        onChange={(e) => setFilterDate(e.target.value)}
+                        onChange={(e) => {
+                            setFilterDate(e.target.value);
+                            closeAllDropdowns();
+                        }}
                     />
                 </div>
             </div>
             <div className="filter-controls">
-                <button className="reset-button" onClick={resetFilters}>Reset Filters</button>
+                <button className="reset-button" onClick={() => {
+                    resetFilters();
+                    closeAllDropdowns();
+                }}>Reset Filters</button>
             </div>
         </div>
     );
@@ -235,13 +247,45 @@ function MatchManagement() {
             (!filterDate || doesDateMatchFilter(matchDate,filterDate)) &&
             (!filterLocations.length || filterLocations.includes(match.location))
         );
-    });
+    }).sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
 
     const resetFilters = () => {
         setFilterWinners([]);
         setFilterLosers([]);
         setFilterDate('');
         setFilterLocations([]);
+    };
+
+    const groupMatchesByDate = (matches) => {
+        return matches.reduce((groups,match) => {
+            const date = match.date.split('T')[0]; // Extract date part
+            if(!groups[date]) {
+                groups[date] = [];
+            }
+            groups[date].push(match);
+            return groups;
+        },{});
+    };
+
+    const groupedMatches = groupMatchesByDate(filteredMatches);
+
+    const renderMatches = (matches) => {
+        const rows = [];
+        for(let i = 0;i < matches.length;i += 3) {
+            rows.push(
+                <div key={i} className="match-row">
+                    {matches.slice(i,i + 3).map(match => (
+                        <div key={match._id} className="match-card">
+                            <div>Winners: {getWinners(match)}</div>
+                            <div>Losers: {getLosers(match)}</div>
+                            <div>Date: {formatDate(match.date)}</div>
+                            <button onClick={() => openModal(match)}>Details</button>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+        return rows;
     };
 
     return (
@@ -275,20 +319,19 @@ function MatchManagement() {
                 setFilterDate={setFilterDate}
                 availableLocations={availableLocations}
                 filterLocations={filterLocations}
-                setFilterLocations={setFilterLocations} // Ensure this is passed correctly
+                setFilterLocations={setFilterLocations}
                 resetFilters={resetFilters}
             />
             <div className="match-grid">
-                {filteredMatches.map(match => (
-                    <div key={match._id} className="match-card">
-                        <div>Winners: {getWinners(match)}</div>
-                        <div>Losers: {getLosers(match)}</div>
-                        <div>Date: {formatDate(match.date)}</div>
-                        <button onClick={() => openModal(match)}>Details</button>
+                {Object.keys(groupedMatches).sort((a,b) => new Date(b) - new Date(a)).map(date => (
+                    <div>
+                        <div className="date-header">{formatDate(date)}</div>
+                        <div key={date} className={"date-group"}> {/* New date group should start on a new line */}
+                            {renderMatches(groupedMatches[date])}
+                        </div>
                     </div>
                 ))}
             </div>
-
 
             {isModalOpen && selectedMatch && (
                 <div className="modal">

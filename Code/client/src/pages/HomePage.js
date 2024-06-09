@@ -64,12 +64,9 @@ function HomePage() {
                     <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
                 </nav>
             </header>
-            <main className="bodycontent">
-                <h2>Welcome to VolleyVibe!</h2>
-                <Link to="/matches"><button>Add Match Results</button></Link>
-
-                <h2>Leaderboard</h2>
-                <table>
+            <main>
+                <h2 className="match-title">Leaderboard</h2>
+                <table classname="leaderlist">
                     <thead>
                         <tr>
                             <th style={{ width: '20%' }} onClick={() => requestSort('name')}>
