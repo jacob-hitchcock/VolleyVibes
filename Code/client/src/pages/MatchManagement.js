@@ -4,13 +4,7 @@ import axios from 'axios';
 import { Link,useLocation } from 'react-router-dom';
 import '../styles.css';
 
-const Chip = ({ label,isSelected,onClick }) => (
-    <div className={`chip ${isSelected ? 'selected' : ''}`} onClick={onClick}>
-        {label}
-    </div>
-);
-
-const Dropdown = ({ label,items,selectedItems,setSelectedItems }) => {
+const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive }) => {
     const [isOpen,setIsOpen] = useState(false);
 
     const handleCheckboxChange = (e) => {
@@ -20,13 +14,8 @@ const Dropdown = ({ label,items,selectedItems,setSelectedItems }) => {
         );
     };
 
-    const selectedNames = items
-        .filter(item => selectedItems.includes(item._id))
-        .map(item => item.name)
-        .join(', ');
-
     return (
-        <div className="dropdown">
+        <div className={`dropdown ${isActive ? 'active' : ''}`}>
             <button onClick={() => setIsOpen(!isOpen)} className="dropdown-button">
                 {label} <span className="dropdown-icon">{isOpen ? '▲' : '▼'}</span>
             </button>
@@ -45,10 +34,10 @@ const Dropdown = ({ label,items,selectedItems,setSelectedItems }) => {
                     ))}
                 </div>
             )}
-            <div className="selected-names">{selectedNames}</div>
         </div>
     );
 };
+
 
 const FilterBar = ({
     winners,
@@ -61,45 +50,78 @@ const FilterBar = ({
     setFilterDate,
     availableLocations,
     filterLocations,
-    toggleLocationFilter,
+    setFilterLocations,
     resetFilters,
 }) => {
+    const [showFilterSummary,setShowFilterSummary] = useState(false);
+
+    const hasActiveFilters = (filters) => filters.length > 0;
+    const isDateFilterActive = filterDate !== '';
+
+    const activeFilters = [
+        ...filterWinners.map(id => winners.find(w => w._id === id)?.name),
+        ...filterLosers.map(id => losers.find(l => l._id === id)?.name),
+        ...(filterDate ? [`Date: ${filterDate}`] : []),
+        ...filterLocations.map(location => location),
+    ];
+
     return (
         <div className="filter-bar">
-            <Dropdown
-                label="Winners"
-                items={winners}
-                selectedItems={filterWinners}
-                setSelectedItems={setFilterWinners}
-            />
-            <Dropdown
-                label="Losers"
-                items={losers}
-                selectedItems={filterLosers}
-                setSelectedItems={setFilterLosers}
-            />
             <div className="filter-group">
-                <span>Date:</span>
-                <input
-                    type="date"
-                    value={filterDate}
-                    onChange={(e) => setFilterDate(e.target.value)}
+                <Dropdown
+                    label="Winners"
+                    items={winners}
+                    selectedItems={filterWinners}
+                    setSelectedItems={setFilterWinners}
+                    isActive={hasActiveFilters(filterWinners)} // New prop
                 />
-            </div>
-            <div className="chip-container">
-                {availableLocations.map(location => (
-                    <Chip
-                        key={location}
-                        label={location}
-                        isSelected={filterLocations.includes(location)}
-                        onClick={() => toggleLocationFilter(location)}
+                <Dropdown
+                    label="Losers"
+                    items={losers}
+                    selectedItems={filterLosers}
+                    setSelectedItems={setFilterLosers}
+                    isActive={hasActiveFilters(filterLosers)} // New prop
+                />
+                <div className={'loco'}>
+                    <Dropdown
+                        label="Locations"
+                        items={availableLocations.map(location => ({ _id: location,name: location }))}
+                        selectedItems={filterLocations}
+                        setSelectedItems={setFilterLocations}
+                        isActive={hasActiveFilters(filterLocations)} // New prop
                     />
-                ))}
+                </div>
+                <div className={`filter-date ${isDateFilterActive ? 'active' : ''}`}>
+                    <input
+                        id="filter-date"
+                        type="date"
+                        className="date-input"
+                        value={filterDate}
+                        onChange={(e) => setFilterDate(e.target.value)}
+                    />
+                </div>
             </div>
-            <button className="reset-button" onClick={resetFilters}>Reset Filters</button>
+            <div className="filter-controls">
+                <button className="reset-button" onClick={resetFilters}>Reset Filters</button>
+                {showFilterSummary && (
+                    <div className="filter-summary">
+                        {activeFilters.length > 0 ? (
+                            <ul>
+                                {activeFilters.map((filter,index) => (
+                                    <li key={index}>{filter}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                                <p>No filters applied.</p>
+                            )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
+
+
 
 function MatchManagement() {
     const [matches,setMatches] = useState([]);
@@ -223,7 +245,7 @@ function MatchManagement() {
             (!filterWinners.length || allWinnersPresent) &&
             (!filterLosers.length || allLosersPresent) &&
             (!filterDate || doesDateMatchFilter(matchDate,filterDate)) &&
-            (!filterLocations.length || filterLocations.includes(match.location))
+            (!filterLocations.length || filterLocations.includes(matchLocation))
         );
     });
 
@@ -261,6 +283,7 @@ function MatchManagement() {
                     <Link to="/matches" className={locationHook.pathname === '/matches' ? 'active' : ''}>Matches</Link>
                 </nav>
             </header>
+            <div className="match-title">Matches</div>
             <FilterBar
                 winners={players}
                 losers={players}
@@ -272,7 +295,7 @@ function MatchManagement() {
                 setFilterDate={setFilterDate}
                 availableLocations={availableLocations}
                 filterLocations={filterLocations}
-                toggleLocationFilter={toggleLocationFilter}
+                setFilterLocations={setFilterLocations} // Ensure this is passed correctly
                 resetFilters={resetFilters}
             />
             <div className="match-grid">
@@ -337,14 +360,6 @@ function MatchManagement() {
                         onChange={(e) => setScoreB(e.target.value)}
                         required
                     />
-                    <input
-                        type="date"
-                        name="date"
-                        placeholder="Date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        required
-                    />
                     <select
                         name="location"
                         value={location}
@@ -356,6 +371,14 @@ function MatchManagement() {
                         <option value="Beach">Beach</option>
                         <option value="Indoor Court">Indoor Court</option>
                     </select>
+                    <input
+                        type="date"
+                        name="date"
+                        placeholder="Date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        required
+                    />
                     <button type="submit">Add Match</button>
                 </div>
             </form>
@@ -393,3 +416,4 @@ function MatchManagement() {
 }
 
 export default MatchManagement;
+

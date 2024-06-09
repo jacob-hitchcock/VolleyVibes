@@ -116,18 +116,7 @@ function PlayerManagement() {
                     <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
                 </nav>
             </header>
-            <div className="table-header sticky-header">
-                <h2>Players</h2>
-                <FaSearch className="search-icon" onClick={toggleSearchVisibility} />
-                <div className={`search-container ${searchVisible ? 'visible' : 'hidden'}`}>
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={handleSearchChange}
-                        placeholder="Search by name"
-                    />
-                </div>
-            </div>
+            <h2 className="match-title">Players</h2>
             <table className="playerlist">
                 <thead className="sticky-header">
                     <tr>
