@@ -168,6 +168,9 @@ const updatePlayerStats = async (match) => {
             player.pointsFor = player.pointsFor || 0;
             player.pointsAgainst = player.pointsAgainst || 0;
             player.pointDifferential = player.pointDifferential || 0;
+            player.gamesPlayed = player.gamesPlayed || 0;  // Initialize gamesPlayed
+
+            player.gamesPlayed += 1;  // Increment gamesPlayed
             player.wins += winningTeam.includes(playerId) ? 1 : 0;
             player.pointsFor += pointsFor;
             player.pointsAgainst += pointsAgainst;
@@ -187,6 +190,7 @@ const updatePlayerStats = async (match) => {
         await updatePlayer(playerId,scoreB,scoreA);
     }
 };
+
 
 // Basic route for testing
 app.get('/',(req,res) => {

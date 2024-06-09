@@ -23,6 +23,9 @@ function HomePage() {
         if(a[sortConfig.key] > b[sortConfig.key]) {
             return sortConfig.direction === 'ascending' ? 1 : -1;
         }
+        if(sortConfig.key === 'wins' || sortConfig.key === 'pointDifferential') {
+            return a.pointDifferential < b.pointDifferential ? 1 : -1;
+        }
         return 0;
     });
 
@@ -30,9 +33,7 @@ function HomePage() {
         let direction = 'descending';
         if(sortConfig.key === key) {
             direction = sortConfig.direction === 'descending' ? 'ascending' : 'descending';
-        } else if(key === 'name') {
-            direction = 'ascending';
-        } else if(key === 'pointsAgainst') {
+        } else if(key === 'name' || key === 'pointsAgainst') {
             direction = 'ascending';
         }
         setSortConfig({ key,direction });
@@ -66,13 +67,19 @@ function HomePage() {
             </header>
             <main>
                 <h2 className="match-title">Leaderboard</h2>
-                <table classname="leaderlist">
+                <table className="leaderlist">
                     <thead>
                         <tr>
                             <th style={{ width: '20%' }} onClick={() => requestSort('name')}>
                                 <div className="header-content">
                                     <span className="header-text">Name</span>
                                     <span className="sort-indicator">{getSortIndicator('name')}</span>
+                                </div>
+                            </th>
+                            <th style={{ width: '15%' }} onClick={() => requestSort('gamesPlayed')}>
+                                <div className="header-content">
+                                    <span className="header-text">Games Played</span>
+                                    <span className="sort-indicator">{getSortIndicator('gamesPlayed')}</span>
                                 </div>
                             </th>
                             <th style={{ width: '15%' }} onClick={() => requestSort('wins')}>
@@ -105,6 +112,7 @@ function HomePage() {
                         {sortedPlayers.map(player => (
                             <tr key={player._id}>
                                 <td>{player.name}</td>
+                                <td>{player.gamesPlayed}</td>
                                 <td>{player.wins}</td>
                                 <td>{player.pointsFor}</td>
                                 <td>{player.pointsAgainst}</td>

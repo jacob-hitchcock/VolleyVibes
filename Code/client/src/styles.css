@@ -127,7 +127,6 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    margin-top: -20px
 }
 
 th, td {
@@ -342,7 +341,7 @@ li button {
 }
 
 .leaderlist {
-    margin-top: -100px;
+    margin-top: -20px;
 }
 
 input[type="checkbox"]:disabled + label {
