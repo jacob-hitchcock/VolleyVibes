@@ -210,9 +210,9 @@ li button {
 .team {
     width: 45%;
     padding: 15px;
-    border: 2px solid #E7552B;
+    border: 1px solid #E7552B;
     border-radius: 10px;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -231,18 +231,31 @@ li button {
 }
 
 .match-details input,
-.match-details button {
+.match-details button,
+.match-details select {
     flex: 1;
     min-width: 120px;
     padding: 10px;
     margin: 5px;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 1px solid #E7552B;
     border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+    font-family: 'Coolvetica', Arial, sans-serif;
+    color: #333;
+    -webkit-appearance: none; /* Remove default styling in WebKit browsers */
+    -moz-appearance: none; /* Remove default styling in Firefox */
+    appearance: none; /* Remove default styling */
 }
 
-.match-details input {
-    border: 2px solid #E7552B;
+.match-details select option:first-child {
+    color: gray; /* Placeholder color */
+}
+
+.match-details input::placeholder,
+.match-details select {
+    color: gray; /* Ensure placeholder text is gray and not bold */
+    font-weight: normal;
 }
 
 .match-details button {
@@ -256,6 +269,31 @@ li button {
 
 .match-details button:hover {
     background-color: #e03e00;
+}
+
+/* Ensure the select box height matches the input fields */
+.match-details select {
+    height: 42px;
+}
+
+.filter-container {
+    margin-top: 40px;
+}
+
+.filter-container input {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px;
+    margin: 5px;
+    box-sizing: border-box;
+    border: 1px solid #E7552B;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+    font-family: 'Coolvetica', Arial, sans-serif;
+    color: #333;
+    -webkit-appearance: none; /* Remove default styling in WebKit browsers */
+    -moz-appearance: none; /* Remove default styling in Firefox */
+    appearance: none; /* Remove default styling */
 }
 
 .sort-indicator {
@@ -319,67 +357,24 @@ li button {
     z-index: 1;
 }
 
-/* Add this to your styles.css */
-
 input[type="checkbox"]:disabled + label {
     color: #999; /* Gray out the label */
     cursor: not-allowed;
     text-decoration: line-through; /* Optional: add strikethrough */
 }
 
-/* styles.css */
-
-/* Modal Styles */
-.modal {
-    display: block;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 10px;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* styles.css */
-
 /* Grid layout for matches */
 .match-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     margin: 20px 0;
 }
 
 .match-card {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.6);
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #E7552B;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -402,6 +397,509 @@ input[type="checkbox"]:disabled + label {
     background-color: #e03e00;
 }
 
+/* Modal Styles */
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #FFFBEF;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-title {
+    color: #e7552b;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.team-column {
+    width: 45%;
+}
+
+.team-column.winner h3,
+.team-column.winner p {
+    color: #e7552b;
+}
+
+.team-column.loser h3,
+.team-column.loser p {
+    color: #000;
+}
+
+.team-column h3{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.team-color p {
+    margin: 5px 0
+}
+
+.score {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    margin: 0 20px;
+}
+
+.triangle-right {
+    border-width: 10px 0 10px 20px;
+    border-color: transparent transparent transparent #e7552b;
+}
+
+.triangle-left {
+    border-width: 10px 20px 10px 0;
+    border-color: transparent #E7552B transparent transparent;
+}
+
+.modal-footer {
+    text-align: center;
+}
+
+.modal-footer p {
+    margin: 5px 0;
+}
+
+.chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    margin: 5px;
+    border: 1px solid #E7552B;
+    border-radius: 16px;
+    font-family: 'Coolvetica', Arial, sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.chip.selected {
+    background-color: #E7552B;
+    color: #fff5d6;
+}
+
+.chip:not(.selected) {
+    background-color: transparent;
+    color: #E7552B;
+}
+
+/* Sidebar styles */
+.match-management {
+    display: flex;
+}
+
+.filter-bar {
+    width: 25%; /* Updated to take 25% of the width */
+    padding: 20px;
+    background-color: #f4f4f4;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.content {
+    margin-left: 25%; /* Adjust margin to align content next to the filter */
+    padding: 20px;
+    width: 75%; /* Updated to take 75% of the width */
+}
+
+.match-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.match-card {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 10px;
+    border: 1px solid #E7552B;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.match-card div {
+    margin-bottom: 10px;
+}
+
+.match-card button {
+    background-color: #E7552B;
+    color: #fff5d6;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.match-card button:hover {
+    background-color: #e03e00;
+}
+
+/* Modal Styles */
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #FFFBEF;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-title {
+    color: #e7552b;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.team-column {
+    width: 45%;
+}
+
+.team-column.winner h3,
+.team-column.winner p {
+    color: #e7552b;
+}
+
+.team-column.loser h3,
+.team-column.loser p {
+    color: #000;
+}
+
+.team-column h3{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.team-color p {
+    margin: 5px 0
+}
+
+.score {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    margin: 0 20px;
+}
+
+.triangle-right {
+    border-width: 10px 0 10px 20px;
+    border-color: transparent transparent transparent #e7552b;
+}
+
+.triangle-left {
+    border-width: 10px 20px 10px 0;
+    border-color: transparent #E7552B transparent transparent;
+}
+
+.modal-footer {
+    text-align: center;
+}
+
+.modal-footer p {
+    margin: 5px 0;
+}
+
+.chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    margin: 5px;
+    border: 1px solid #E7552B;
+    border-radius: 16px;
+    font-family: 'Coolvetica', Arial, sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.chip.selected {
+    background-color: #E7552B;
+    color: #fff5d6;
+}
+
+.chip:not(.selected) {
+    background-color: transparent;
+    color: #E7552B;
+}
+
+/* Sidebar styles */
+.match-management {
+    display: flex;
+}
+
+.filter-bar {
+    width: 25%; /* Updated to take 25% of the width */
+    padding: 20px;
+    background-color: #f4f4f4;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.content {
+    margin-left: 25%; /* Adjust margin to align content next to the filter */
+    padding: 20px;
+    width: 75%; /* Updated to take 75% of the width */
+}
+
+.match-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.match-card {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 10px;
+    border: 1px solid #E7552B;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.match-card div {
+    margin-bottom: 10px;
+}
+
+.match-card button {
+    background-color: #E7552B;
+    color: #fff5d6;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.match-card button:hover {
+    background-color: #e03e00;
+}
+
+/* Modal Styles */
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #FFFBEF;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-title {
+    color: #e7552b;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.team-column {
+    width: 45%;
+}
+
+.team-column.winner h3,
+.team-column.winner p {
+    color: #e7552b;
+}
+
+.team-column.loser h3,
+.team-column.loser p {
+    color: #000;
+}
+
+.team-column h3{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.team-color p {
+    margin: 5px 0
+}
+
+.score {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    margin: 0 20px;
+}
+
+.triangle-right {
+    border-width: 10px 0 10px 20px;
+    border-color: transparent transparent transparent #e7552b;
+}
+
+.triangle-left {
+    border-width: 10px 20px 10px 0;
+    border-color: transparent #E7552B transparent transparent;
+}
+
+.modal-footer {
+    text-align: center;
+}
+
+.modal-footer p {
+    margin: 5px 0;
+}
+
+.chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    margin: 5px;
+    border: 1px solid #E7552B;
+    border-radius: 16px;
+    font-family: 'Coolvetica', Arial, sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.chip.selected {
+    background-color: #E7552B;
+    color: #fff5d6;
+}
+
+.chip:not(.selected) {
+    background-color: transparent;
+    color: #E7552B;
+}
+
 @media (max-width: 768px) {
     .teams {
         flex-direction: column;
@@ -417,7 +915,19 @@ input[type="checkbox"]:disabled + label {
     }
 
     .match-details input,
-    .match-details button {
+    .match-details button,
+    .match-details select {
+        width: 100%;
+    }
+
+    .filter-bar {
+        width: 100%;
+        position: static;
+        height: auto;
+    }
+
+    .content {
+        margin-left: 0;
         width: 100%;
     }
 }
