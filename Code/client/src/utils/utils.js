@@ -47,3 +47,18 @@ export const groupMatchesByDate = (matches) => {
         return groups;
     },{});
 };
+
+// Validation Function
+export const validatePlayerForm = (form) => {
+    const errors = {};
+    if(!form.name) {
+        errors.name = 'Name is required';
+    }
+    if(form.age && (form.age < 0 || form.age > 120)) {
+        errors.age = 'Age must be between 0 and 120';
+    }
+    if(!form.gender) {
+        errors.gender = 'Gender is required';
+    }
+    return errors;
+};

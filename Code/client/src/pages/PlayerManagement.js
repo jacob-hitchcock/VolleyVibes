@@ -2,52 +2,29 @@ import React,{ useState,useEffect } from 'react';
 import axios from 'axios';
 import { Link,useLocation } from 'react-router-dom';
 import NavBar from '../components/NavBar';
+import PlayerTable from '../components/PlayerTable';
+import PlayerForm from '../components/PlayerForm';
+import SearchBar from '../components/SearchBar';
+import Footer from '../components/Footer';
+import useFetchData from '../hooks/useFetchData';
+import useFormValidation from '../hooks/useFormValidation';
+import useToggle from '../hooks/useToggle';
+import { validatePlayerForm } from '../utils/utils';
 import '../styles.css';
-import { FaSearch } from 'react-icons/fa';
 
 function PlayerManagement() {
-    const [players,setPlayers] = useState([]);
-    const [form,setForm] = useState({ name: '',age: '',gender: '' });
+    const { players,loading,setPlayers } = useFetchData(); // Use the hook to get players data
+    const { form,errors,handleChange,handleSubmit,setForm,setErrors } = useFormValidation(
+        { name: '',age: '',gender: '' },
+        validatePlayerForm
+    );
     const [editMode,setEditMode] = useState(false);
     const [currentPlayerId,setCurrentPlayerId] = useState(null);
-    const [errors,setErrors] = useState({});
     const [search,setSearch] = useState('');
-    const [searchVisible,setSearchVisible] = useState(false);
+    const [searchVisible,toggleSearchVisible] = useToggle(false); // Use the useToggle hook
     const location = useLocation();
 
-    useEffect(() => {
-        axios.get('/api/players')
-            .then(response => setPlayers(response.data))
-            .catch(error => console.error('Error fetching players:',error));
-    },[]);
-
-    const handleChange = (e) => {
-        const { name,value } = e.target;
-        setForm({ ...form,[name]: value });
-    };
-
-    const validateForm = () => {
-        const errors = {};
-        if(!form.name) {
-            errors.name = 'Name is required';
-        }
-        if(form.age && (form.age < 0 || form.age > 120)) {
-            errors.age = 'Age must be between 0 and 120';
-        }
-        if(!form.gender) {
-            errors.gender = 'Gender is required';
-        }
-        return errors;
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const validationErrors = validateForm();
-        if(Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
-        }
-
+    const onSubmit = () => {
         if(editMode) {
             axios.put(`/api/players/${currentPlayerId}`,form)
                 .then(response => {
@@ -55,7 +32,6 @@ function PlayerManagement() {
                     setEditMode(false);
                     setCurrentPlayerId(null);
                     setForm({ name: '',age: '',gender: '' });
-                    setErrors({});
                 })
                 .catch(error => console.error('Error updating player:',error));
         } else {
@@ -63,7 +39,6 @@ function PlayerManagement() {
                 .then(response => {
                     setPlayers([...players,response.data]);
                     setForm({ name: '',age: '',gender: '' });
-                    setErrors({});
                 })
                 .catch(error => console.error('Error adding player:',error));
         }
@@ -91,89 +66,40 @@ function PlayerManagement() {
         setSearch(e.target.value);
     };
 
-    const toggleSearchVisibility = () => {
-        setSearchVisible(!searchVisible);
-        setSearch('');
-    };
-
     const filteredPlayers = players.filter(player => player.name.toLowerCase().includes(search.toLowerCase()));
 
     return (
         <div>
             <NavBar />
             <h2 className="match-title">Players</h2>
-            <table className="playerlist">
-                <thead className="sticky-header">
-                    <tr>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredPlayers.map(player => (
-                        <tr key={player._id}>
-                            <td>{player.name}</td>
-                            <td>{player.age}</td>
-                            <td>{player.gender}</td>
-                            <td>
-                                <button onClick={() => handleEdit(player)}>Edit</button>
-                                <button onClick={() => handleDelete(player._id)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Name:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Name"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                    />
-                    {errors.name && <span className="error">{errors.name}</span>}
-                </div>
-                <div>
-                    <label>Age:</label>
-                    <input
-                        type="number"
-                        name="age"
-                        placeholder="Age"
-                        value={form.age}
-                        onChange={handleChange}
-                    />
-                    {errors.age && <span className="error">{errors.age}</span>}
-                </div>
-                <div>
-                    <label>Gender:</label>
-                    <input
-                        type="text"
-                        name="gender"
-                        placeholder="Gender"
-                        value={form.gender}
-                        onChange={handleChange}
-                        required
-                    />
-                    {errors.gender && <span className="error">{errors.gender}</span>}
-                </div>
-                <button type="submit">{editMode ? 'Update Player' : 'Add Player'}</button>
-            </form>
-            <footer>
-                <img src="icon1.png" alt="icon1" />
-                <img src="icon2.png" alt="icon2" />
-            </footer>
+            {loading ? (
+                <div className="loading-indicator">Loading players...</div>
+            ) : (
+                    <>
+                        <SearchBar
+                            search={search}
+                            handleSearchChange={handleSearchChange}
+                            toggleSearchVisibility={toggleSearchVisible}
+                            searchVisible={searchVisible}
+                        />
+                        <PlayerTable
+                            players={filteredPlayers}
+                            handleEdit={handleEdit}
+                            handleDelete={handleDelete}
+                            loading={loading} // Pass the loading state
+                        />
+                    </>
+                )}
+            <PlayerForm
+                form={form}
+                errors={errors}
+                handleChange={handleChange}
+                handleSubmit={(e) => handleSubmit(e,onSubmit)}
+                editMode={editMode}
+            />
+            <Footer />
         </div>
     );
 }
 
 export default PlayerManagement;
-
-/*
-Form to create new player, add in when admin is created
-
-*/

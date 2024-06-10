@@ -107,7 +107,7 @@ function MatchManagement() {
                 resetFilters={resetFilters}
             />
             {loading ? (
-                <div className="loading-indicator">Loading...</div>
+                <div className="loading-indicator">Loading matches...</div>
             ) : (
                     <MatchGrid
                         groupedMatches={groupedMatches}
