@@ -17,14 +17,35 @@ function HomePage() {
     },[]);
 
     const sortedPlayers = [...players].sort((a,b) => {
-        if(a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? -1 : 1;
-        }
-        if(a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-        if(sortConfig.key === 'wins' || sortConfig.key === 'pointDifferential') {
-            return a.pointDifferential < b.pointDifferential ? 1 : -1;
+        const aLosses = a.gamesPlayed - a.wins;
+        const bLosses = b.gamesPlayed - b.wins;
+        const aWinningPercentage = a.gamesPlayed ? (a.wins / a.gamesPlayed).toFixed(3) : 0;
+        const bWinningPercentage = b.gamesPlayed ? (b.wins / b.gamesPlayed).toFixed(3) : 0;
+
+        if(sortConfig.key === 'losses') {
+            if(aLosses < bLosses) {
+                return sortConfig.direction === 'ascending' ? -1 : 1;
+            }
+            if(aLosses > bLosses) {
+                return sortConfig.direction === 'ascending' ? 1 : -1;
+            }
+        } else if(sortConfig.key === 'winningPercentage') {
+            if(aWinningPercentage < bWinningPercentage) {
+                return sortConfig.direction === 'ascending' ? -1 : 1;
+            }
+            if(aWinningPercentage > bWinningPercentage) {
+                return sortConfig.direction === 'ascending' ? 1 : -1;
+            }
+        } else {
+            if(a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === 'ascending' ? -1 : 1;
+            }
+            if(a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === 'ascending' ? 1 : -1;
+            }
+            if(sortConfig.key === 'wins' || sortConfig.key === 'pointDifferential') {
+                return a.pointDifferential < b.pointDifferential ? 1 : -1;
+            }
         }
         return 0;
     });
@@ -33,7 +54,7 @@ function HomePage() {
         let direction = 'descending';
         if(sortConfig.key === key) {
             direction = sortConfig.direction === 'descending' ? 'ascending' : 'descending';
-        } else if(key === 'name' || key === 'pointsAgainst') {
+        } else if(key === 'name' || key === 'pointsAgainst' || key === 'losses' || key === 'winningPercentage') {
             direction = 'ascending';
         }
         setSortConfig({ key,direction });
@@ -70,37 +91,49 @@ function HomePage() {
                 <table className="leaderlist">
                     <thead>
                         <tr>
-                            <th style={{ width: '20%' }} onClick={() => requestSort('name')}>
+                            <th onClick={() => requestSort('name')}>
                                 <div className="header-content">
                                     <span className="header-text">Name</span>
                                     <span className="sort-indicator">{getSortIndicator('name')}</span>
                                 </div>
                             </th>
-                            <th style={{ width: '15%' }} onClick={() => requestSort('gamesPlayed')}>
+                            <th onClick={() => requestSort('gamesPlayed')}>
                                 <div className="header-content">
                                     <span className="header-text">Games Played</span>
                                     <span className="sort-indicator">{getSortIndicator('gamesPlayed')}</span>
                                 </div>
                             </th>
-                            <th style={{ width: '15%' }} onClick={() => requestSort('wins')}>
+                            <th onClick={() => requestSort('wins')}>
                                 <div className="header-content">
                                     <span className="header-text">Wins</span>
                                     <span className="sort-indicator">{getSortIndicator('wins')}</span>
                                 </div>
                             </th>
-                            <th style={{ width: '20%' }} onClick={() => requestSort('pointsFor')}>
+                            <th onClick={() => requestSort('losses')}>
+                                <div className="header-content">
+                                    <span className="header-text">Losses</span>
+                                    <span className="sort-indicator">{getSortIndicator('losses')}</span>
+                                </div>
+                            </th>
+                            <th onClick={() => requestSort('winningPercentage')}>
+                                <div className="header-content">
+                                    <span className="header-text">Winning %</span>
+                                    <span className="sort-indicator">{getSortIndicator('winningPercentage')}</span>
+                                </div>
+                            </th>
+                            <th onClick={() => requestSort('pointsFor')}>
                                 <div className="header-content">
                                     <span className="header-text">Points For</span>
                                     <span className="sort-indicator">{getSortIndicator('pointsFor')}</span>
                                 </div>
                             </th>
-                            <th style={{ width: '20%' }} onClick={() => requestSort('pointsAgainst')}>
+                            <th onClick={() => requestSort('pointsAgainst')}>
                                 <div className="header-content">
                                     <span className="header-text">Points Against</span>
                                     <span className="sort-indicator">{getSortIndicator('pointsAgainst')}</span>
                                 </div>
                             </th>
-                            <th style={{ width: '25%' }} onClick={() => requestSort('pointDifferential')}>
+                            <th onClick={() => requestSort('pointDifferential')}>
                                 <div className="header-content">
                                     <span className="header-text">Point Differential</span>
                                     <span className="sort-indicator">{getSortIndicator('pointDifferential')}</span>
@@ -109,16 +142,21 @@ function HomePage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedPlayers.map(player => (
-                            <tr key={player._id}>
-                                <td>{player.name}</td>
-                                <td>{player.gamesPlayed}</td>
-                                <td>{player.wins}</td>
-                                <td>{player.pointsFor}</td>
-                                <td>{player.pointsAgainst}</td>
-                                <td>{player.pointDifferential}</td>
-                            </tr>
-                        ))}
+                        {sortedPlayers.map(player => {
+                            const winningPercentage = player.gamesPlayed ? (player.wins / player.gamesPlayed).toFixed(3) : '0.000';
+                            return (
+                                <tr key={player._id}>
+                                    <td>{player.name}</td>
+                                    <td>{player.gamesPlayed}</td>
+                                    <td>{player.wins}</td>
+                                    <td>{player.gamesPlayed - player.wins}</td>
+                                    <td>{winningPercentage}</td>
+                                    <td>{player.pointsFor}</td>
+                                    <td>{player.pointsAgainst}</td>
+                                    <td>{player.pointDifferential}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </main>

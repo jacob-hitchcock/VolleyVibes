@@ -141,6 +141,16 @@ th {
     cursor: pointer;
 }
 
+th .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+th .header-text {
+    white-space: nowrap;
+}
+
 footer {
     padding: 20px;
     margin-bottom: 20px;
@@ -337,10 +347,6 @@ li button {
 }
 
 .playerlist {
-    margin-top: -20px;
-}
-
-.leaderlist {
     margin-top: -20px;
 }
 
@@ -723,6 +729,70 @@ input[type="checkbox"]:disabled + label {
     width: 75%;
 }
 
+/* Styles for the leaderboard */
+.leaderlist {
+    margin-top: -20px;
+    width: 100%;
+}
+
+.leaderlist th {
+    text-align: left;
+    white-space: nowrap;
+    background-color: #E7552B;
+    color: #fff5d6;
+    cursor: pointer;
+    padding-right: 10px; /* Extra space for sort indicator */
+}
+
+.leaderlist th:nth-child(1) {
+    width: 17%; /* Name column */
+}
+
+.leaderlist th:nth-child(2) {
+    width: 12%; /* Games Played column */
+}
+
+.leaderlist th:nth-child(3) {
+    width: 10%; /* Wins column */
+}
+
+.leaderlist th:nth-child(4) {
+    width: 10%; /* Losses column */
+}
+
+.leaderlist th:nth-child(5) {
+    width: 12%; /* Winning % column */
+}
+
+.leaderlist th:nth-child(6) {
+    width: 11%; /* Points For column */
+}
+
+.leaderlist th:nth-child(7) {
+    width: 14%; /* Points Against column */
+}
+
+.leaderlist th:nth-child(8) {
+    width: 14%; /* Point Differential column */
+}
+
+.leaderlist th .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.leaderlist th .header-text {
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
+.leaderlist td {
+    text-align: left;
+}
+
+
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .teams {
@@ -755,3 +825,5 @@ input[type="checkbox"]:disabled + label {
         width: 100%;
     }
 }
+
+
