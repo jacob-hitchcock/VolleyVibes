@@ -316,6 +316,61 @@ li button {
     color: #E7552B;
 }
 
+/* Search bar styles */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    position: relative;
+    margin-top: -70px; /* Add top margin for better alignment */
+}
+
+.search-input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    right: 130px;
+    color: #E7552B;
+    font-size: 16px;
+}
+
+.search-input {
+    width: 200px;
+    padding: 10px 10px 10px 50px; /* Add padding to the left for the icon */
+    border: 2px solid #E7552B; /* Outline color */
+    border-radius: 5px;
+    background-color: #fff5d6;
+    color: #E7552B;
+    font-family: 'Coolvetica', Arial, sans-serif;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.search-input::placeholder {
+    color: #E7552B;
+    padding-left: 10px; /* Adjust placeholder padding to avoid overlap */
+}
+
+.search-input:focus {
+    border-color: #e7552b; /* Outline color */
+    background-color: #fff;
+}
+
+.search-input::selection {
+    background-color: #E7552B;
+    color: #fff5d6;
+}
+
+/* Ensure the h2 and search bar are aligned */
+h2.match-title {
+    display: inline-block;
+    margin-right: 20px;
+}
+
 .search-icon {
     cursor: pointer;
     font-size: 24px;
@@ -422,6 +477,8 @@ input[type="checkbox"]:disabled + label {
 }
 
 .modal-content {
+    position: relative;
+    z-index: 2;
     background-color: #FFFBEF;
     margin: 15% auto;
     padding: 20px;
@@ -430,6 +487,66 @@ input[type="checkbox"]:disabled + label {
     max-width: 600px;
     border-radius: 10px;
 }
+
+/* Keyframes for zoom-in and zoom-out animations */
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+/* Keyframes for fade-in and fade-out animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Animation classes */
+.modal-zoom-in {
+    animation: zoomIn 0.5s forwards;
+}
+
+.modal-zoom-out {
+    animation: zoomOut 0.5s forwards;
+}
+
+.background-fade-in {
+    animation: fadeIn 0.5s forwards;
+}
+
+.background-fade-out {
+    animation: fadeOut 0.5s forwards;
+}
+
 
 .close {
     color: #aaa;
@@ -458,6 +575,18 @@ input[type="checkbox"]:disabled + label {
     align-items: center;
     margin-bottom: 20px;
     text-align: center;
+}
+
+/* Ensure modal background stays in place */
+.modal-background {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
 }
 
 .team-column {

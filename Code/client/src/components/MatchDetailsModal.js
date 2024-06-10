@@ -1,11 +1,22 @@
-import React from 'react';
+import React,{ useState,useEffect } from 'react';
 import '../styles.css';
 
 const MatchDetailsModal = ({ selectedMatch,isTeamAWinner,getPlayerName,formatDate,closeModal }) => {
+    const [isClosing,setIsClosing] = useState(false);
+
+    // Add a function to handle closing animation
+    const handleClose = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+            closeModal();
+            setIsClosing(false);
+        },500); // Duration of the closing animation
+    };
+
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <span className="close" onClick={closeModal}>&times;</span>
+        <div className={`modal-background ${isClosing ? 'background-fade-out' : 'background-fade-in'}`}>
+            <div className={`modal-content ${isClosing ? 'modal-zoom-out' : 'modal-zoom-in'}`}>
+                <span className="close" onClick={handleClose}>&times;</span>
                 <h2 className="modal-title">Match Details</h2>
                 <div className="modal-body">
                     <div className={`team-column ${isTeamAWinner(selectedMatch) ? 'winner' : 'loser'}`}>
