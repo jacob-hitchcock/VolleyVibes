@@ -6,12 +6,17 @@ import '../styles.css';
 function HomePage() {
     const [players,setPlayers] = useState([]);
     const [sortConfig,setSortConfig] = useState({ key: 'wins',direction: 'descending' });
+    const [initialLoad,setInitialLoad] = useState(true); // Track initial load
     const location = useLocation();
+    const [loading,setLoading] = useState(true);
 
     useEffect(() => {
         axios.get('/api/players')
             .then(response => {
                 setPlayers(response.data);
+                setLoading(false);
+                setInitialLoad(true); // Set to true after fetching data
+                setTimeout(() => setInitialLoad(false),1000); // Reset after animation
             })
             .catch(error => console.error('Error fetching leaderboard:',error));
     },[]);
@@ -64,9 +69,14 @@ function HomePage() {
 
     const getSortIndicator = key => {
         if(sortConfig.key === key) {
-            return sortConfig.direction === 'ascending' ? '▲' : '▼';
+            const directionClass = sortConfig.direction === 'ascending' ? 'sorted-ascending' : 'sorted-descending';
+            return (
+                <span className={`sort-indicator ${directionClass}`}>
+                    {sortConfig.direction === 'ascending' ? '▲' : '▼'}
+                </span>
+            );
         }
-        return '';
+        return <span className="sort-indicator"></span>; // Default state
     };
 
     return (
@@ -96,58 +106,62 @@ function HomePage() {
                             <th className={sortConfig.key === 'name' ? 'sorted' : ''} onClick={() => requestSort('name')}>
                                 <div className="header-content">
                                     <span className="header-text">Name</span>
-                                    <span className="sort-indicator">{getSortIndicator('name')}</span>
+                                    {getSortIndicator('name')}
                                 </div>
                             </th>
                             <th className={sortConfig.key === 'gamesPlayed' ? 'sorted' : ''} onClick={() => requestSort('gamesPlayed')}>
                                 <div className="header-content">
                                     <span className="header-text">Games Played</span>
-                                    <span className="sort-indicator">{getSortIndicator('gamesPlayed')}</span>
+                                    {getSortIndicator('gamesPlayed')}
                                 </div>
                             </th>
                             <th className={sortConfig.key === 'wins' ? 'sorted' : ''} onClick={() => requestSort('wins')}>
                                 <div className="header-content">
                                     <span className="header-text">Wins</span>
-                                    <span className="sort-indicator">{getSortIndicator('wins')}</span>
+                                    {getSortIndicator('wins')}
                                 </div>
                             </th>
                             <th className={sortConfig.key === 'losses' ? 'sorted' : ''} onClick={() => requestSort('losses')}>
                                 <div className="header-content">
                                     <span className="header-text">Losses</span>
-                                    <span className="sort-indicator">{getSortIndicator('losses')}</span>
+                                    {getSortIndicator('losses')}
                                 </div>
                             </th>
                             <th className={sortConfig.key === 'winningPercentage' ? 'sorted' : ''} onClick={() => requestSort('winningPercentage')}>
                                 <div className="header-content">
                                     <span className="header-text">Winning %</span>
-                                    <span className="sort-indicator">{getSortIndicator('winningPercentage')}</span>
+                                    {getSortIndicator('winningPercentage')}
                                 </div>
                             </th>
                             <th className={sortConfig.key === 'pointsFor' ? 'sorted' : ''} onClick={() => requestSort('pointsFor')}>
                                 <div className="header-content">
                                     <span className="header-text">Points For</span>
-                                    <span className="sort-indicator">{getSortIndicator('pointsFor')}</span>
+                                    {getSortIndicator('pointsFor')}
                                 </div>
                             </th>
                             <th className={sortConfig.key === 'pointsAgainst' ? 'sorted' : ''} onClick={() => requestSort('pointsAgainst')}>
                                 <div className="header-content">
                                     <span className="header-text">Points Against</span>
-                                    <span className="sort-indicator">{getSortIndicator('pointsAgainst')}</span>
+                                    {getSortIndicator('pointsAgainst')}
                                 </div>
                             </th>
                             <th className={sortConfig.key === 'pointDifferential' ? 'sorted' : ''} onClick={() => requestSort('pointDifferential')}>
                                 <div className="header-content">
                                     <span className="header-text">Point Differential</span>
-                                    <span className="sort-indicator">{getSortIndicator('pointDifferential')}</span>
+                                    {getSortIndicator('pointDifferential')}
                                 </div>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedPlayers.map(player => {
+                        {!loading && sortedPlayers.map((player,index) => {
                             const winningPercentage = player.gamesPlayed ? (player.wins / player.gamesPlayed).toFixed(3) : '0.000';
                             return (
-                                <tr key={player._id}>
+                                <tr
+                                    key={player._id}
+                                    className={initialLoad ? "flip-in" : ""}
+                                    style={initialLoad ? { animationDelay: `${index * 0.1}s` } : {}}
+                                >
                                     <td>{player.name}</td>
                                     <td>{player.gamesPlayed}</td>
                                     <td>{player.wins}</td>

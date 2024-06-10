@@ -733,6 +733,7 @@ input[type="checkbox"]:disabled + label {
 .leaderlist {
     margin-top: -20px;
     width: 100%;
+    border-collapse: collapse;
 }
 
 .leaderlist th {
@@ -795,8 +796,22 @@ input[type="checkbox"]:disabled + label {
     text-align: left;
 }
 
+@keyframes flipIn {
+    from {
+        transform: rotateX(-90deg);
+        opacity: 0;
+    }
+    to {
+        transform: rotateX(0);
+        opacity: 1;
+    }
+}
 
-
+.flip-in {
+    animation: flipIn 0.5s ease-out forwards;
+    transform-origin: top;
+    opacity: 0; /* Ensure rows are initially hidden */
+}
 
 /* Responsive Styles */
 @media (max-width: 768px) {
