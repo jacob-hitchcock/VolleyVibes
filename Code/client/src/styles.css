@@ -219,6 +219,13 @@ li button {
     margin-bottom: 10px;
 }
 
+.loading-indicator {
+    font-size: 24px;
+    color: #E7552B;
+    text-align: center;
+    margin: 20px 0;
+}
+
 .match-details {
     display: flex;
     flex-wrap: wrap;

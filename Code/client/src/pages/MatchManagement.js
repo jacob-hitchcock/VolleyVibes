@@ -1,133 +1,39 @@
-import React,{ useState,useEffect } from 'react';
+import React,{ useState } from 'react';
 import axios from 'axios';
 import { Link,useLocation } from 'react-router-dom';
 import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import FilterBar from '../components/FilterBar';
+import MatchGrid from '../components/MatchGrid';
+import TeamSelection from '../components/TeamSelection';
+import MatchDetailsModal from '../components/MatchDetailsModal';
+import useFetchData from '../hooks/useFetchData'; // Import the useFetchData hook
+import useFilters from '../hooks/useFilters'; // Import the useFilters hook
+import {
+    getPlayerName,
+    formatDate,
+    getWinners,
+    getLosers,
+    groupMatchesByDate,
+} from '../utils/utils'; // Import utility functions
 import '../styles.css';
 
-const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive,isOpen,onToggle }) => {
-    const handleCheckboxChange = (e) => {
-        const { value,checked } = e.target;
-        setSelectedItems(prevItems =>
-            checked ? [...prevItems,value] : prevItems.filter(item => item !== value)
-        );
-    };
-
-    return (
-        <div className={`dropdown ${isActive ? 'active' : ''} ${isOpen ? 'open' : ''}`}>
-            <button onClick={onToggle} className="dropdown-button">
-                {label} <span className="dropdown-icon">{isOpen ? '▲' : '▼'}</span>
-            </button>
-            {isOpen && (
-                <div className="dropdown-content">
-                    {items.sort((a,b) => a.name.localeCompare(b.name)).map(item => (
-                        <label key={item._id}>
-                            <input
-                                type="checkbox"
-                                value={item._id}
-                                checked={selectedItems.includes(item._id)}
-                                onChange={handleCheckboxChange}
-                            />
-                            {item.name}
-                        </label>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
-};
-
-const FilterBar = ({
-    winners,
-    losers,
-    filterWinners,
-    setFilterWinners,
-    filterLosers,
-    setFilterLosers,
-    filterDate,
-    setFilterDate,
-    availableLocations,
-    filterLocations,
-    setFilterLocations,
-    resetFilters,
-}) => {
-    const [openDropdown,setOpenDropdown] = useState(null);
-
-    const hasActiveFilters = (filters) => filters.length > 0;
-    const isDateFilterActive = filterDate !== '';
-
-    const activeFilters = [
-        ...filterWinners.map(id => winners.find(w => w._id === id)?.name),
-        ...filterLosers.map(id => losers.find(l => l._id === id)?.name),
-        ...(filterDate ? [`Date: ${filterDate}`] : []),
-        ...filterLocations.map(location => location),
-    ];
-
-    const handleToggle = (dropdown) => {
-        setOpenDropdown(openDropdown === dropdown ? null : dropdown);
-    };
-
-    const closeAllDropdowns = () => {
-        setOpenDropdown(null);
-    };
-
-    return (
-        <div className="filter-bar">
-            <div className="filter-group">
-                <Dropdown
-                    label="Winners"
-                    items={winners}
-                    selectedItems={filterWinners}
-                    setSelectedItems={setFilterWinners}
-                    isActive={hasActiveFilters(filterWinners)}
-                    isOpen={openDropdown === 'winners'}
-                    onToggle={() => handleToggle('winners')}
-                />
-                <Dropdown
-                    label="Losers"
-                    items={losers}
-                    selectedItems={filterLosers}
-                    setSelectedItems={setFilterLosers}
-                    isActive={hasActiveFilters(filterLosers)}
-                    isOpen={openDropdown === 'losers'}
-                    onToggle={() => handleToggle('losers')}
-                />
-                <div className={'loco'}>
-                    <Dropdown
-                        label="Locations"
-                        items={availableLocations.map(location => ({ _id: location,name: location }))}
-                        selectedItems={filterLocations}
-                        setSelectedItems={setFilterLocations}
-                        isActive={hasActiveFilters(filterLocations)}
-                        isOpen={openDropdown === 'locations'}
-                        onToggle={() => handleToggle('locations')}
-                    />
-                </div>
-                <div className={`filter-date ${isDateFilterActive ? 'active' : ''}`}>
-                    <input
-                        id="filter-date"
-                        type="date"
-                        className="date-input"
-                        value={filterDate}
-                        onChange={(e) => {
-                            setFilterDate(e.target.value);
-                            closeAllDropdowns();
-                        }}
-                    />
-                </div>
-            </div>
-            <div className="filter-controls">
-                <button className="reset-button" onClick={() => {
-                    resetFilters();
-                    closeAllDropdowns();
-                }}>Reset Filters</button>
-            </div>
-        </div>
-    );
-};
-
 function MatchManagement() {
-    const [matches,setMatches] = useState([]);
-    const [players,setPlayers] = useState([]);
+    const { matches,players,loading,setMatches } = useFetchData(); // Destructure setMatches from the hook
+    const {
+        filterWinners,
+        setFilterWinners,
+        filterLosers,
+        setFilterLosers,
+        filterDate,
+        setFilterDate,
+        filterLocations,
+        setFilterLocations,
+        filteredMatches,
+        resetFilters,
+        isTeamAWinner, // Destructure isTeamAWinner from the hook
+    } = useFilters(matches,players); // Destructure the filters and filteredMatches from the useFilters hook
+
     const [teamA,setTeamA] = useState([]);
     const [teamB,setTeamB] = useState([]);
     const [scoreA,setScoreA] = useState('');
@@ -138,22 +44,17 @@ function MatchManagement() {
     const [isModalOpen,setIsModalOpen] = useState(false);
     const locationHook = useLocation();
 
-    const [filterWinners,setFilterWinners] = useState([]);
-    const [filterLosers,setFilterLosers] = useState([]);
-    const [filterDate,setFilterDate] = useState('');
-    const [filterLocations,setFilterLocations] = useState([]);
-
     const availableLocations = ['Grass','Beach','Indoor Court'];
 
-    useEffect(() => {
-        axios.get('/api/players')
-            .then(response => setPlayers(response.data))
-            .catch(error => console.error('Error fetching players:',error));
+    const openModal = (match) => {
+        setSelectedMatch(match);
+        setIsModalOpen(true);
+    };
 
-        axios.get('/api/matches')
-            .then(response => setMatches(response.data))
-            .catch(error => console.error('Error fetching matches:',error));
-    },[]);
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedMatch(null);
+    };
 
     const handlePlayerSelection = (e,team) => {
         const { value,checked } = e.target;
@@ -185,107 +86,7 @@ function MatchManagement() {
             .catch(error => console.error('Error adding match:',error));
     };
 
-    const getPlayerName = (id) => {
-        const player = players.find(p => p._id === id);
-        return player ? player.name : '';
-    };
-
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric',month: 'long',day: 'numeric' };
-        const date = new Date(dateString);
-        return date.toLocaleDateString(undefined,options);
-    };
-
-    const getWinners = (match) => {
-        return parseInt(match.scores[0]) > parseInt(match.scores[1])
-            ? match.teams[0].map(id => getPlayerName(id)).join(', ')
-            : match.teams[1].map(id => getPlayerName(id)).join(', ');
-    };
-
-    const getLosers = (match) => {
-        return parseInt(match.scores[0]) > parseInt(match.scores[1])
-            ? match.teams[1].map(id => getPlayerName(id)).join(', ')
-            : match.teams[0].map(id => getPlayerName(id)).join(', ');
-    };
-
-    const openModal = (match) => {
-        setSelectedMatch(match);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setSelectedMatch(null);
-    };
-
-    const isTeamAWinner = (match) => parseInt(match.scores[0]) > parseInt(match.scores[1]);
-
-    const doesDateMatchFilter = (matchDate,filterDate) => {
-        const matchDateUTC = new Date(matchDate.toISOString().split('T')[0]); // Convert to UTC and strip time
-        const filterDateUTC = new Date(filterDate);
-
-        return (
-            filterDateUTC.getFullYear() === matchDateUTC.getFullYear() &&
-            filterDateUTC.getMonth() === matchDateUTC.getMonth() &&
-            filterDateUTC.getDate() === matchDateUTC.getDate()
-        );
-    };
-
-    const filteredMatches = matches.filter(match => {
-        const matchDate = new Date(match.date);
-
-        const winningTeam = parseInt(match.scores[0]) > parseInt(match.scores[1]) ? match.teams[0] : match.teams[1];
-        const allWinnersPresent = filterWinners.every(winner => winningTeam.includes(winner));
-
-        const losingTeam = parseInt(match.scores[0]) > parseInt(match.scores[1]) ? match.teams[1] : match.teams[0];
-        const allLosersPresent = filterLosers.every(loser => losingTeam.includes(loser));
-
-        return (
-            (!filterWinners.length || allWinnersPresent) &&
-            (!filterLosers.length || allLosersPresent) &&
-            (!filterDate || doesDateMatchFilter(matchDate,filterDate)) &&
-            (!filterLocations.length || filterLocations.includes(match.location))
-        );
-    }).sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
-
-    const resetFilters = () => {
-        setFilterWinners([]);
-        setFilterLosers([]);
-        setFilterDate('');
-        setFilterLocations([]);
-    };
-
-    const groupMatchesByDate = (matches) => {
-        return matches.reduce((groups,match) => {
-            const date = match.date.split('T')[0]; // Extract date part
-            if(!groups[date]) {
-                groups[date] = [];
-            }
-            groups[date].push(match);
-            return groups;
-        },{});
-    };
-
     const groupedMatches = groupMatchesByDate(filteredMatches);
-
-    const renderMatches = (matches) => {
-        const rows = [];
-        for(let i = 0;i < matches.length;i += 3) {
-            rows.push(
-                <div key={i} className="match-row">
-                    {matches.slice(i,i + 3).map(match => (
-                        <div key={match._id} className="match-card">
-                            <div>Winners: {getWinners(match)}</div>
-                            <div>Losers: {getLosers(match)}</div>
-                            <div>Date: {formatDate(match.date)}</div>
-                            <button onClick={() => openModal(match)}>Details</button>
-                        </div>
-                    ))}
-                </div>
-            );
-        }
-        return rows;
-    };
 
     return (
         <div>
@@ -305,51 +106,24 @@ function MatchManagement() {
                 setFilterLocations={setFilterLocations}
                 resetFilters={resetFilters}
             />
-            <div className="match-grid">
-                {Object.keys(groupedMatches).sort((a,b) => new Date(b) - new Date(a)).map(date => (
-                    <div>
-                        <div className="date-header">{formatDate(date)}</div>
-                        <div key={date} className={"date-group"}> {/* New date group should start on a new line */}
-                            {renderMatches(groupedMatches[date])}
-                        </div>
-                    </div>
-                ))}
-            </div>
+            {loading ? (
+                <div className="loading-indicator">Loading...</div>
+            ) : (
+                    <MatchGrid
+                        groupedMatches={groupedMatches}
+                        getWinners={(match) => getWinners(match,(id) => getPlayerName(id,players))}
+                        getLosers={(match) => getLosers(match,(id) => getPlayerName(id,players))}
+                        formatDate={formatDate}
+                        openModal={openModal}
+                    />
+                )}
             <form onSubmit={handleSubmit} className="bodycontent">
-                <div className="teams">
-                    <div className="team">
-                        <h3>Team A</h3>
-                        {players.map(player => (
-                            <div key={player._id}>
-                                <input
-                                    type="checkbox"
-                                    value={player._id}
-                                    checked={teamA.includes(player._id)}
-                                    onChange={(e) => handlePlayerSelection(e,'A')}
-                                    disabled={teamB.includes(player._id)}
-                                    id={`teamA-${player._id}`}
-                                />
-                                <label htmlFor={`teamA-${player._id}`}>{player.name}</label>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="team">
-                        <h3>Team B</h3>
-                        {players.map(player => (
-                            <div key={player._id}>
-                                <input
-                                    type="checkbox"
-                                    value={player._id}
-                                    checked={teamB.includes(player._id)}
-                                    onChange={(e) => handlePlayerSelection(e,'B')}
-                                    disabled={teamA.includes(player._id)}
-                                    id={`teamB-${player._id}`}
-                                />
-                                <label htmlFor={`teamB-${player._id}`}>{player.name}</label>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <TeamSelection
+                    teamA={teamA}
+                    teamB={teamB}
+                    players={players}
+                    handlePlayerSelection={handlePlayerSelection}
+                />
                 <div className="match-details">
                     <input
                         type="number"
@@ -389,43 +163,18 @@ function MatchManagement() {
                     <button type="submit">Add Match</button>
                 </div>
             </form>
-
+            <Footer />
             {isModalOpen && selectedMatch && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close" onClick={closeModal}>&times;</span>
-                        <h2 className="modal-title">Match Details</h2>
-                        <div className="modal-body">
-                            <div className={`team-column ${isTeamAWinner(selectedMatch) ? 'winner' : 'loser'}`}>
-                                <h3>Team A</h3>
-                                <p className={`score ${isTeamAWinner(selectedMatch) ? 'winning-score' : 'losing-score'}`}>
-                                    {selectedMatch.scores[0]}
-                                </p>
-                                <p>{selectedMatch.teams[0].map(id => getPlayerName(id)).join(', ')}</p>
-                            </div>
-                            <div className={`triangle ${isTeamAWinner(selectedMatch) ? 'triangle-left' : 'triangle-right'}`}></div>
-                            <div className={`team-column ${!isTeamAWinner(selectedMatch) ? 'winner' : 'loser'}`}>
-                                <h3>Team B</h3>
-                                <p className={`score ${!isTeamAWinner(selectedMatch) ? 'winning-score' : 'losing-score'}`}>
-                                    {selectedMatch.scores[1]}
-                                </p>
-                                <p>{selectedMatch.teams[1].map(id => getPlayerName(id)).join(', ')}</p>
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <p><strong>Date:</strong> {formatDate(selectedMatch.date)} <strong> | Location:</strong> {selectedMatch.location}</p>
-                        </div>
-                    </div>
-                </div>
+                <MatchDetailsModal
+                    selectedMatch={selectedMatch}
+                    isTeamAWinner={isTeamAWinner}
+                    getPlayerName={(id) => getPlayerName(id,players)}
+                    formatDate={formatDate}
+                    closeModal={closeModal}
+                />
             )}
         </div>
     );
 }
 
 export default MatchManagement;
-
-
-
-/*
-
-            */

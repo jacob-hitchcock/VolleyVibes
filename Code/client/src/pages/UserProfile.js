@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link,useLocation } from 'react-router-dom';
 import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 import '../styles.css';
 
 function UserProfile() {
@@ -25,11 +26,7 @@ function UserProfile() {
                 <p>Gender: {user.gender}</p>
                 <p>Email: {user.email}</p>
             </main>
-            <footer>
-                <p>Contact Information | Social Media Links | Terms of Service</p>
-                <img src="/images/icon1.png" alt="icon1" />
-                <img src="/images/icon2.png" alt="icon2" />
-            </footer>
+            <Footer />
         </div>
     );
 }
