@@ -1,6 +1,7 @@
 import React,{ useState,useEffect } from 'react';
 import axios from 'axios';
 import { Link,useLocation } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 import '../styles.css';
 
 const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive,isOpen,onToggle }) => {
@@ -288,23 +289,7 @@ function MatchManagement() {
 
     return (
         <div>
-            <header className="header">
-                <nav className="nav-left">
-                    <Link to="/" className={locationHook.pathname === '/' ? 'active' : ''}>Home</Link>
-                    <Link to="/profile" className={locationHook.pathname === '/profile' ? 'active' : ''}>Profile</Link>
-                </nav>
-                <div className="title-container">
-                    <img src="/images/VolleyVibe.png" alt="VolleyVibe Logo" className="logo" />
-                    <div className="title">
-                        <div className="volley">Volley</div>
-                        <div className="vibe">Vibe!</div>
-                    </div>
-                </div>
-                <nav className="nav-right">
-                    <Link to="/players" className={locationHook.pathname === '/players' ? 'active' : ''}>Players</Link>
-                    <Link to="/matches" className={locationHook.pathname === '/matches' ? 'active' : ''}>Matches</Link>
-                </nav>
-            </header>
+            <NavBar />
             <div className="match-title">Matches</div>
             <FilterBar
                 winners={players}

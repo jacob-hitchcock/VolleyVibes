@@ -1,6 +1,7 @@
 import React,{ useState,useEffect } from 'react';
 import axios from 'axios';
 import { Link,useLocation } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 import '../styles.css';
 import { FaSearch } from 'react-icons/fa';
 
@@ -99,23 +100,7 @@ function PlayerManagement() {
 
     return (
         <div>
-            <header className="header">
-                <nav className="nav-left">
-                    <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
-                    <Link to="/profile" className={location.pathname === '/profile' ? 'active' : ''}>Profile</Link>
-                </nav>
-                <div className="title-container">
-                    <img src="/images/VolleyVibe.png" alt="VolleyVibe Logo" className="logo" />
-                    <div className="title">
-                        <div className="volley">Volley</div>
-                        <div className="vibe">Vibe!</div>
-                    </div>
-                </div>
-                <nav className="nav-right">
-                    <Link to="/players" className={location.pathname === '/players' ? 'active' : ''}>Players</Link>
-                    <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
-                </nav>
-            </header>
+            <NavBar />
             <h2 className="match-title">Players</h2>
             <table className="playerlist">
                 <thead className="sticky-header">

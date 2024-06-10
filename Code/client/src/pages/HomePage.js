@@ -1,13 +1,13 @@
+// src/pages/HomePage.js
 import React,{ useState,useEffect } from 'react';
-import { Link,useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../styles.css';
+import NavBar from '../components/NavBar';
 
 function HomePage() {
     const [players,setPlayers] = useState([]);
     const [sortConfig,setSortConfig] = useState({ key: 'wins',direction: 'descending' });
     const [initialLoad,setInitialLoad] = useState(true); // Track initial load
-    const location = useLocation();
     const [loading,setLoading] = useState(true);
 
     useEffect(() => {
@@ -81,23 +81,7 @@ function HomePage() {
 
     return (
         <div>
-            <header className="header">
-                <nav className="nav-left">
-                    <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
-                    <Link to="/profile" className={location.pathname === '/profile' ? 'active' : ''}>Profile</Link>
-                </nav>
-                <div className="title-container">
-                    <img src="/images/VolleyVibe.png" alt="VolleyVibe Logo" className="logo" />
-                    <div className="title">
-                        <div className="volley">Volley</div>
-                        <div className="vibe">Vibe!</div>
-                    </div>
-                </div>
-                <nav className="nav-right">
-                    <Link to="/players" className={location.pathname === '/players' ? 'active' : ''}>Players</Link>
-                    <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
-                </nav>
-            </header>
+            <NavBar />
             <main>
                 <h2 className="match-title">Leaderboard</h2>
                 <table className="leaderlist">

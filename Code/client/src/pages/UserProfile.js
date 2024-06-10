@@ -1,6 +1,7 @@
 // src/pages/UserProfile.js
 import React from 'react';
 import { Link,useLocation } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 import '../styles.css';
 
 function UserProfile() {
@@ -16,23 +17,7 @@ function UserProfile() {
 
     return (
         <div>
-            <header className="header">
-                <nav className="nav-left">
-                    <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
-                    <Link to="/profile" className={location.pathname === '/profile' ? 'active' : ''}>Profile</Link>
-                </nav>
-                <div className="title-container">
-                    <img src="/images/VolleyVibe.png" alt="VolleyVibe Logo" className="logo" />
-                    <div className="title">
-                        <div className="volley">Volley</div>
-                        <div className="vibe">Vibe!</div>
-                    </div>
-                </div>
-                <nav className="nav-right">
-                    <Link to="/players" className={location.pathname === '/players' ? 'active' : ''}>Players</Link>
-                    <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
-                </nav>
-            </header>
+            <NavBar />
             <main className="bodycontent">
                 <h2>User Profile</h2>
                 <p>Name: {user.name}</p>
