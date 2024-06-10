@@ -744,6 +744,10 @@ input[type="checkbox"]:disabled + label {
     padding-right: 10px; /* Extra space for sort indicator */
 }
 
+.leaderlist th.sorted {
+    background-color: #d34725; /* Slightly darker shade */
+}
+
 .leaderlist th:nth-child(1) {
     width: 17%; /* Name column */
 }
@@ -790,6 +794,7 @@ input[type="checkbox"]:disabled + label {
 .leaderlist td {
     text-align: left;
 }
+
 
 
 

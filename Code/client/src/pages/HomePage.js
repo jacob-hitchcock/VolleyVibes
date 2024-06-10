@@ -54,7 +54,9 @@ function HomePage() {
         let direction = 'descending';
         if(sortConfig.key === key) {
             direction = sortConfig.direction === 'descending' ? 'ascending' : 'descending';
-        } else if(key === 'name' || key === 'pointsAgainst' || key === 'losses' || key === 'winningPercentage') {
+        } else if(key === 'winningPercentage') {
+            direction = 'descending'; // Set initial direction to descending for winningPercentage
+        } else if(key === 'name' || key === 'pointsAgainst' || key === 'losses') {
             direction = 'ascending';
         }
         setSortConfig({ key,direction });
@@ -91,49 +93,49 @@ function HomePage() {
                 <table className="leaderlist">
                     <thead>
                         <tr>
-                            <th onClick={() => requestSort('name')}>
+                            <th className={sortConfig.key === 'name' ? 'sorted' : ''} onClick={() => requestSort('name')}>
                                 <div className="header-content">
                                     <span className="header-text">Name</span>
                                     <span className="sort-indicator">{getSortIndicator('name')}</span>
                                 </div>
                             </th>
-                            <th onClick={() => requestSort('gamesPlayed')}>
+                            <th className={sortConfig.key === 'gamesPlayed' ? 'sorted' : ''} onClick={() => requestSort('gamesPlayed')}>
                                 <div className="header-content">
                                     <span className="header-text">Games Played</span>
                                     <span className="sort-indicator">{getSortIndicator('gamesPlayed')}</span>
                                 </div>
                             </th>
-                            <th onClick={() => requestSort('wins')}>
+                            <th className={sortConfig.key === 'wins' ? 'sorted' : ''} onClick={() => requestSort('wins')}>
                                 <div className="header-content">
                                     <span className="header-text">Wins</span>
                                     <span className="sort-indicator">{getSortIndicator('wins')}</span>
                                 </div>
                             </th>
-                            <th onClick={() => requestSort('losses')}>
+                            <th className={sortConfig.key === 'losses' ? 'sorted' : ''} onClick={() => requestSort('losses')}>
                                 <div className="header-content">
                                     <span className="header-text">Losses</span>
                                     <span className="sort-indicator">{getSortIndicator('losses')}</span>
                                 </div>
                             </th>
-                            <th onClick={() => requestSort('winningPercentage')}>
+                            <th className={sortConfig.key === 'winningPercentage' ? 'sorted' : ''} onClick={() => requestSort('winningPercentage')}>
                                 <div className="header-content">
                                     <span className="header-text">Winning %</span>
                                     <span className="sort-indicator">{getSortIndicator('winningPercentage')}</span>
                                 </div>
                             </th>
-                            <th onClick={() => requestSort('pointsFor')}>
+                            <th className={sortConfig.key === 'pointsFor' ? 'sorted' : ''} onClick={() => requestSort('pointsFor')}>
                                 <div className="header-content">
                                     <span className="header-text">Points For</span>
                                     <span className="sort-indicator">{getSortIndicator('pointsFor')}</span>
                                 </div>
                             </th>
-                            <th onClick={() => requestSort('pointsAgainst')}>
+                            <th className={sortConfig.key === 'pointsAgainst' ? 'sorted' : ''} onClick={() => requestSort('pointsAgainst')}>
                                 <div className="header-content">
                                     <span className="header-text">Points Against</span>
                                     <span className="sort-indicator">{getSortIndicator('pointsAgainst')}</span>
                                 </div>
                             </th>
-                            <th onClick={() => requestSort('pointDifferential')}>
+                            <th className={sortConfig.key === 'pointDifferential' ? 'sorted' : ''} onClick={() => requestSort('pointDifferential')}>
                                 <div className="header-content">
                                     <span className="header-text">Point Differential</span>
                                     <span className="sort-indicator">{getSortIndicator('pointDifferential')}</span>

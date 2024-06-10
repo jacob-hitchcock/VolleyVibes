@@ -168,7 +168,7 @@ function MatchManagement() {
         const match = {
             teams: [teamA,teamB],
             scores: [scoreA,scoreB],
-            date,
+            date: new Date(date).toISOString(), // Convert date to UTC
             location,
         };
         axios.post('/api/matches',match)
@@ -220,15 +220,13 @@ function MatchManagement() {
     const isTeamAWinner = (match) => parseInt(match.scores[0]) > parseInt(match.scores[1]);
 
     const doesDateMatchFilter = (matchDate,filterDate) => {
-        const matchYear = matchDate.getFullYear().toString();
-        const matchMonth = (matchDate.getMonth() + 1).toString().padStart(2,'0');
-        const matchDay = matchDate.getDate().toString().padStart(2,'0');
-        const matchFullDate = `${matchYear}-${matchMonth}-${matchDay}`;
+        const matchDateUTC = new Date(matchDate.toISOString().split('T')[0]); // Convert to UTC and strip time
+        const filterDateUTC = new Date(filterDate);
 
         return (
-            filterDate === matchYear ||
-            filterDate === `${matchYear}-${matchMonth}` ||
-            filterDate === matchFullDate
+            filterDateUTC.getFullYear() === matchDateUTC.getFullYear() &&
+            filterDateUTC.getMonth() === matchDateUTC.getMonth() &&
+            filterDateUTC.getDate() === matchDateUTC.getDate()
         );
     };
 
