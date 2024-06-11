@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Player = require('./models/Player');
 const Match = require('./models/Match'); // Import the Match model
+const loginRoute = require('./routes/Login'); // Import the login route
 const app = express();
 const port = 3000;
 
@@ -191,6 +192,8 @@ const updatePlayerStats = async (match) => {
     }
 };
 
+// Use the login route
+app.use('/api/users',loginRoute); // Adjust the path as necessary
 
 // Basic route for testing
 app.get('/',(req,res) => {
