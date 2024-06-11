@@ -1,15 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const Player = require('./models/Player');
 const Match = require('./models/Match');
-const loginRoute = require('./routes/Login');
+const loginRoute = require('./routes/login');
 const authMiddleware = require('./middlewares/authMiddleware'); // Import the middleware
 const app = express();
 const port = 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// Use cookie-parser middleware
+app.use(cookieParser());
 
 app.use(cors({
     origin: 'http://localhost:3001',

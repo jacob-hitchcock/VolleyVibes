@@ -1,41 +1,56 @@
 // src/context/AuthContext.js
 import React,{ createContext,useState,useEffect } from 'react';
 import axiosInstance from '../axiosInstance';
-import jwt from 'jsonwebtoken'; // You may need to install this package for decoding JWT
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [auth,setAuth] = useState({ user: null,token: null });
+    const [auth,setAuth] = useState({ user: null });
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user'));
-        if(token && user) {
-            setAuth({ token,user });
-        }
+        const checkAuth = async () => {
+            try {
+                const response = await axiosInstance.get('/users/check-auth');
+                if(response.data.user) {
+                    console.log('User authenticated:',response.data.user);
+                    setAuth({ user: response.data.user });
+                } else {
+                    console.log('No user authenticated');
+                }
+            } catch(error) {
+                console.error('Auth check failed:',error.response ? error.response.data : error.message);
+            }
+        };
+        checkAuth();
     },[]);
 
     const login = async (email,password) => {
         try {
             console.log("Sending login request to backend");
-            const response = await axiosInstance.post('/users/login',{ email,password });
-            const { token } = response.data;
-            const user = jwt.decode(token); // Decode token to get user info
-            localStorage.setItem('token',token);
-            localStorage.setItem('user',JSON.stringify(user));
-            setAuth({ token,user });
-            return true;
+            await axiosInstance.post('/users/login',{ email,password });
+            const response = await axiosInstance.get('/users/check-auth');
+            if(response.data.user) {
+                console.log('Login successful:',response.data.user);
+                setAuth({ user: response.data.user });
+                return true;
+            } else {
+                console.log('Login check-auth failed');
+                return false;
+            }
         } catch(error) {
-            console.error('Login failed:',error.resopnse ? error.response.data : error.message);
+            console.error('Login failed:',error.response ? error.response.data : error.message);
             return false;
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setAuth({ user: null,token: null });
+    const logout = async () => {
+        try {
+            await axiosInstance.post('/users/logout');
+            setAuth({ user: null });
+            console.log('Logout successful');
+        } catch(error) {
+            console.error('Logout failed:',error.response ? error.response.data : error.message);
+        }
     };
 
     return (

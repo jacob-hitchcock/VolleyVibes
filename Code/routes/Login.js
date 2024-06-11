@@ -9,6 +9,25 @@ const router = express.Router();
 
 console.log("Login route loaded");
 
+router.get('/check-auth',(req,res) => {
+    const token = req.cookies.token;
+    if(!token) {
+        return res.status(401).json({ message: 'Not authenticated' })
+    } try {
+        const decoded = jwt.verify(token,config.jwtSecret);
+
+        User.findById(decoded.user.id).then(user => {
+            if(!user) {
+                return res.status(401).json({ message: 'Not authenticated' });
+            }
+            res.json({ user: { id: user.id,email: user.email,role: user.role } });
+        });
+    } catch(error) {
+        console.error('Token verification failed:',error.message);
+        res.status(401).json({ message: 'Not authenticated' });
+    }
+});
+
 router.post(
     '/login',
     [
@@ -57,7 +76,14 @@ router.post(
                 (err,token) => {
                     if(err) throw err;
                     console.log("Token generated");
-                    res.json({ token });
+                    res.cookie('token',token,{
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        sameSite: 'strict',
+                        maxAge: 3600000
+                    });
+
+                    res.json({ message: 'Login successful' });
                 }
             );
         } catch(error) {
@@ -66,5 +92,10 @@ router.post(
         }
     }
 );
+
+router.post('/logout',(req,res) => {
+    res.clearCookie('token');
+    res.json({ message: 'Logout successful' });
+});
 
 module.exports = router;

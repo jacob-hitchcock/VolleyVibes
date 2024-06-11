@@ -2,19 +2,14 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3000/api', // Adjust to your backend URL
+    baseURL: 'http://localhost:3000/api',
+    withCredentials: true, // Include credentials in requests
 });
 
-// Add a request interceptor to attach the token to every request
-axiosInstance.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('token');
-        if(token) {
-            config.headers['x-auth-token'] = token;
-        }
-        return config;
-    },
-    (error) => {
+axiosInstance.interceptors.response.use(
+    response => response,
+    error => {
+        console.error('Axios error:',error.response ? error.response.data : error.message);
         return Promise.reject(error);
     }
 );

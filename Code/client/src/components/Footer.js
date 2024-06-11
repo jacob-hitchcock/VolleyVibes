@@ -9,7 +9,8 @@ function Footer() {
             <div className="footer-content">
                 <p>
                     <Link to="/contact">Contact Information</Link> |
-                    <Link to="/terms-of-service">Terms of Service</Link>
+                    <Link to="/terms-of-service">Terms of Service</Link> |
+                    <Link to="/login">Admin Login</Link>
                 </p>
                 <div className="social-media">
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
