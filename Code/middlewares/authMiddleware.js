@@ -1,21 +1,21 @@
+// middlewares/authMiddleware.js
 const jwt = require('jsonwebtoken');
-const config = require('../config'); // Adjust the path as necessary
+const config = require('../config');
 
-module.exports = function(req,res,next) {
-    // Get token from header
-    const token = req.header('x-auth-token');
-
-    // Check if no token
+const authMiddleware = (req,res,next) => {
+    const token = req.cookies.token;
     if(!token) {
         return res.status(401).json({ message: 'No token, authorization denied' });
     }
 
-    // Verify token
     try {
         const decoded = jwt.verify(token,config.jwtSecret);
         req.user = decoded.user;
         next();
-    } catch(err) {
+    } catch(error) {
+        console.error('Token verification failed:',error.message);
         res.status(401).json({ message: 'Token is not valid' });
     }
 };
+
+module.exports = authMiddleware;

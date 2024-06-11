@@ -1,7 +1,7 @@
-// src/components/PlayerTable.js
+// src/components/AdminPlayerTable.js
 import React from 'react';
 
-const PlayerTable = ({ players,loading }) => {
+const AdminPlayerTable = ({ players,handleEdit,handleDelete,loading }) => {
     if(loading) {
         return <div>Loading players...</div>;
     }
@@ -13,6 +13,7 @@ const PlayerTable = ({ players,loading }) => {
                     <th>Name</th>
                     <th>Age</th>
                     <th>Gender</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,10 @@ const PlayerTable = ({ players,loading }) => {
                         <td>{player.name}</td>
                         <td>{player.age}</td>
                         <td>{player.gender}</td>
+                        <td>
+                            <button onClick={() => handleEdit(player)}>Edit</button>
+                            <button onClick={() => handleDelete(player._id)}>Delete</button>
+                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -28,4 +33,4 @@ const PlayerTable = ({ players,loading }) => {
     );
 };
 
-export default PlayerTable;
+export default AdminPlayerTable;

@@ -20,7 +20,7 @@ const useFetchData = () => {
             .finally(() => setLoading(false));
     },[]);
 
-    return { matches,players,loading,setMatches }; // Return setMatches as well
+    return { matches,players,loading,setMatches,setPlayers }; // Return setPlayers as well
 };
 
 export default useFetchData;

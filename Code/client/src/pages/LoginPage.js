@@ -1,6 +1,7 @@
 // src/pages/LoginPage.js
 import React,{ useState,useContext,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 import AuthContext from '../context/AuthContext';
 
 const LoginPage = () => {
@@ -29,6 +30,7 @@ const LoginPage = () => {
 
     return (
         <div>
+            <NavBar />
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <div>

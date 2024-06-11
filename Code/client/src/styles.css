@@ -408,6 +408,12 @@ h2.match-title {
     z-index: 1;
 }
 
+.admin-confirm {
+    font-size: 20px;
+    color: #E7552B;
+    margin: 20px 0;
+}
+
 .playerlist {
     margin-top: -20px;
 }
