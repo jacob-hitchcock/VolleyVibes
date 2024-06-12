@@ -60,11 +60,11 @@ function MatchManagement() {
                 setFilterWinners={setFilterWinners}
                 filterLosers={filterLosers}
                 setFilterLosers={setFilterLosers}
-                filterMatchDate={filterMatchDate}
-                setFilterMatchDate={setFilterMatchDate}
-                filterMatchLocations={filterMatchLocations}
-                setFilterMatchLocations={setFilterMatchLocations}
+                filterDate={filterMatchDate}
+                setFilterDate={setFilterMatchDate}
                 availableLocations={availableLocations}
+                filterLocations={filterMatchLocations}
+                setFilterLocations={setFilterMatchLocations}
                 resetFilters={resetMatchFilters}
             />
             {loading ? (

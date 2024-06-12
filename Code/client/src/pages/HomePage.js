@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect } from 'react';
 import '../styles.css';
 import NavBar from '../components/NavBar';
 import Leaderboard from '../components/Leaderboard';
@@ -18,12 +18,16 @@ function HomePage() {
         setFilterPlayerDate,
         filterPlayerLocations,
         setFilterPlayerLocations,
-        filteredPlayers,
+        aggregatedPlayerStats,
         resetPlayerFilters,
     } = useFilters(matches,players);
 
-    // Apply sorting to the filtered players
-    const { sortedPlayers,requestSort,getSortIndicator,sortConfig } = useSortedPlayers(filteredPlayers);
+    // Apply sorting to the aggregated player stats
+    const { sortedPlayers,requestSort,getSortIndicator,sortConfig } = useSortedPlayers(aggregatedPlayerStats);
+
+    useEffect(() => {
+        console.log('Aggregated Player Stats:',aggregatedPlayerStats);
+    },[aggregatedPlayerStats]);
 
     return (
         <div>

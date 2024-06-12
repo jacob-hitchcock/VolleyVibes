@@ -7,20 +7,23 @@ const useFetchData = () => {
     const [loading,setLoading] = useState(true);
 
     useEffect(() => {
-        setLoading(true);
-        const fetchPlayers = axios.get('/api/players');
-        const fetchMatches = axios.get('/api/matches');
-
-        Promise.all([fetchPlayers,fetchMatches])
-            .then(([playersResponse,matchesResponse]) => {
-                setPlayers(playersResponse.data);
+        const fetchData = async () => {
+            try {
+                const matchesResponse = await axios.get('/api/matches');
+                const playersResponse = await axios.get('/api/players');
                 setMatches(matchesResponse.data);
-            })
-            .catch(error => console.error('Error fetching data:',error))
-            .finally(() => setLoading(false));
+                setPlayers(playersResponse.data);
+                setLoading(false);
+            } catch(error) {
+                console.error('Error fetching data:',error);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     },[]);
 
-    return { matches,players,loading,setMatches,setPlayers }; // Return setPlayers as well
+    return { matches,players,loading };
 };
 
 export default useFetchData;

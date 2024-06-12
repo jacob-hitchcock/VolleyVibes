@@ -1,5 +1,12 @@
 import { useState,useMemo } from 'react';
-import { doesDateMatchFilter,isTeamAWinner } from '../utils/utils';
+import { doesDateMatchFilter } from '../utils/utils';
+
+// Utility function to determine if the player's team won the match
+const didPlayerTeamWin = (match,playerTeamIndex) => {
+    const teamScore = Number(match.scores[playerTeamIndex]);
+    const opponentScore = Number(match.scores[playerTeamIndex === 0 ? 1 : 0]);
+    return teamScore > opponentScore;
+};
 
 const useFilters = (matches = [],players = []) => {
     // Match filters
@@ -17,10 +24,12 @@ const useFilters = (matches = [],players = []) => {
         return matches.filter(match => {
             const matchDate = new Date(match.date);
 
-            const winningTeam = isTeamAWinner(match) ? match.teams[0] : match.teams[1];
+            const winningTeamIndex = Number(match.scores[0]) > Number(match.scores[1]) ? 0 : 1;
+            const winningTeam = match.teams[winningTeamIndex];
             const allWinnersPresent = filterWinners.every(winner => winningTeam.includes(winner));
 
-            const losingTeam = isTeamAWinner(match) ? match.teams[1] : match.teams[0];
+            const losingTeamIndex = winningTeamIndex === 0 ? 1 : 0;
+            const losingTeam = match.teams[losingTeamIndex];
             const allLosersPresent = filterLosers.every(loser => losingTeam.includes(loser));
 
             return (
@@ -32,20 +41,46 @@ const useFilters = (matches = [],players = []) => {
         }).sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
     },[matches,filterWinners,filterLosers,filterMatchDate,filterMatchLocations]);
 
-    // Filtered players
-    const filteredPlayers = useMemo(() => {
-        if(!filterPlayerDate && !filterPlayerLocations.length) {
-            // If no player filters are set, return all players
-            return players;
-        }
-
-        return players.filter(player => {
+    // Aggregated player stats
+    const aggregatedPlayerStats = useMemo(() => {
+        console.log('Aggregating player stats');
+        return players.map(player => {
             const playerMatches = matches.filter(match =>
-                match.players && match.players.includes(player._id) && // Add check for match.players
+                match.teams.some(team => team.includes(player._id)) &&
                 (!filterPlayerDate || doesDateMatchFilter(new Date(match.date),filterPlayerDate)) &&
                 (!filterPlayerLocations.length || filterPlayerLocations.includes(match.location))
             );
-            return playerMatches.length > 0;
+            console.log(`Player: ${player.name}, Matches:`,playerMatches);
+
+            const gamesPlayed = playerMatches.length;
+
+            const wins = playerMatches.filter(match => {
+                const playerTeamIndex = match.teams.findIndex(team => team.includes(player._id));
+                const isWinningTeam = didPlayerTeamWin(match,playerTeamIndex);
+                console.log(`Match ID: ${match._id}, Player Team Index: ${playerTeamIndex}, Is Winning Team: ${isWinningTeam}`);
+                return isWinningTeam;
+            }).length;
+
+            const losses = gamesPlayed - wins;
+
+            const pointsFor = playerMatches.reduce((acc,match) => {
+                const playerTeamIndex = match.teams.findIndex(team => team.includes(player._id));
+                return acc + Number(match.scores[playerTeamIndex]);
+            },0);
+
+            const pointsAgainst = playerMatches.reduce((acc,match) => {
+                const playerTeamIndex = match.teams.findIndex(team => team.includes(player._id));
+                const opponentTeamIndex = playerTeamIndex === 0 ? 1 : 0;
+                return acc + Number(match.scores[opponentTeamIndex]);
+            },0);
+
+            const pointDifferential = pointsFor - pointsAgainst;
+
+            const winningPercentage = gamesPlayed ? ((wins / gamesPlayed) * 100).toFixed(3) : '0.000';
+
+            console.log(`Player: ${player.name}, Games Played: ${gamesPlayed}, Wins: ${wins}, Losses: ${losses}, Points For: ${pointsFor}, Points Against: ${pointsAgainst}, Point Differential: ${pointDifferential}, Winning Percentage: ${winningPercentage}`);
+
+            return { ...player,gamesPlayed,wins,losses,pointsFor,pointsAgainst,pointDifferential,winningPercentage };
         });
     },[players,matches,filterPlayerDate,filterPlayerLocations]);
 
@@ -81,10 +116,10 @@ const useFilters = (matches = [],players = []) => {
         setFilterPlayerDate,
         filterPlayerLocations,
         setFilterPlayerLocations,
-        filteredPlayers,
+        aggregatedPlayerStats,
         resetPlayerFilters,
 
-        isTeamAWinner,
+        didPlayerTeamWin,
     };
 };
 
