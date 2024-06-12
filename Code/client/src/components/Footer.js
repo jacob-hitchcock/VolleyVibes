@@ -10,8 +10,7 @@ function Footer() {
                 <p>
                     <Link to="/contact">Contact Information</Link> |
                     <Link to="/terms-of-service">Terms of Service</Link> |
-                    <Link to="/login">Admin Login</Link> |
-                    <Link to="/protected">Protected Content Testing</Link>
+                    <Link to="/protected">Admin Dashboard</Link>
                 </p>
                 <div className="social-media">
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">

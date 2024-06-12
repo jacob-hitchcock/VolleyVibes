@@ -22,7 +22,7 @@ function PlayerManagement() {
     return (
         <div>
             <NavBar />
-            <h2 className="match-title">Players</h2>
+            <h2 className="player-title">Players</h2>
             {loading ? (
                 <div className="loading-indicator">Loading players...</div>
             ) : (
