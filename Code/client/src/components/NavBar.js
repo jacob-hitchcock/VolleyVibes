@@ -10,7 +10,7 @@ function NavBar() {
         <header className="header">
             <nav className="nav-left">
                 <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
-                <Link to="/profile" className={location.pathname === '/profile' ? 'active' : ''}>Profile</Link>
+                <Link to="/combos" className={location.pathname === '/combos' ? 'active' : ''}>Combos</Link>
             </nav>
             <div className="title-container">
                 <img src="/images/VolleyVibe.png" alt="VolleyVibe Logo" className="logo" />

@@ -761,6 +761,17 @@ input[type="checkbox"]:disabled + label {
     line-height: 1;
 }
 
+.leader-title {
+    font-family: 'Mahoda Display', sans-serif;
+    color: #e7552b;
+    font-size: 48px;
+    line-height: 1;
+}
+
+.home-content {
+    margin-top: -20px;
+}
+
 .admin-title {
     font-family: 'Mahoda Display', sans-serif;
     color: #e7552b;
@@ -981,7 +992,70 @@ input[type="checkbox"]:disabled + label {
     color: white;
 }
 
+.combos-page .players-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
+.combos-page .player-checkbox {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.combos-page label {
+    margin-right: 10px;
+}
+
+.combos-page .combos-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.combos-page .combo-item {
+    flex: 1 1 calc(50% - 20px);
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.combos-page .match-card {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 10px;
+    border: 1px solid #E7552B;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 10px
+}
+
+.match-card.completed {
+    background-color: rgba(200, 200, 200, 0.6);
+    text-decoration: line-through;
+}
+
+.combos-page .match-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.combos-page ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.combos-page ul li {
+    margin-bottom: 10px;
+}
+
+.num-matchups {
+    font-family: 'Coolvetica', Arial, Helvetica, sans-serif;
+}
 .content {
     margin-left: 25%;
     padding: 20px;
@@ -990,7 +1064,6 @@ input[type="checkbox"]:disabled + label {
 
 /* Styles for the leaderboard */
 .leaderlist {
-    margin-top: -20px;
     width: 100%;
     border-collapse: collapse;
 }

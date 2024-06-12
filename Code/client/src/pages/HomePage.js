@@ -29,24 +29,26 @@ function HomePage() {
         <div>
             <NavBar />
             <main>
-                <h2 className="match-title">Leaderboard</h2>
-                <FilterBar
-                    context="players"
-                    filterPlayerDate={filterPlayerDate}
-                    setFilterPlayerDate={setFilterPlayerDate}
-                    filterPlayerLocations={filterPlayerLocations}
-                    setFilterPlayerLocations={setFilterPlayerLocations}
-                    availableLocations={['Grass','Beach','Indoor Court']}
-                    resetFilters={resetPlayerFilters}
-                />
-                <Leaderboard
-                    players={sortedPlayers}
-                    sortConfig={sortConfig}
-                    requestSort={requestSort}
-                    getSortIndicator={getSortIndicator}
-                    initialLoad={initialLoad}
-                    loading={dataLoading}
-                />
+                <h2 className="leader-title">Leaderboard</h2>
+                <div className="home-content">
+                    <FilterBar
+                        context="players"
+                        filterPlayerDate={filterPlayerDate}
+                        setFilterPlayerDate={setFilterPlayerDate}
+                        filterPlayerLocations={filterPlayerLocations}
+                        setFilterPlayerLocations={setFilterPlayerLocations}
+                        availableLocations={['Grass','Beach','Indoor Court']}
+                        resetFilters={resetPlayerFilters}
+                    />
+                    <Leaderboard
+                        players={sortedPlayers}
+                        sortConfig={sortConfig}
+                        requestSort={requestSort}
+                        getSortIndicator={getSortIndicator}
+                        initialLoad={initialLoad}
+                        loading={dataLoading}
+                    />
+                </div>
             </main>
             <Footer />
         </div>

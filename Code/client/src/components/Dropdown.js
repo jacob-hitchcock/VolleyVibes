@@ -1,11 +1,11 @@
 import React from 'react';
 import '../styles.css';
 
-const Dropdown = ({ label,items = [],selectedItems = [],setSelectedItems,isActive,isOpen,onToggle }) => {
+const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive,isOpen,onToggle }) => {
     const handleCheckboxChange = (e) => {
         const { value,checked } = e.target;
-        setSelectedItems(prevItems =>
-            checked ? [...prevItems,value] : prevItems.filter(item => item !== value)
+        setSelectedItems((prevItems) =>
+            checked ? [...prevItems,value] : prevItems.filter((item) => item !== value)
         );
     };
 
@@ -16,7 +16,7 @@ const Dropdown = ({ label,items = [],selectedItems = [],setSelectedItems,isActiv
             </button>
             {isOpen && (
                 <div className="dropdown-content">
-                    {items.sort((a,b) => a.name.localeCompare(b.name)).map(item => (
+                    {items.sort((a,b) => a.name.localeCompare(b.name)).map((item) => (
                         <label key={item._id}>
                             <input
                                 type="checkbox"

@@ -7,7 +7,7 @@ import PlayerManagement from './pages/PlayerManagement';
 import MatchManagement from './pages/MatchManagement';
 import TermsOfService from './pages/TermsOfService';
 import Contact from './pages/Contact';
-import UserProfile from './pages/UserProfile';
+import Combos from './pages/Combos';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/AdminDashboard';
 import LoginPage from './pages/LoginPage';
@@ -20,7 +20,7 @@ function App() {
           <Route exact path="/" element={<HomePage />} />
           <Route path="/players" element={<PlayerManagement />} />
           <Route path="/matches" element={<MatchManagement />} />
-          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/combos" element={<Combos />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<LoginPage />} />

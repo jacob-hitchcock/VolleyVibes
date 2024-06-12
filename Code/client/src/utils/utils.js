@@ -64,3 +64,88 @@ export const validatePlayerForm = (form) => {
     }
     return errors;
 };
+
+// New Utility Functions
+
+// Function to generate random numbers for players
+export const generateRandomNumbers = (players) => {
+    const numbers = [...Array(players.length).keys()].map((i) => i + 1);
+    for(let i = numbers.length - 1;i > 0;i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [numbers[i],numbers[j]] = [numbers[j],numbers[i]];
+    }
+    return numbers;
+};
+
+// Function to calculate all possible matchups
+export const calculateMatchups = (selectedPlayerIds,players) => {
+    const numbers = generateRandomNumbers(selectedPlayerIds);
+    const numberedPlayers = selectedPlayerIds.map((playerId,index) => {
+        const player = players.find(p => p._id === playerId);
+        if(!player) {
+            console.error(`Player with ID ${playerId} not found in players list.`);
+            return null;
+        }
+        return {
+            id: playerId,
+            number: numbers[index],
+            name: player.name
+        };
+    }).filter(player => player !== null);
+
+    const totalPlayers = numberedPlayers.length;
+    const teamSizeA = Math.floor(totalPlayers / 2);
+    const teamSizeB = totalPlayers % 2 === 0 ? teamSizeA : teamSizeA + 1;
+
+    const allCombos = [];
+
+    const generateCombinations = (arr,size,start = 0,initial = []) => {
+        if(size === 0) {
+            const teamA = initial;
+            const teamB = arr.filter(player => !teamA.includes(player));
+            if(teamA.length === teamSizeA && teamB.length === teamSizeB) {
+                allCombos.push({ teamA,teamB,completed: false });
+            }
+            return;
+        }
+        for(let i = start;i <= arr.length - size;i++) {
+            generateCombinations(arr,size - 1,i + 1,[...initial,arr[i]]);
+        }
+    };
+
+    generateCombinations(numberedPlayers,teamSizeA);
+
+    const uniqueMatchups = [];
+    const seen = new Set();
+
+    allCombos.forEach(combo => {
+        const teamA = combo.teamA.map(player => player.number).sort((a,b) => a - b);
+        const teamB = combo.teamB.map(player => player.number).sort((a,b) => a - b);
+
+        const matchupString = JSON.stringify([teamA,teamB].sort((a,b) => a[0] - b[0]));
+
+        if(!seen.has(matchupString)) {
+            uniqueMatchups.push({
+                teamA: combo.teamA.map(player => ({ number: player.number,name: player.name })),
+                teamB: combo.teamB.map(player => ({ number: player.number,name: player.name })),
+                completed: false
+            });
+            seen.add(matchupString);
+        }
+    });
+
+    return uniqueMatchups;
+};
+
+// Function to retrieve saved combos from local storage
+export const getSavedCombos = () => {
+    const savedMatchups = JSON.parse(localStorage.getItem('matchups')) || [];
+    const savedGeneratedCombos = JSON.parse(localStorage.getItem('generatedCombos')) || [];
+    return { savedMatchups,savedGeneratedCombos };
+};
+
+// Function to save combos to local storage
+export const saveCombos = (matchups,generatedCombos) => {
+    localStorage.setItem('matchups',JSON.stringify(matchups));
+    localStorage.setItem('generatedCombos',JSON.stringify(generatedCombos));
+};

@@ -12,7 +12,7 @@ const FilterBar = ({
     filterPlayerDate = '',setFilterPlayerDate = () => { },
     filterPlayerLocations = [],setFilterPlayerLocations = () => { },
     availableLocations = [],
-    resetFilters = () => { }
+    resetFilters = () => { },
 }) => {
     const [openDropdown,setOpenDropdown] = useState(null);
 
@@ -56,7 +56,7 @@ const FilterBar = ({
                             isOpen={openDropdown === 'locations'}
                             onToggle={() => handleToggle('locations')}
                         />
-                        <div className={`filter-date`}>
+                        <div className="filter-date">
                             <input
                                 id="filter-date"
                                 type="date"
@@ -81,7 +81,7 @@ const FilterBar = ({
                             isOpen={openDropdown === 'locations'}
                             onToggle={() => handleToggle('locations')}
                         />
-                        <div className={`filter-date`}>
+                        <div className="filter-date">
                             <input
                                 id="filter-date"
                                 type="date"
