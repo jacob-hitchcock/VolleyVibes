@@ -46,7 +46,21 @@ const useComboData = (players) => {
 
     const handleGenerateSelectedCombos = () => {
         if(matchups.length > 0 && numberOfCombos > 0) {
-            const selectedCombos = matchups.sort(() => 0.5 - Math.random()).slice(0,numberOfCombos);
+            const totalPlayers = selectedPlayers.length;
+            const selectedCombos = matchups
+                .sort(() => 0.5 - Math.random())
+                .slice(0,numberOfCombos)
+                .map((combo) => {
+                    // Only flip teams if the number of total players is even
+                    if(totalPlayers % 2 === 0) {
+                        const flipTeams = Math.random() > 0.5;
+                        return flipTeams
+                            ? { teamA: combo.teamB,teamB: combo.teamA,completed: combo.completed }
+                            : combo;
+                    }
+                    return combo;
+                });
+
             setGeneratedCombos(selectedCombos);
         }
     };
