@@ -1,10 +1,10 @@
-import React,{ useState,useEffect } from 'react';
-import '../styles.css';
+// src/components/MatchDetailsModal.js
+import React,{ useState } from 'react';
+import { isTeamAWinner } from '../utils/utils';
 
-const MatchDetailsModal = ({ selectedMatch,isTeamAWinner,getPlayerName,formatDate,closeModal }) => {
+const MatchDetailsModal = ({ selectedMatch,getPlayerName,formatDate,closeModal }) => {
     const [isClosing,setIsClosing] = useState(false);
 
-    // Add a function to handle closing animation
     const handleClose = () => {
         setIsClosing(true);
         setTimeout(() => {

@@ -28,7 +28,6 @@ function MatchManagement() {
         setFilterMatchLocations,
         filteredMatches,
         resetMatchFilters,
-        isTeamAWinner,
     } = useFilters(matches,players);
 
     const [selectedMatch,setSelectedMatch] = useState(null);
@@ -82,7 +81,6 @@ function MatchManagement() {
             {isModalOpen && selectedMatch && (
                 <MatchDetailsModal
                     selectedMatch={selectedMatch}
-                    isTeamAWinner={isTeamAWinner}
                     getPlayerName={(id) => getPlayerName(id,players)}
                     formatDate={formatDate}
                     closeModal={closeModal}
