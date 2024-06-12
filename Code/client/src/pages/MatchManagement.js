@@ -1,6 +1,4 @@
-// src/pages/MatchManagement.js
 import React,{ useState } from 'react';
-import { Link,useLocation } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import FilterBar from '../components/FilterBar';
@@ -35,7 +33,6 @@ function MatchManagement() {
 
     const [selectedMatch,setSelectedMatch] = useState(null);
     const [isModalOpen,setIsModalOpen] = useState(false);
-    const locationHook = useLocation();
 
     const availableLocations = ['Grass','Beach','Indoor Court'];
 

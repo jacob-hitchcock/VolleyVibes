@@ -9,7 +9,7 @@ import TermsOfService from './pages/TermsOfService';
 import Contact from './pages/Contact';
 import UserProfile from './pages/UserProfile';
 import ProtectedRoute from './components/ProtectedRoute';
-import ProtectedComponent from './pages/ProtectedComponent';
+import AdminDashboard from './pages/AdminDashboard';
 import LoginPage from './pages/LoginPage';
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<LoginPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/protected" element={<ProtectedComponent />} />
+            <Route path="/protected" element={<AdminDashboard />} />
           </Route>
         </Routes>
       </Router>
