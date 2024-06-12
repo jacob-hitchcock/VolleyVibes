@@ -316,6 +316,20 @@ li button {
     margin-top: 20px;
 }
 
+.match-details label {
+    font-weight: bold;
+}
+
+.edit-scores input,
+.match-details input,
+.match-details select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #e7552b;
+    border-radius: 4px;
+}
+
 .match-details input,
 .match-details button,
 .match-details select {
@@ -489,6 +503,17 @@ h2.match-title {
     margin: 20px 0;
 }
 
+.admin-dashboard-modal {
+    width: 90%;
+    max-width: 1200px;
+}
+
+.match-management-modal {
+    width: 100%;
+    max-width: 1200px;
+}
+
+
 .playerlist {
     margin-top: -16px;
 }
@@ -629,21 +654,25 @@ input[type="checkbox"]:disabled + label {
 
 .modal-content {
     position: relative;
-    z-index: 2;
+    z-index: 1001;
     background-color: #FFFBEF;
-    margin: 15% auto;
+    margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
     border-radius: 10px;
+    overflow-y: auto;
 }
 
 .admin-modal {
-    width: 90%;
-    max-height: 80vh;
+    width: 100%;
+    max-height: 100vh;
     display: flex;
     flex-direction:column;
+    overflow: auto;
+    padding: 20px;
 }
 
 /* Keyframes for zoom-in and zoom-out animations */
@@ -738,9 +767,11 @@ input[type="checkbox"]:disabled + label {
 
 /* Ensure modal background stays in place */
 .modal-background {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
@@ -750,6 +781,8 @@ input[type="checkbox"]:disabled + label {
 
 .team-column {
     width: 45%;
+    flex: 1;
+    padding: 10px;
 }
 
 .team-column.winner h3,

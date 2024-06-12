@@ -81,6 +81,7 @@ const MatchManagement = () => {
             <Footer className="footer-matches" />
             {isModalOpen && selectedMatch && (
                 <MatchDetailsModal
+                    className="match-management-modal"
                     selectedMatch={selectedMatch}
                     isTeamAWinner={isTeamAWinner}
                     getPlayerName={(id) => getPlayerName(id,players)}
@@ -88,6 +89,7 @@ const MatchManagement = () => {
                     closeModal={closeModal}
                 />
             )}
+
         </div>
     );
 };

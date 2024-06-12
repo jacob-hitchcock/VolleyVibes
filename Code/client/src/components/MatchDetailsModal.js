@@ -14,7 +14,8 @@ const MatchDetailsModal = ({
     isAdmin,
     isEditing,
     setIsEditing,
-    players
+    players,
+    className
 }) => {
     const [isClosing,setIsClosing] = useState(false);
     const [editableMatch,setEditableMatch] = useState({ ...selectedMatch });
@@ -70,7 +71,7 @@ const MatchDetailsModal = ({
 
     return (
         <div className={`modal-background ${isClosing ? 'background-fade-out' : 'background-fade-in'}`}>
-            <div className={`modal-content ${isClosing ? 'modal-zoom-out' : 'modal-zoom-in'} ${isAdmin ? 'admin-modal' : ''}`}>
+            <div className={`modal-content ${isClosing ? 'modal-zoom-out' : 'modal-zoom-in'} ${className}`}>
                 <span className="close" onClick={handleClose}>&times;</span>
                 <h2 className="modal-title">Match Details</h2>
                 <div className="modal-body">

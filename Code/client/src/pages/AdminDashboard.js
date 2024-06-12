@@ -124,6 +124,7 @@ const AdminDashboard = () => {
                             )}
                         {isModalOpen && selectedMatch && (
                             <MatchDetailsModal
+                                className="admin-dashboard-modal"
                                 selectedMatch={selectedMatch}
                                 isTeamAWinner={isTeamAWinner}
                                 getPlayerName={(id) => getPlayerName(id,players)}
