@@ -2,7 +2,7 @@
 import React from 'react';
 import '../styles.css';
 import NavBar from '../components/NavBar';
-import PlayerTable from '../components/Leaderboard';
+import Leaderboard from '../components/Leaderboard';
 import Footer from '../components/Footer';
 import useSortedPlayers from '../hooks/useSortedPlayers';
 import useInitialLoad from '../hooks/useInitialLoad';
@@ -18,7 +18,7 @@ function HomePage() {
             <NavBar />
             <main>
                 <h2 className="match-title">Leaderboard</h2>
-                <PlayerTable
+                <Leaderboard
                     players={sortedPlayers}
                     sortConfig={sortConfig}
                     requestSort={requestSort}
