@@ -23,7 +23,7 @@ const AdminPlayerTable = ({ players,handleEdit,handleDelete,loading }) => {
                         <td>{player.age}</td>
                         <td>{player.gender}</td>
                         <td>
-                            <button onClick={() => handleEdit(player)}>Edit</button>
+                            <button style={{ marginRight: 10 }} onClick={() => handleEdit(player)}>Edit</button>
                             <button onClick={() => handleDelete(player._id)}>Delete</button>
                         </td>
                     </tr>

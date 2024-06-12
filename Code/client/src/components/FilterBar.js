@@ -3,7 +3,7 @@ import Dropdown from './Dropdown';
 import '../styles.css';
 
 const FilterBar = ({
-    context, // 'matches' or 'players'
+    context, // 'matches', 'players', or 'adminMatches'
     winners = [],losers = [],
     filterWinners = [],setFilterWinners = () => { },
     filterLosers = [],setFilterLosers = () => { },
@@ -69,6 +69,20 @@ const FilterBar = ({
                             />
                         </div>
                     </>
+                )}
+                {context === 'adminMatches' && (
+                    <div className="filter-date">
+                        <input
+                            id="filter-date"
+                            type="date"
+                            className="date-input"
+                            value={filterMatchDate}
+                            onChange={(e) => {
+                                setFilterMatchDate(e.target.value);
+                                closeAllDropdowns();
+                            }}
+                        />
+                    </div>
                 )}
                 {context === 'players' && (
                     <>

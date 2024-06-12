@@ -33,6 +33,11 @@ html {
     position: relative;
 }
 
+.bodycontent {
+    display: flex;
+    flex-direction: column;
+}
+
 .header-content {
     display: flex;
     align-items: center;
@@ -306,7 +311,7 @@ li button {
 
 .match-details {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: column;
     gap: 10px;
     margin-top: 20px;
 }
@@ -498,6 +503,12 @@ h2.match-title {
     justify-content: flex-start;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    position: relative;
+}
+
+.sidebar nav {
+    position: sticky;
+    top: 0px;
 }
 
 .sidebar nav ul {
@@ -628,6 +639,13 @@ input[type="checkbox"]:disabled + label {
     border-radius: 10px;
 }
 
+.admin-modal {
+    width: 90%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction:column;
+}
+
 /* Keyframes for zoom-in and zoom-out animations */
 @keyframes zoomIn {
     from {
@@ -710,6 +728,7 @@ input[type="checkbox"]:disabled + label {
 }
 
 .modal-body {
+    padding: 20px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -776,6 +795,10 @@ input[type="checkbox"]:disabled + label {
 
 .modal-footer {
     text-align: center;
+    padding: 10px 0;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
 }
 
 .modal-footer p {

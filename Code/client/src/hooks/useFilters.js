@@ -25,11 +25,11 @@ const useFilters = (matches = [],players = []) => {
             const matchDate = new Date(match.date);
 
             const winningTeamIndex = Number(match.scores[0]) > Number(match.scores[1]) ? 0 : 1;
-            const winningTeam = match.teams[winningTeamIndex];
+            const winningTeam = Array.isArray(match.teams[winningTeamIndex]) ? match.teams[winningTeamIndex] : [];
             const allWinnersPresent = filterWinners.every(winner => winningTeam.includes(winner));
 
             const losingTeamIndex = winningTeamIndex === 0 ? 1 : 0;
-            const losingTeam = match.teams[losingTeamIndex];
+            const losingTeam = Array.isArray(match.teams[losingTeamIndex]) ? match.teams[losingTeamIndex] : [];
             const allLosersPresent = filterLosers.every(loser => losingTeam.includes(loser));
 
             return (
@@ -45,7 +45,8 @@ const useFilters = (matches = [],players = []) => {
     const aggregatedPlayerStats = useMemo(() => {
         return players.map(player => {
             const playerMatches = matches.filter(match =>
-                match.teams.some(team => team.includes(player._id)) &&
+                Array.isArray(match.teams) &&
+                match.teams.some(team => Array.isArray(team) && team.includes(player._id)) &&
                 (!filterPlayerDate || doesDateMatchFilter(new Date(match.date),filterPlayerDate)) &&
                 (!filterPlayerLocations.length || filterPlayerLocations.includes(match.location))
             );
@@ -53,7 +54,7 @@ const useFilters = (matches = [],players = []) => {
             const gamesPlayed = playerMatches.length;
 
             const wins = playerMatches.filter(match => {
-                const playerTeamIndex = match.teams.findIndex(team => team.includes(player._id));
+                const playerTeamIndex = match.teams.findIndex(team => Array.isArray(team) && team.includes(player._id));
                 const isWinningTeam = didPlayerTeamWin(match,playerTeamIndex);
                 return isWinningTeam;
             }).length;
@@ -61,12 +62,12 @@ const useFilters = (matches = [],players = []) => {
             const losses = gamesPlayed - wins;
 
             const pointsFor = playerMatches.reduce((acc,match) => {
-                const playerTeamIndex = match.teams.findIndex(team => team.includes(player._id));
+                const playerTeamIndex = match.teams.findIndex(team => Array.isArray(team) && team.includes(player._id));
                 return acc + Number(match.scores[playerTeamIndex]);
             },0);
 
             const pointsAgainst = playerMatches.reduce((acc,match) => {
-                const playerTeamIndex = match.teams.findIndex(team => team.includes(player._id));
+                const playerTeamIndex = match.teams.findIndex(team => Array.isArray(team) && team.includes(player._id));
                 const opponentTeamIndex = playerTeamIndex === 0 ? 1 : 0;
                 return acc + Number(match.scores[opponentTeamIndex]);
             },0);

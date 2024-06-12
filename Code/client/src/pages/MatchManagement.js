@@ -12,10 +12,11 @@ import {
     getWinners,
     getLosers,
     groupMatchesByDate,
+    isTeamAWinner
 } from '../utils/utils';
 import '../styles.css';
 
-function MatchManagement() {
+const MatchManagement = () => {
     const { matches,players,loading } = useFetchData();
     const {
         filterWinners,
@@ -81,6 +82,7 @@ function MatchManagement() {
             {isModalOpen && selectedMatch && (
                 <MatchDetailsModal
                     selectedMatch={selectedMatch}
+                    isTeamAWinner={isTeamAWinner}
                     getPlayerName={(id) => getPlayerName(id,players)}
                     formatDate={formatDate}
                     closeModal={closeModal}
@@ -88,6 +90,6 @@ function MatchManagement() {
             )}
         </div>
     );
-}
+};
 
 export default MatchManagement;

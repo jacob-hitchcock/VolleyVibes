@@ -2,7 +2,7 @@ import React from 'react';
 import MatchCard from './MatchCard';
 import '../styles.css';
 
-const MatchGrid = ({ groupedMatches,getWinners,getLosers,formatDate,openModal }) => {
+const MatchGrid = ({ groupedMatches,getWinners,getLosers,formatDate,openModal,handleEdit,handleDelete,isAdmin }) => {
     const renderMatches = (matches) => {
         const rows = [];
         for(let i = 0;i < matches.length;i += 3) {
@@ -16,6 +16,9 @@ const MatchGrid = ({ groupedMatches,getWinners,getLosers,formatDate,openModal })
                             getLosers={getLosers}
                             formatDate={formatDate}
                             openModal={openModal}
+                            handleEdit={handleEdit}
+                            handleDelete={handleDelete}
+                            isAdmin={isAdmin}
                         />
                     ))}
                 </div>
