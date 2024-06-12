@@ -1,4 +1,3 @@
-// src/components/PlayerTable.js
 import React from 'react';
 
 const Leaderboard = ({ players,sortConfig,requestSort,getSortIndicator,initialLoad,loading }) => (

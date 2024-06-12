@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles.css';
 
-const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive,isOpen,onToggle }) => {
+const Dropdown = ({ label,items = [],selectedItems = [],setSelectedItems,isActive,isOpen,onToggle }) => {
     const handleCheckboxChange = (e) => {
         const { value,checked } = e.target;
         setSelectedItems(prevItems =>

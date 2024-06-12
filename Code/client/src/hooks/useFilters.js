@@ -1,12 +1,18 @@
 import { useState,useMemo } from 'react';
 import { doesDateMatchFilter,isTeamAWinner } from '../utils/utils';
 
-const useFilters = (matches,players) => {
+const useFilters = (matches = [],players = []) => {
+    // Match filters
     const [filterWinners,setFilterWinners] = useState([]);
     const [filterLosers,setFilterLosers] = useState([]);
-    const [filterDate,setFilterDate] = useState('');
-    const [filterLocations,setFilterLocations] = useState([]);
+    const [filterMatchDate,setFilterMatchDate] = useState('');
+    const [filterMatchLocations,setFilterMatchLocations] = useState([]);
 
+    // Player filters
+    const [filterPlayerDate,setFilterPlayerDate] = useState('');
+    const [filterPlayerLocations,setFilterPlayerLocations] = useState([]);
+
+    // Filtered matches
     const filteredMatches = useMemo(() => {
         return matches.filter(match => {
             const matchDate = new Date(match.date);
@@ -20,30 +26,64 @@ const useFilters = (matches,players) => {
             return (
                 (!filterWinners.length || allWinnersPresent) &&
                 (!filterLosers.length || allLosersPresent) &&
-                (!filterDate || doesDateMatchFilter(matchDate,filterDate)) &&
-                (!filterLocations.length || filterLocations.includes(match.location))
+                (!filterMatchDate || doesDateMatchFilter(matchDate,filterMatchDate)) &&
+                (!filterMatchLocations.length || filterMatchLocations.includes(match.location))
             );
         }).sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
-    },[matches,filterWinners,filterLosers,filterDate,filterLocations]);
+    },[matches,filterWinners,filterLosers,filterMatchDate,filterMatchLocations]);
 
-    const resetFilters = () => {
+    // Filtered players
+    const filteredPlayers = useMemo(() => {
+        if(!filterPlayerDate && !filterPlayerLocations.length) {
+            // If no player filters are set, return all players
+            return players;
+        }
+
+        return players.filter(player => {
+            const playerMatches = matches.filter(match =>
+                match.players && match.players.includes(player._id) && // Add check for match.players
+                (!filterPlayerDate || doesDateMatchFilter(new Date(match.date),filterPlayerDate)) &&
+                (!filterPlayerLocations.length || filterPlayerLocations.includes(match.location))
+            );
+            return playerMatches.length > 0;
+        });
+    },[players,matches,filterPlayerDate,filterPlayerLocations]);
+
+    // Reset match filters
+    const resetMatchFilters = () => {
         setFilterWinners([]);
         setFilterLosers([]);
-        setFilterDate('');
-        setFilterLocations([]);
+        setFilterMatchDate('');
+        setFilterMatchLocations([]);
+    };
+
+    // Reset player filters
+    const resetPlayerFilters = () => {
+        setFilterPlayerDate('');
+        setFilterPlayerLocations([]);
     };
 
     return {
+        // Match filters
         filterWinners,
         setFilterWinners,
         filterLosers,
         setFilterLosers,
-        filterDate,
-        setFilterDate,
-        filterLocations,
-        setFilterLocations,
+        filterMatchDate,
+        setFilterMatchDate,
+        filterMatchLocations,
+        setFilterMatchLocations,
         filteredMatches,
-        resetFilters,
+        resetMatchFilters,
+
+        // Player filters
+        filterPlayerDate,
+        setFilterPlayerDate,
+        filterPlayerLocations,
+        setFilterPlayerLocations,
+        filteredPlayers,
+        resetPlayerFilters,
+
         isTeamAWinner,
     };
 };

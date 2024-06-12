@@ -1,4 +1,3 @@
-// src/hooks/useSortedPlayers.js
 import { useState } from 'react';
 
 const useSortedPlayers = (players) => {

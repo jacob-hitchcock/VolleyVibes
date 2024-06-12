@@ -4,32 +4,32 @@ import Footer from '../components/Footer';
 import FilterBar from '../components/FilterBar';
 import MatchGrid from '../components/MatchGrid';
 import MatchDetailsModal from '../components/MatchDetailsModal';
-import useFetchData from '../hooks/useFetchData'; // Import the useFetchData hook
-import useFilters from '../hooks/useFilters'; // Import the useFilters hook
+import useFetchData from '../hooks/useFetchData';
+import useFilters from '../hooks/useFilters';
 import {
     getPlayerName,
     formatDate,
     getWinners,
     getLosers,
     groupMatchesByDate,
-} from '../utils/utils'; // Import utility functions
+} from '../utils/utils';
 import '../styles.css';
 
 function MatchManagement() {
-    const { matches,players,loading } = useFetchData(); // Remove setMatches from the hook
+    const { matches,players,loading } = useFetchData();
     const {
         filterWinners,
         setFilterWinners,
         filterLosers,
         setFilterLosers,
-        filterDate,
-        setFilterDate,
-        filterLocations,
-        setFilterLocations,
+        filterMatchDate,
+        setFilterMatchDate,
+        filterMatchLocations,
+        setFilterMatchLocations,
         filteredMatches,
-        resetFilters,
-        isTeamAWinner, // Destructure isTeamAWinner from the hook
-    } = useFilters(matches,players); // Destructure the filters and filteredMatches from the useFilters hook
+        resetMatchFilters,
+        isTeamAWinner,
+    } = useFilters(matches,players);
 
     const [selectedMatch,setSelectedMatch] = useState(null);
     const [isModalOpen,setIsModalOpen] = useState(false);
@@ -53,18 +53,19 @@ function MatchManagement() {
             <NavBar />
             <div className="match-title">Matches</div>
             <FilterBar
+                context="matches"
                 winners={players}
                 losers={players}
                 filterWinners={filterWinners}
                 setFilterWinners={setFilterWinners}
                 filterLosers={filterLosers}
                 setFilterLosers={setFilterLosers}
-                filterDate={filterDate}
-                setFilterDate={setFilterDate}
+                filterMatchDate={filterMatchDate}
+                setFilterMatchDate={setFilterMatchDate}
+                filterMatchLocations={filterMatchLocations}
+                setFilterMatchLocations={setFilterMatchLocations}
                 availableLocations={availableLocations}
-                filterLocations={filterLocations}
-                setFilterLocations={setFilterLocations}
-                resetFilters={resetFilters}
+                resetFilters={resetMatchFilters}
             />
             {loading ? (
                 <div className="loading-indicator">Loading matches...</div>
