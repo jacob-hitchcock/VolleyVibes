@@ -7,8 +7,10 @@ export const getPlayerName = (id,players) => {
 };
 
 export const formatDate = (dateString) => {
-    const options = { year: 'numeric',month: 'long',day: 'numeric' };
     const date = new Date(dateString);
+    // Adjust for local timezone offset
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+    const options = { year: 'numeric',month: 'long',day: 'numeric' };
     return date.toLocaleDateString(undefined,options);
 };
 

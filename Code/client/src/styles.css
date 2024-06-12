@@ -151,18 +151,6 @@ th .header-text {
     white-space: nowrap;
 }
 
-footer {
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-footer img {
-    width: 30px;
-    height: 30px;
-    margin: 0 10px;
-}
-
 form {
     margin-bottom: 20px;
 }
@@ -194,6 +182,52 @@ ul {
 
 li button {
     margin-left: 10px;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #e7552b;
+    color: #fff5d6;
+    padding: 20px 0;
+    text-align: center;
+    width: calc(100% + 80px);
+    height: 40px;
+    margin-top: 130px;
+    margin-left: -40px;
+    margin-right: -40px;
+    position:relative;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-content p {
+    margin: 0 0 0px;
+    font-family: 'Coolvetica', Arial, sans-serif;
+    font-size: 16px;
+}
+
+.footer-content p a {
+    color: #fff5d6;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.footer-content p a:hover {
+    color: #fff;
 }
 
 /* Additional Styles for MatchManagement */
@@ -415,25 +449,25 @@ h2.match-title {
 }
 
 .playerlist {
-    margin-top: -20px;
+    margin-top: -16px;
 }
 
 .sidebar {
     width: 250px;
     background-color: #e7552b;
     padding: 20px;
-    height: calc(100vh - 175px); /* Adjust height based on your NavBar height */
-    position: absolute;
-    top: 175px; /* Adjust based on your NavBar height */
-    left: 0;
-    z-index: 1000;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
 .sidebar nav ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .sidebar nav ul li {
@@ -456,18 +490,20 @@ h2.match-title {
 .dashboard-layout {
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 
 .dashboard-container {
     display: flex;
-    padding-left: 250px; /* Width of the sidebar */
+    flex: 1;
+    padding-left: 0px; /* Width of the sidebar */
 }
 
 .dashboard-content {
+    flex: 1;
     padding-left: 20px;
-    width: 100%;
     background-color: #fff5d6;
-    margin-top: -2px;
+    overflow-y: auto;
 }
 
 /* Dashboard Card */

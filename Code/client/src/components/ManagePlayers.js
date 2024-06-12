@@ -68,6 +68,12 @@ const ManagePlayers = ({ players,setPlayers,loading }) => {
     return (
         <div>
             <h3>Manage Players</h3>
+            <AdminPlayerTable
+                players={players}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                loading={loading}
+            />
             <PlayerForm
                 form={form}
                 errors={errors}
@@ -78,12 +84,6 @@ const ManagePlayers = ({ players,setPlayers,loading }) => {
             {confirmationMessage && (
                 <p className="admin-confirm">{confirmationMessage}</p>
             )}
-            <AdminPlayerTable
-                players={players}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-                loading={loading}
-            />
         </div>
     );
 };

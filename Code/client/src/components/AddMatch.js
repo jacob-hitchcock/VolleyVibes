@@ -32,12 +32,17 @@ const AddMatch = ({ matches,setMatches,players }) => {
 
     const handleMatchSubmit = (e) => {
         e.preventDefault();
+        // Adjust for local timezone offset
+        const localDate = new Date(date);
+        localDate.setMinutes(localDate.getMinutes() + localDate.getTimezoneOffset());
+
         const match = {
             teams: [teamA,teamB],
             scores: [scoreA,scoreB],
-            date: new Date(date).toISOString(), // Convert date to UTC
+            date: localDate.toISOString(), // Convert adjusted date to UTC
             location,
         };
+
         axiosInstance.post('/matches',match)
             .then(response => {
                 setMatches([...matches,response.data]);

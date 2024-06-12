@@ -77,7 +77,7 @@ function MatchManagement() {
                         openModal={openModal}
                     />
                 )}
-            <Footer />
+            <Footer className="footer-matches" />
             {isModalOpen && selectedMatch && (
                 <MatchDetailsModal
                     selectedMatch={selectedMatch}
