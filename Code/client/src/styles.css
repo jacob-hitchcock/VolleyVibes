@@ -18,6 +18,11 @@ body {
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 10px;
+}
+
 .header {
     display: flex;
     justify-content: center;
@@ -37,6 +42,19 @@ body {
     text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-thickness: 2px;
+}
+
+.section {
+    position: relative;
+}
+
+.section::before {
+    content: '';
+    display: block;
+    height: 10px;
+    margin-top: -10px;
+    visibility: hidden;
+    pointer-events:none;
 }
 
 .logo {
@@ -100,6 +118,32 @@ body {
 
 .nav-left a.active:hover, .nav-right a.active:hover {
     background-color: #e03e00;
+}
+
+.return-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.return-to-top-icon {
+    font-size: 2rem;
+    color: #fff5d6;
+    background-color: rgba(231, 85, 43, 0.8);
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.return-to-top-icon:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 h1, h2, h3 {

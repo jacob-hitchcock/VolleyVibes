@@ -1,6 +1,4 @@
-// src/components/Sidebar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
 import '../styles.css'; // Ensure you import your styles
 
 const Sidebar = () => {
@@ -8,8 +6,8 @@ const Sidebar = () => {
         <div className="sidebar">
             <nav>
                 <ul>
-                    <li><Link to="/admin/manage-players">Manage Players</Link></li>
-                    <li><Link to="/admin/add-match">Add Match</Link></li>
+                    <li><a href="#add-match">Add Match</a></li>
+                    <li><a href="#manage-players">Manage Players</a></li>
                     {/* Add more links as needed */}
                 </ul>
             </nav>
