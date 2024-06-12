@@ -7,7 +7,7 @@ import useFetchData from '../hooks/useFetchData';
 import '../styles.css'; // Ensure you import your styles
 
 const AdminDashboard = () => {
-    const { matches,players,setPlayers,setMatches,loading } = useFetchData();
+    const { matches,setMatches,players,setPlayers,loading } = useFetchData();
 
     return (
         <div className="dashboard-layout admin-dashboard">

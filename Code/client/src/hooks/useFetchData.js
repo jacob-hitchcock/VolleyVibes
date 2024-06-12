@@ -23,7 +23,7 @@ const useFetchData = () => {
         fetchData();
     },[]);
 
-    return { matches,players,loading };
+    return { matches,setMatches,players,setPlayers,loading };
 };
 
 export default useFetchData;

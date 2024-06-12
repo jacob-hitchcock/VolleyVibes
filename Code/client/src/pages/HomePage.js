@@ -25,10 +25,6 @@ function HomePage() {
     // Apply sorting to the aggregated player stats
     const { sortedPlayers,requestSort,getSortIndicator,sortConfig } = useSortedPlayers(aggregatedPlayerStats);
 
-    useEffect(() => {
-        console.log('Aggregated Player Stats:',aggregatedPlayerStats);
-    },[aggregatedPlayerStats]);
-
     return (
         <div>
             <NavBar />

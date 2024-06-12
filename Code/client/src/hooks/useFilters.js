@@ -43,21 +43,18 @@ const useFilters = (matches = [],players = []) => {
 
     // Aggregated player stats
     const aggregatedPlayerStats = useMemo(() => {
-        console.log('Aggregating player stats');
         return players.map(player => {
             const playerMatches = matches.filter(match =>
                 match.teams.some(team => team.includes(player._id)) &&
                 (!filterPlayerDate || doesDateMatchFilter(new Date(match.date),filterPlayerDate)) &&
                 (!filterPlayerLocations.length || filterPlayerLocations.includes(match.location))
             );
-            console.log(`Player: ${player.name}, Matches:`,playerMatches);
 
             const gamesPlayed = playerMatches.length;
 
             const wins = playerMatches.filter(match => {
                 const playerTeamIndex = match.teams.findIndex(team => team.includes(player._id));
                 const isWinningTeam = didPlayerTeamWin(match,playerTeamIndex);
-                console.log(`Match ID: ${match._id}, Player Team Index: ${playerTeamIndex}, Is Winning Team: ${isWinningTeam}`);
                 return isWinningTeam;
             }).length;
 
@@ -77,8 +74,6 @@ const useFilters = (matches = [],players = []) => {
             const pointDifferential = pointsFor - pointsAgainst;
 
             const winningPercentage = gamesPlayed ? ((wins / gamesPlayed) * 100).toFixed(3) : '0.000';
-
-            console.log(`Player: ${player.name}, Games Played: ${gamesPlayed}, Wins: ${wins}, Losses: ${losses}, Points For: ${pointsFor}, Points Against: ${pointsAgainst}, Point Differential: ${pointDifferential}, Winning Percentage: ${winningPercentage}`);
 
             return { ...player,gamesPlayed,wins,losses,pointsFor,pointsAgainst,pointDifferential,winningPercentage };
         });
