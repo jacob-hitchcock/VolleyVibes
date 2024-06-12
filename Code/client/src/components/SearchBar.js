@@ -5,7 +5,6 @@ const SearchBar = ({ search,handleSearchChange }) => {
     return (
         <div className="search-bar-container">
             <div className="search-input-container">
-                <FaSearch className="search-icon" />
                 <input
                     type="text"
                     className="search-input"

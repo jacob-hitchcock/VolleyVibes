@@ -12,7 +12,7 @@ const ComboControls = ({
             <input type="number" value={numberOfCombos} onChange={handleSelectNumberOfCombos} />
         </label>
         <button onClick={handleGenerateSelectedCombos}>Generate Selected Combos</button>
-        <button onClick={handleClearCombos}>Clear Combos</button>
+        <button style={{ marginLeft: 10 }} onClick={handleClearCombos}>Clear Combos</button>
     </div>
 );
 

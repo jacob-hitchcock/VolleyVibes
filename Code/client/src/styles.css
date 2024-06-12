@@ -163,7 +163,7 @@ input[type="text"], input[type="number"], input[type="date"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #E7552B;
     border-radius: 5px;
 }
 
@@ -366,16 +366,9 @@ li button {
     position: relative;
 }
 
-.search-icon {
-    position: absolute;
-    right: 130px;
-    color: #E7552B;
-    font-size: 16px;
-}
-
 .search-input {
     width: 200px;
-    padding: 10px 10px 10px 50px; /* Add padding to the left for the icon */
+    padding: 100px; /* Add padding to the left for the icon */
     border: 2px solid #E7552B; /* Outline color */
     border-radius: 5px;
     background-color: #fff5d6;
@@ -386,7 +379,6 @@ li button {
 
 .search-input::placeholder {
     color: #E7552B;
-    padding-left: 10px; /* Adjust placeholder padding to avoid overlap */
 }
 
 .search-input:focus {
