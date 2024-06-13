@@ -16,8 +16,16 @@ app.use(express.json());
 // Use cookie-parser middleware
 app.use(cookieParser());
 
+const allowedOrigins = ['https://volleyvibes.vercel.app']; // Add your Vercel domain here
+
 app.use(cors({
-    origin: 'https://volleyvibes.vercel.app/', // Update this to your Vercel domain
+    origin: (origin,callback) => {
+        if(!origin || allowedOrigins.includes(origin)) {
+            callback(null,true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
