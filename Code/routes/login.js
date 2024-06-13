@@ -10,8 +10,9 @@ const router = express.Router();
 router.get('/check-auth',(req,res) => {
     const token = req.cookies.token;
     if(!token) {
-        return res.status(401).json({ message: 'Not authenticated' })
-    } try {
+        return res.status(401).json({ message: 'Not authenticated' });
+    }
+    try {
         const decoded = jwt.verify(token,config.jwtSecret);
 
         User.findById(decoded.user.id).then(user => {
@@ -75,10 +76,11 @@ router.post(
                         maxAge: 3600000
                     });
 
-                    res.json({ message: 'Login successful' });
+                    res.json({ message: 'Login successful',token }); // Return token in the response
                 }
             );
         } catch(error) {
+            console.error('Server error:',error);
             res.status(500).send('Server error');
         }
     }

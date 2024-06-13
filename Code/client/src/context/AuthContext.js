@@ -27,11 +27,17 @@ export const AuthProvider = ({ children }) => {
     const login = async (email,password) => {
         try {
             console.log("Sending login request to backend");
-            await axiosInstance.post('/users/login',{ email,password });
-            const response = await axiosInstance.get('/users/check-auth');
-            if(response.data.user) {
-                console.log('Login successful:',response.data.user);
-                setAuth({ user: response.data.user });
+            const loginResponse = await axiosInstance.post('/users/login',{ email,password });
+            const token = loginResponse.data.token;
+
+            // Set token in a cookie
+            document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}; HttpOnly`;
+            console.log('Token set in cookie:',token);
+
+            const checkAuthResponse = await axiosInstance.get('/users/check-auth');
+            if(checkAuthResponse.data.user) {
+                console.log('Login successful:',checkAuthResponse.data.user);
+                setAuth({ user: checkAuthResponse.data.user });
                 return true;
             } else {
                 console.log('Login check-auth failed');
