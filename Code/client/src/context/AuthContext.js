@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await axiosInstance.get('/users/check-auth');
+                const response = await axiosInstance.get('/users/check-auth',{ withCredentials: true });
                 if(response.data.user) {
                     console.log('User authenticated:',response.data.user);
                     setAuth({ user: response.data.user });
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (email,password) => {
         try {
             console.log("Sending login request to backend");
-            const loginResponse = await axiosInstance.post('/users/login',{ email,password });
+            const loginResponse = await axiosInstance.post('/users/login',{ email,password },{ withCredentials: true });
             const token = loginResponse.data.token;
 
             // Set token in a cookie
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
             // Manually set the Authorization header for subsequent requests
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-            const checkAuthResponse = await axiosInstance.get('/users/check-auth');
+            const checkAuthResponse = await axiosInstance.get('/users/check-auth',{ withCredentials: true });
             if(checkAuthResponse.data.user) {
                 console.log('Login successful:',checkAuthResponse.data.user);
                 setAuth({ user: checkAuthResponse.data.user });
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axiosInstance.post('/users/logout');
+            await axiosInstance.post('/users/logout',{},{ withCredentials: true });
             setAuth({ user: null });
             console.log('Logout successful');
         } catch(error) {
