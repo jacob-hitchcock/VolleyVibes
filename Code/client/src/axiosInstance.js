@@ -1,11 +1,10 @@
 import axios from 'axios';
 
-// Ensure the environment variable is correctly set and accessible
 const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api';
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
-    withCredentials: true, // Include credentials in requests
+    withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(

@@ -1,4 +1,3 @@
-// src/context/AuthContext.js
 import React,{ createContext,useState,useEffect } from 'react';
 import axiosInstance from '../axiosInstance';
 
@@ -30,11 +29,9 @@ export const AuthProvider = ({ children }) => {
             const loginResponse = await axiosInstance.post('/users/login',{ email,password },{ withCredentials: true });
             const token = loginResponse.data.token;
 
-            // Set token in a cookie
-            document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}; samesite=strict`;
+            document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}; SameSite=Strict`;
             console.log('Token set in cookie:',token);
 
-            // Manually set the Authorization header for subsequent requests
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             const checkAuthResponse = await axiosInstance.get('/users/check-auth',{ withCredentials: true });

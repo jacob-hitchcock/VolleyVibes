@@ -3,16 +3,16 @@ const config = require('../config');
 
 const authMiddleware = (req,res,next) => {
     const token = req.cookies.token;
-    console.log('Token from cookie in authMiddleware:',token); // Add this line for debugging
+    console.log('Token from cookie in authMiddleware:',token);
 
     if(!token) {
-        console.log('No token found in authMiddleware'); // Add this line for debugging
+        console.log('No token found in authMiddleware');
         return res.status(401).json({ message: 'No token, authorization denied' });
     }
 
     try {
         const decoded = jwt.verify(token,config.jwtSecret);
-        console.log('Decoded token in authMiddleware:',decoded); // Add this line for debugging
+        console.log('Decoded token in authMiddleware:',decoded);
         req.user = decoded.user;
         next();
     } catch(error) {

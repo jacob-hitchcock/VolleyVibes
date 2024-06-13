@@ -27,6 +27,7 @@ app.use(cors({
 }));
 
 console.log('Starting server...');
+console.log('NODE_ENV:',process.env.NODE_ENV);
 
 // Connect to MongoDB Atlas using environment variables
 const dbURI = process.env.MONGODB_URI;

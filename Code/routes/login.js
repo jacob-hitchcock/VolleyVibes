@@ -2,21 +2,18 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { body,validationResult } = require('express-validator');
-const User = require('../models/User'); // Adjust the path as necessary
-const config = require('../config'); // Adjust the path as necessary
+const User = require('../models/User');
+const config = require('../config');
 
 const router = express.Router();
 
 router.get('/check-auth',(req,res) => {
     const token = req.cookies.token;
-    console.log('Token from cookie in check-auth:',token); // Add this line for debugging
-
     if(!token) {
         return res.status(401).json({ message: 'Not authenticated' });
     }
     try {
         const decoded = jwt.verify(token,config.jwtSecret);
-        console.log('Decoded token in check-auth:',decoded); // Add this line for debugging
 
         User.findById(decoded.user.id).then(user => {
             if(!user) {
@@ -25,7 +22,7 @@ router.get('/check-auth',(req,res) => {
             res.json({ user: { id: user.id,email: user.email,role: user.role } });
         });
     } catch(error) {
-        console.error('Token verification failed in check-auth:',error.message);
+        console.error('Token verification failed:',error.message);
         res.status(401).json({ message: 'Not authenticated' });
     }
 });
@@ -45,19 +42,16 @@ router.post(
         const { email,password } = req.body;
 
         try {
-            // Check if the user exists
             const user = await User.findOne({ email });
             if(!user) {
                 return res.status(400).json({ message: 'Invalid email or password' });
             }
 
-            // Compare the password with the hashed password in the database
             const isMatch = await bcrypt.compare(password,user.password);
             if(!isMatch) {
                 return res.status(400).json({ message: 'Invalid email or password' });
             }
 
-            // Create a JWT payload
             const payload = {
                 user: {
                     id: user.id,
@@ -65,7 +59,6 @@ router.post(
                 },
             };
 
-            // Sign the token
             jwt.sign(
                 payload,
                 config.jwtSecret,
@@ -76,16 +69,14 @@ router.post(
                         httpOnly: true,
                         secure: process.env.NODE_ENV === 'production',
                         sameSite: 'strict',
-                        maxAge: 3600000
+                        maxAge: 3600000,
                     });
 
-                    console.log('Generated token in login:',token); // Add this line for debugging
-
-                    res.json({ message: 'Login successful',token }); // Return token in the response
+                    res.json({ message: 'Login successful',token });
                 }
             );
         } catch(error) {
-            console.error('Server error in login:',error);
+            console.error('Server error:',error);
             res.status(500).send('Server error');
         }
     }
