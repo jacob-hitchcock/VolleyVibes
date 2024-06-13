@@ -6,6 +6,7 @@ const Player = require('./models/Player');
 const Match = require('./models/Match');
 const loginRoute = require('./routes/login');
 const authMiddleware = require('./middlewares/authMiddleware'); // Import the middleware
+const adminMiddleware = require('./middlewares/adminMiddleware'); // Import the admin middleware
 
 const app = express();
 const port = process.env.PORT || 3000; // Use the environment variable PORT or default to 3000
@@ -61,7 +62,7 @@ app.post('/api/players',authMiddleware,async (req,res) => {
 });
 
 app.put('/api/players/:id',authMiddleware,async (req,res) => {
-    const { id } = req.params;
+    const { id } = params;
     try {
         const player = await Player.findByIdAndUpdate(id,req.body,{ new: true,runValidators: true });
         if(!player) {

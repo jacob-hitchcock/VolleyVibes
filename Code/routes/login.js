@@ -9,11 +9,14 @@ const router = express.Router();
 
 router.get('/check-auth',(req,res) => {
     const token = req.cookies.token;
+    console.log('Token from cookie in check-auth:',token); // Add this line for debugging
+
     if(!token) {
         return res.status(401).json({ message: 'Not authenticated' });
     }
     try {
         const decoded = jwt.verify(token,config.jwtSecret);
+        console.log('Decoded token in check-auth:',decoded); // Add this line for debugging
 
         User.findById(decoded.user.id).then(user => {
             if(!user) {
@@ -22,7 +25,7 @@ router.get('/check-auth',(req,res) => {
             res.json({ user: { id: user.id,email: user.email,role: user.role } });
         });
     } catch(error) {
-        console.error('Token verification failed:',error.message);
+        console.error('Token verification failed in check-auth:',error.message);
         res.status(401).json({ message: 'Not authenticated' });
     }
 });
@@ -76,11 +79,13 @@ router.post(
                         maxAge: 3600000
                     });
 
+                    console.log('Generated token in login:',token); // Add this line for debugging
+
                     res.json({ message: 'Login successful',token }); // Return token in the response
                 }
             );
         } catch(error) {
-            console.error('Server error:',error);
+            console.error('Server error in login:',error);
             res.status(500).send('Server error');
         }
     }
