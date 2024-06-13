@@ -31,8 +31,11 @@ export const AuthProvider = ({ children }) => {
             const token = loginResponse.data.token;
 
             // Set token in a cookie
-            document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}; HttpOnly`;
+            document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}`;
             console.log('Token set in cookie:',token);
+
+            // Manually set the Authorization header for subsequent requests
+            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             const checkAuthResponse = await axiosInstance.get('/users/check-auth');
             if(checkAuthResponse.data.user) {
