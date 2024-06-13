@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{ useState,useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import FilterBar from '../components/FilterBar';
@@ -23,18 +23,21 @@ const MatchManagement = () => {
         setFilterWinners,
         filterLosers,
         setFilterLosers,
-        filterMatchDate,
-        setFilterMatchDate,
-        filterMatchLocations,
-        setFilterMatchLocations,
-        filteredMatches,
+        filteredMatches: baseFilteredMatches,
         resetMatchFilters,
     } = useFilters(matches,players);
 
     const [selectedMatch,setSelectedMatch] = useState(null);
     const [isModalOpen,setIsModalOpen] = useState(false);
+    const [selectedLocations,setSelectedLocations] = useState([]); // Local state for location filter
+    const [selectedDate,setSelectedDate] = useState(''); // Local state for date filter
 
     const availableLocations = ['Grass','Beach','Indoor Court'];
+
+    useEffect(() => {
+        console.log('Selected Locations:',selectedLocations);
+        console.log('Selected Date:',selectedDate);
+    },[selectedLocations,selectedDate]);
 
     const openModal = (match) => {
         setSelectedMatch(match);
@@ -46,7 +49,17 @@ const MatchManagement = () => {
         setSelectedMatch(null);
     };
 
+    const filteredMatches = baseFilteredMatches.filter(match =>
+        (!selectedLocations.length || selectedLocations.includes(match.location)) &&
+        (!selectedDate || new Date(match.date).toISOString().split('T')[0] === selectedDate)
+    );
+
     const groupedMatches = groupMatchesByDate(filteredMatches);
+
+    // Debug logs to check the filtering
+    console.log('Filter Locations:',selectedLocations);
+    console.log('Filter Date:',selectedDate);
+    console.log('Filtered Matches:',filteredMatches);
 
     return (
         <div>
@@ -60,12 +73,17 @@ const MatchManagement = () => {
                 setFilterWinners={setFilterWinners}
                 filterLosers={filterLosers}
                 setFilterLosers={setFilterLosers}
-                filterDate={filterMatchDate}
-                setFilterDate={setFilterMatchDate}
+                // Use local state and handler for location and date filters
                 availableLocations={availableLocations}
-                filterLocations={filterMatchLocations}
-                setFilterLocations={setFilterMatchLocations}
-                resetFilters={resetMatchFilters}
+                filterLocations={selectedLocations}
+                setFilterLocations={setSelectedLocations}
+                filterDate={selectedDate}
+                setFilterDate={setSelectedDate}
+                resetFilters={() => {
+                    resetMatchFilters();
+                    setSelectedLocations([]);
+                    setSelectedDate('');
+                }}
             />
             {loading ? (
                 <div className="loading-indicator">Loading matches...</div>
@@ -89,7 +107,6 @@ const MatchManagement = () => {
                     closeModal={closeModal}
                 />
             )}
-
         </div>
     );
 };

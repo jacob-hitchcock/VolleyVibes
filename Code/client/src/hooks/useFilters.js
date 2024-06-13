@@ -13,11 +13,17 @@ const useFilters = (matches = [],players = []) => {
     const [filterWinners,setFilterWinners] = useState([]);
     const [filterLosers,setFilterLosers] = useState([]);
     const [filterMatchDate,setFilterMatchDate] = useState('');
-    const [filterMatchLocations,setFilterMatchLocations] = useState([]);
+    const [filterMatchLocation,setFilterMatchLocation] = useState(''); // New state
 
     // Player filters
     const [filterPlayerDate,setFilterPlayerDate] = useState('');
     const [filterPlayerLocations,setFilterPlayerLocations] = useState([]);
+
+    // Log state updates
+    console.log('FilterWinners State:',filterWinners);
+    console.log('FilterLosers State:',filterLosers);
+    console.log('FilterMatchDate State:',filterMatchDate);
+    console.log('FilterMatchLocation State:',filterMatchLocation);
 
     // Filtered matches
     const filteredMatches = useMemo(() => {
@@ -32,14 +38,21 @@ const useFilters = (matches = [],players = []) => {
             const losingTeam = Array.isArray(match.teams[losingTeamIndex]) ? match.teams[losingTeamIndex] : [];
             const allLosersPresent = filterLosers.every(loser => losingTeam.includes(loser));
 
+            const locationMatch = !filterMatchLocation || match.location === filterMatchLocation; // Updated condition
+            const dateMatch = !filterMatchDate || doesDateMatchFilter(matchDate,filterMatchDate);
+
+            console.log('Match:',match);
+            console.log('Location Match:',locationMatch);
+            console.log('Date Match:',dateMatch);
+
             return (
                 (!filterWinners.length || allWinnersPresent) &&
                 (!filterLosers.length || allLosersPresent) &&
-                (!filterMatchDate || doesDateMatchFilter(matchDate,filterMatchDate)) &&
-                (!filterMatchLocations.length || filterMatchLocations.includes(match.location))
+                dateMatch &&
+                locationMatch
             );
         }).sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
-    },[matches,filterWinners,filterLosers,filterMatchDate,filterMatchLocations]);
+    },[matches,filterWinners,filterLosers,filterMatchDate,filterMatchLocation]);
 
     // Aggregated player stats
     const aggregatedPlayerStats = useMemo(() => {
@@ -85,13 +98,15 @@ const useFilters = (matches = [],players = []) => {
         setFilterWinners([]);
         setFilterLosers([]);
         setFilterMatchDate('');
-        setFilterMatchLocations([]);
+        setFilterMatchLocation(''); // Reset new state
+        console.log('Match filters reset');
     };
 
     // Reset player filters
     const resetPlayerFilters = () => {
         setFilterPlayerDate('');
         setFilterPlayerLocations([]);
+        console.log('Player filters reset');
     };
 
     return {
@@ -102,8 +117,8 @@ const useFilters = (matches = [],players = []) => {
         setFilterLosers,
         filterMatchDate,
         setFilterMatchDate,
-        filterMatchLocations,
-        setFilterMatchLocations,
+        filterMatchLocation,
+        setFilterMatchLocation,
         filteredMatches,
         resetMatchFilters,
 

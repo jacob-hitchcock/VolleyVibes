@@ -3,12 +3,14 @@ import Dropdown from './Dropdown';
 import '../styles.css';
 
 const FilterBar = ({
-    context, // 'matches', 'players', or 'adminMatches'
+    context,
     winners = [],losers = [],
     filterWinners = [],setFilterWinners = () => { },
     filterLosers = [],setFilterLosers = () => { },
     filterMatchDate = '',setFilterMatchDate = () => { },
-    filterMatchLocations = [],setFilterMatchLocations = () => { },
+    // New location filter state
+    filterLocations = [],setFilterLocations = () => { },
+    filterDate = '',setFilterDate = () => { },
     filterPlayerDate = '',setFilterPlayerDate = () => { },
     filterPlayerLocations = [],setFilterPlayerLocations = () => { },
     availableLocations = [],
@@ -47,24 +49,27 @@ const FilterBar = ({
                             isOpen={openDropdown === 'losers'}
                             onToggle={() => handleToggle('losers')}
                         />
+                        {/* New Location Filter */}
                         <Dropdown
                             label="Locations"
                             items={availableLocations.map(location => ({ _id: location,name: location }))}
-                            selectedItems={filterMatchLocations}
-                            setSelectedItems={setFilterMatchLocations}
-                            isActive={filterMatchLocations.length > 0}
+                            selectedItems={filterLocations}
+                            setSelectedItems={setFilterLocations}
+                            isActive={filterLocations.length > 0}
                             isOpen={openDropdown === 'locations'}
                             onToggle={() => handleToggle('locations')}
                         />
+                        {/* New Date Filter */}
                         <div className="filter-date">
                             <input
                                 id="filter-date"
                                 type="date"
                                 className="date-input"
-                                value={filterMatchDate}
+                                value={filterDate}
                                 onChange={(e) => {
-                                    setFilterMatchDate(e.target.value);
+                                    setFilterDate(e.target.value);
                                     closeAllDropdowns();
+                                    console.log('Date selected:',e.target.value);
                                 }}
                             />
                         </div>
@@ -80,6 +85,7 @@ const FilterBar = ({
                             onChange={(e) => {
                                 setFilterMatchDate(e.target.value);
                                 closeAllDropdowns();
+                                console.log('Admin date selected:',e.target.value);
                             }}
                         />
                     </div>
@@ -104,6 +110,7 @@ const FilterBar = ({
                                 onChange={(e) => {
                                     setFilterPlayerDate(e.target.value);
                                     closeAllDropdowns();
+                                    console.log('Player date selected:',e.target.value);
                                 }}
                             />
                         </div>
@@ -114,6 +121,9 @@ const FilterBar = ({
                 <button className="reset-button" onClick={() => {
                     resetFilters();
                     closeAllDropdowns();
+                    setFilterLocations([]); // Reset location filter
+                    setFilterDate(''); // Reset date filter
+                    console.log('Filters reset');
                 }}>Reset Filters</button>
             </div>
         </div>

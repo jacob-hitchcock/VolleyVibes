@@ -7,6 +7,8 @@ const Dropdown = ({ label,items,selectedItems,setSelectedItems,isActive,isOpen,o
         setSelectedItems((prevItems) =>
             checked ? [...prevItems,value] : prevItems.filter((item) => item !== value)
         );
+        console.log('Checkbox change:',value,checked);
+        console.log('Updated selectedItems:',checked ? [...selectedItems,value] : selectedItems.filter((item) => item !== value));
     };
 
     return (
