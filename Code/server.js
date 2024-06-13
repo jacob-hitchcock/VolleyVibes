@@ -6,8 +6,9 @@ const Player = require('./models/Player');
 const Match = require('./models/Match');
 const loginRoute = require('./routes/login');
 const authMiddleware = require('./middlewares/authMiddleware'); // Import the middleware
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Use the environment variable PORT or default to 3000
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -16,16 +17,18 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: 'http://localhost:3001',
+    origin: 'your-frontend-domain.vercel.app', // Update this to your Vercel domain
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-}))
+}));
 
 console.log('Starting server...');
 
-// Connect to MongoDB Atlas
-const dbURI = 'mongodb+srv://Cluster36644:QXNaeXdqZ3pU@cluster36644.tofuamk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster36644';
+// Connect to MongoDB Atlas using environment variables
+const dbURI = process.env.MONGODB_URI;
 mongoose.connect(dbURI,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
     writeConcern: {
         w: 'majority',
         wtimeout: 5000,
@@ -185,9 +188,9 @@ const updatePlayerStats = async (match) => {
             player.pointsFor = player.pointsFor || 0;
             player.pointsAgainst = player.pointsAgainst || 0;
             player.pointDifferential = player.pointDifferential || 0;
-            player.gamesPlayed = player.gamesPlayed || 0;  // Initialize gamesPlayed
+            player.gamesPlayed = player.gamesPlayed || 0; // Initialize gamesPlayed
 
-            player.gamesPlayed += 1;  // Increment gamesPlayed
+            player.gamesPlayed += 1; // Increment gamesPlayed
             player.wins += winningTeam.includes(playerId) ? 1 : 0;
             player.pointsFor += pointsFor;
             player.pointsAgainst += pointsAgainst;
