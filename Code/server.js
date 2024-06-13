@@ -16,16 +16,11 @@ app.use(express.json());
 // Use cookie-parser middleware
 app.use(cookieParser());
 
+// CORS configuration
 const allowedOrigins = ['https://volleyvibes.vercel.app']; // Add your Vercel domain here
 
 app.use(cors({
-    origin: (origin,callback) => {
-        if(!origin || allowedOrigins.includes(origin)) {
-            callback(null,true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: allowedOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
@@ -35,6 +30,8 @@ console.log('Starting server...');
 // Connect to MongoDB Atlas using environment variables
 const dbURI = process.env.MONGODB_URI;
 mongoose.connect(dbURI,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
     writeConcern: {
         w: 'majority',
         wtimeout: 5000,
