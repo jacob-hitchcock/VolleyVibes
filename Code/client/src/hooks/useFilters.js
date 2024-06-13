@@ -1,7 +1,6 @@
 import { useState,useMemo } from 'react';
 import { doesDateMatchFilter } from '../utils/utils';
 
-// Utility function to determine if the player's team won the match
 const didPlayerTeamWin = (match,playerTeamIndex) => {
     const teamScore = Number(match.scores[playerTeamIndex]);
     const opponentScore = Number(match.scores[playerTeamIndex === 0 ? 1 : 0]);
@@ -9,11 +8,15 @@ const didPlayerTeamWin = (match,playerTeamIndex) => {
 };
 
 const useFilters = (matches = [],players = []) => {
+    // Ensure matches and players are arrays
+    matches = Array.isArray(matches) ? matches : [];
+    players = Array.isArray(players) ? players : [];
+
     // Match filters
     const [filterWinners,setFilterWinners] = useState([]);
     const [filterLosers,setFilterLosers] = useState([]);
     const [filterMatchDate,setFilterMatchDate] = useState('');
-    const [filterMatchLocation,setFilterMatchLocation] = useState(''); // New state
+    const [filterMatchLocation,setFilterMatchLocation] = useState('');
 
     // Player filters
     const [filterPlayerDate,setFilterPlayerDate] = useState('');
@@ -24,6 +27,8 @@ const useFilters = (matches = [],players = []) => {
     console.log('FilterLosers State:',filterLosers);
     console.log('FilterMatchDate State:',filterMatchDate);
     console.log('FilterMatchLocation State:',filterMatchLocation);
+    console.log('Matches:',matches);
+    console.log('Players:',players);
 
     // Filtered matches
     const filteredMatches = useMemo(() => {
@@ -38,7 +43,7 @@ const useFilters = (matches = [],players = []) => {
             const losingTeam = Array.isArray(match.teams[losingTeamIndex]) ? match.teams[losingTeamIndex] : [];
             const allLosersPresent = filterLosers.every(loser => losingTeam.includes(loser));
 
-            const locationMatch = !filterMatchLocation || match.location === filterMatchLocation; // Updated condition
+            const locationMatch = !filterMatchLocation || match.location === filterMatchLocation;
             const dateMatch = !filterMatchDate || doesDateMatchFilter(matchDate,filterMatchDate);
 
             console.log('Match:',match);
@@ -51,7 +56,7 @@ const useFilters = (matches = [],players = []) => {
                 dateMatch &&
                 locationMatch
             );
-        }).sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
+        }).sort((a,b) => new Date(b.date) - new Date(a.date));
     },[matches,filterWinners,filterLosers,filterMatchDate,filterMatchLocation]);
 
     // Aggregated player stats
@@ -98,7 +103,7 @@ const useFilters = (matches = [],players = []) => {
         setFilterWinners([]);
         setFilterLosers([]);
         setFilterMatchDate('');
-        setFilterMatchLocation(''); // Reset new state
+        setFilterMatchLocation('');
         console.log('Match filters reset');
     };
 
