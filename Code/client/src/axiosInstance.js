@@ -1,6 +1,6 @@
-// src/axiosInstance.js
 import axios from 'axios';
 
+// Ensure the environment variable is correctly set and accessible
 const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api';
 
 const axiosInstance = axios.create({
@@ -28,4 +28,8 @@ axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
         console.error('Axios error:',error.response ? error.response.data : error.message);
-        retur
+        return Promise.reject(error);
+    }
+);
+
+export default axiosInstance;
