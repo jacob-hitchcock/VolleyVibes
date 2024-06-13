@@ -10,7 +10,6 @@ npm-debug.log*
 .env
 
 # Config files
-config.js
 
 # Other files
 .DS_Store

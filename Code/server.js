@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: 'your-frontend-domain.vercel.app', // Update this to your Vercel domain
+    origin: '*', // Update this to your Vercel domain
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
