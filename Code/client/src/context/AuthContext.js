@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
             const token = loginResponse.data.token;
 
             // Set token in a cookie
-            document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}`;
+            document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}; samesite=strict`;
             console.log('Token set in cookie:',token);
 
             // Manually set the Authorization header for subsequent requests
