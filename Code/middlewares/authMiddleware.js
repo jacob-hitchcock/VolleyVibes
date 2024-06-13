@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 const authMiddleware = (req,res,next) => {
-    const token = req.cookies.token;
-    console.log('Token from cookie in authMiddleware:',token);
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    console.log('Token from cookie or header in authMiddleware:',token);
 
     if(!token) {
         console.log('No token found in authMiddleware');

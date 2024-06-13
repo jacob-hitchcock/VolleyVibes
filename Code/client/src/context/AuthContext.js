@@ -6,43 +6,19 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [auth,setAuth] = useState({ user: null });
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const response = await axiosInstance.get('/users/check-auth',{ withCredentials: true });
-                if(response.data.user) {
-                    console.log('User authenticated:',response.data.user);
-                    setAuth({ user: response.data.user });
-                } else {
-                    console.log('No user authenticated');
-                }
-            } catch(error) {
-                console.error('Auth check failed:',error.response ? error.response.data : error.message);
-            }
-        };
-        checkAuth();
-    },[]);
-
     const login = async (email,password) => {
         try {
             console.log("Sending login request to backend");
-            const loginResponse = await axiosInstance.post('/users/login',{ email,password },{ withCredentials: true });
-            const token = loginResponse.data.token;
+            const response = await axiosInstance.post('/users/login',{ email,password },{ withCredentials: true });
+            const { user,token } = response.data;
 
             document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}; SameSite=Strict`;
             console.log('Token set in cookie:',token);
 
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-            const checkAuthResponse = await axiosInstance.get('/users/check-auth',{ withCredentials: true });
-            if(checkAuthResponse.data.user) {
-                console.log('Login successful:',checkAuthResponse.data.user);
-                setAuth({ user: checkAuthResponse.data.user });
-                return true;
-            } else {
-                console.log('Login check-auth failed');
-                return false;
-            }
+            setAuth({ user });
+            return true;
         } catch(error) {
             console.error('Login failed:',error.response ? error.response.data : error.message);
             return false;

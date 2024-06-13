@@ -7,26 +7,6 @@ const config = require('../config');
 
 const router = express.Router();
 
-router.get('/check-auth',(req,res) => {
-    const token = req.cookies.token;
-    if(!token) {
-        return res.status(401).json({ message: 'Not authenticated' });
-    }
-    try {
-        const decoded = jwt.verify(token,config.jwtSecret);
-
-        User.findById(decoded.user.id).then(user => {
-            if(!user) {
-                return res.status(401).json({ message: 'Not authenticated' });
-            }
-            res.json({ user: { id: user.id,email: user.email,role: user.role } });
-        });
-    } catch(error) {
-        console.error('Token verification failed:',error.message);
-        res.status(401).json({ message: 'Not authenticated' });
-    }
-});
-
 router.post(
     '/login',
     [
@@ -42,16 +22,19 @@ router.post(
         const { email,password } = req.body;
 
         try {
+            // Check if the user exists
             const user = await User.findOne({ email });
             if(!user) {
                 return res.status(400).json({ message: 'Invalid email or password' });
             }
 
+            // Compare the password with the hashed password in the database
             const isMatch = await bcrypt.compare(password,user.password);
             if(!isMatch) {
                 return res.status(400).json({ message: 'Invalid email or password' });
             }
 
+            // Create a JWT payload
             const payload = {
                 user: {
                     id: user.id,
@@ -59,6 +42,7 @@ router.post(
                 },
             };
 
+            // Sign the token
             jwt.sign(
                 payload,
                 config.jwtSecret,
@@ -72,7 +56,7 @@ router.post(
                         maxAge: 3600000,
                     });
 
-                    res.json({ message: 'Login successful',token });
+                    res.json({ message: 'Login successful',user: { id: user.id,email: user.email,role: user.role },token });
                 }
             );
         } catch(error) {

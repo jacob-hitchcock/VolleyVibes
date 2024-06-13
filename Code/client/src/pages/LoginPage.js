@@ -1,5 +1,4 @@
-// src/pages/LoginPage.js
-import React,{ useState,useContext,useEffect } from 'react';
+import React,{ useState,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import AuthContext from '../context/AuthContext';
@@ -10,10 +9,6 @@ const LoginPage = () => {
     const [error,setError] = useState('');
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        console.log('LoginPage component mounted'); // Log component mount
-    },[]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
