@@ -1,4 +1,4 @@
-import React,{ useEffect } from 'react';
+import React from 'react';
 import '../styles.css';
 import NavBar from '../components/NavBar';
 import Leaderboard from '../components/Leaderboard';
@@ -40,14 +40,16 @@ function HomePage() {
                         availableLocations={['Grass','Beach','Indoor Court']}
                         resetFilters={resetPlayerFilters}
                     />
-                    <Leaderboard
-                        players={sortedPlayers}
-                        sortConfig={sortConfig}
-                        requestSort={requestSort}
-                        getSortIndicator={getSortIndicator}
-                        initialLoad={initialLoad}
-                        loading={dataLoading}
-                    />
+                    <div className="leaderboard-container">
+                        <Leaderboard
+                            players={sortedPlayers}
+                            sortConfig={sortConfig}
+                            requestSort={requestSort}
+                            getSortIndicator={getSortIndicator}
+                            initialLoad={initialLoad}
+                            loading={dataLoading}
+                        />
+                    </div>
                 </div>
             </main>
             <Footer />

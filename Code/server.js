@@ -178,9 +178,6 @@ const updatePlayerStats = async (match) => {
         winningTeam = teamB;
     }
 
-    console.log('Updating player stats...');
-    console.log('Match:',match);
-
     const updatePlayer = async (playerId,pointsFor,pointsAgainst) => {
         const player = await Player.findById(playerId);
         if(player) {
@@ -195,7 +192,6 @@ const updatePlayerStats = async (match) => {
             player.pointsFor += pointsFor;
             player.pointsAgainst += pointsAgainst;
             player.pointDifferential += pointsFor - pointsAgainst;
-            console.log('Updated Player:',player);
             await player.save();
         }
     };

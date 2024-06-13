@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../components/Sidebar';
 import NavBar from '../components/NavBar';
 import ManagePlayers from '../components/ManagePlayers';
+import LogoutButton from '../components/LogoutButton';
 import AddMatch from '../components/AddMatch';
 import ReturnToTop from '../components/ReturnToTop';
 import FilterBar from '../components/FilterBar';
@@ -27,7 +28,6 @@ const AdminDashboard = () => {
         filterMatchDate,
         setFilterMatchDate,
         filteredMatches,
-        resetMatchFilters
     } = useFilters(matches,players);
     const [selectedMatch,setSelectedMatch] = useState(null);
     const [isModalOpen,setIsModalOpen] = useState(false);
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
         if(window.confirm('Are you sure you want to delete this match?')) {
             try {
                 await axios.delete(`/api/matches/${matchId}`);
-                setMatches(matches.filter(match => match._id !== matchId));
+                setMatches(matches.filter((match) => match._id !== matchId));
             } catch(error) {
                 console.error('Error deleting match:',error);
             }
@@ -68,7 +68,7 @@ const AdminDashboard = () => {
     const handleUpdate = async (matchId,updatedMatch) => {
         try {
             const response = await axios.put(`/api/matches/${matchId}`,updatedMatch);
-            setMatches(matches.map(match => match._id === matchId ? response.data : match));
+            setMatches(matches.map((match) => (match._id === matchId ? response.data : match)));
             setIsModalOpen(false);
             setSelectedMatch(null);
             setIsEditing(false);
@@ -90,10 +90,11 @@ const AdminDashboard = () => {
             <NavBar />
             <div className="admin-title">Admin Dashboard</div>
             <div className="dashboard-container">
-                <Sidebar />
+                <Sidebar className="sidebar-hidden-mobile" />
                 <div className="dashboard-content">
                     <div className="dashboard-card section">
                         <h1>Hi Jacob👋 🏐</h1>
+                        <LogoutButton />
                     </div>
                     <div id="add-match" className="dashboard-card section">
                         <AddMatch matches={matches} setMatches={setMatches} players={players} />

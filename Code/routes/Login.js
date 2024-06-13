@@ -7,8 +7,6 @@ const config = require('../config'); // Adjust the path as necessary
 
 const router = express.Router();
 
-console.log("Login route loaded");
-
 router.get('/check-auth',(req,res) => {
     const token = req.cookies.token;
     if(!token) {
@@ -35,10 +33,8 @@ router.post(
         body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
     ],
     async (req,res) => {
-        console.log("Received login request");
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
-            console.log("Validation errors:",errors.array());
             return res.status(400).json({ errors: errors.array() });
         }
 
@@ -46,17 +42,14 @@ router.post(
 
         try {
             // Check if the user exists
-            console.log("Finding user with email:",email);
             const user = await User.findOne({ email });
             if(!user) {
-                console.log("User not found");
                 return res.status(400).json({ message: 'Invalid email or password' });
             }
 
             // Compare the password with the hashed password in the database
             const isMatch = await bcrypt.compare(password,user.password);
             if(!isMatch) {
-                console.log("Password does not match");
                 return res.status(400).json({ message: 'Invalid email or password' });
             }
 
@@ -75,7 +68,6 @@ router.post(
                 { expiresIn: config.jwtExpiresIn },
                 (err,token) => {
                     if(err) throw err;
-                    console.log("Token generated");
                     res.cookie('token',token,{
                         httpOnly: true,
                         secure: process.env.NODE_ENV === 'production',
@@ -87,7 +79,6 @@ router.post(
                 }
             );
         } catch(error) {
-            console.error("Server error:",error.message);
             res.status(500).send('Server error');
         }
     }

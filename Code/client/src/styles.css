@@ -23,6 +23,13 @@ html {
     scroll-padding-top: 10px;
 }
 
+/* Scrollbar styling (optional) */
+.leaderboard-table-wrapper {
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    width: 100%;
+    overflow-x: auto;
+}
+
 .header {
     display: flex;
     justify-content: center;
@@ -133,8 +140,9 @@ html {
     top: 70px;
     text-align: center;
     padding: 10px;
+    margin-left: -10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1;
+    z-index: 9999;
     border-radius: 10px;
 }
 
@@ -913,6 +921,7 @@ input[type="checkbox"]:disabled + label {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 0px;
     margin-bottom: 20px;
+    z-index: 5;
 }
 
 .hamburger {
@@ -924,7 +933,7 @@ input[type="checkbox"]:disabled + label {
 
 .date-input {
     height: 36px; /* Match the height of the dropdown buttons */
-    width: 150px; /* Increase the width to prevent text cutoff */
+    width: 200px; /* Increase the width to prevent text cutoff */
     padding: 0 10px; /* Adjust padding as needed */
     font-size: 16px; /* Ensure the font size matches the dropdown buttons */
     box-sizing: border-box;
@@ -960,13 +969,14 @@ input[type="checkbox"]:disabled + label {
 .filter-group .dropdown,
 .filter-group .filter-date {
     margin-right: 10px; /* Adjust spacing between filters as needed */
+    z-index: 4;
 }
 
 .filter-date input {
     margin: 0px;
     margin-right: 0px;
     height: 50px;
-    width: 110px;
+    width: 140px;
     background-color: #fff5d6;
     color: #E7552B;
     font-size: 14px;
@@ -1057,6 +1067,7 @@ input[type="checkbox"]:disabled + label {
 
 .dropdown {
     position: relative;
+    z-index: 4;
 }
 
 .dropdown-button {
@@ -1091,7 +1102,7 @@ input[type="checkbox"]:disabled + label {
     border-radius: 5px; /* Border radius to match your design */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for dropdown */
     position: absolute; /* Positioning for dropdown */
-    z-index: 1; /* Ensure it appears above other elements */
+    z-index: 999; /* Ensure it appears above other elements */
 }
 
 .dropdown-content label {
@@ -1187,10 +1198,22 @@ input[type="checkbox"]:disabled + label {
     width: 75%;
 }
 
+/* Ensure the parent container takes the full width */
+.leaderboard-table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Allow horizontal scrolling */
+}
+
 /* Styles for the leaderboard */
 .leaderlist {
     width: 100%;
     border-collapse: collapse;
+}
+
+/* Keep the navbar, filter, and footer static */
+.navbar, .filter-bar, .footer {
+    position: relative;
+    z-index: 1;
 }
 
 .leaderlist th {
@@ -1270,6 +1293,15 @@ input[type="checkbox"]:disabled + label {
     opacity: 0; /* Ensure rows are initially hidden */
 }
 
+@media (min-width: 769px) {
+    .leaderlist th.sticky-column,
+    .leaderlist td.sticky-column {
+        position: static; /* Disable sticky behavior on larger screens */
+        z-index: initial; /* Reset z-index */
+        box-shadow: none; /* Remove box shadow */
+    }
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .teams {
@@ -1279,6 +1311,24 @@ input[type="checkbox"]:disabled + label {
     .team {
         width: 100%;
         margin-bottom: 20px;
+    }
+
+    .sticky-column {
+        position: sticky;
+        left: 0;
+        background-color: #fff5d6; /* Ensure background matches your design */
+        z-index: 2; /* Ensure it appears above other table content */
+        box-shadow: 0px 0px 0px 1px #E7552B;
+    }
+
+    /* Ensure the first column is sticky */
+    .leaderlist th.sticky-column {
+        background-color: #E7552B; /* Ensure the header's background color matches */
+        color: #fff5d6; /* Ensure the header's text color matches */
+    }
+
+    .leaderlist td.sticky-column {
+        background-color: #fff5d6; /* Ensure the cell's background color matches */
     }
 
     .match-details {
@@ -1292,9 +1342,7 @@ input[type="checkbox"]:disabled + label {
     }
 
     .filter-bar {
-        width: 100%;
-        position: static;
-        height: auto;
+        z-index: 1;
     }
 
     .content {
@@ -1323,6 +1371,14 @@ input[type="checkbox"]:disabled + label {
     }
 
     .nav-left, .nav-right {
+        display: none;
+    }
+
+    .sidebar-hidden-mobile {
+        display: none;
+    }
+
+    .sidebar {
         display: none;
     }
 
