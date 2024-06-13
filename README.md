@@ -1,4 +1,3 @@
-# DO NOT MAKE PUBLIC UNTIL YOU REMOVE CLUSTER PASSWORD IN SERVER BACKEND
 # VolleyVibes
 
 VolleyVibes is a web application designed to manage volleyball bjerring tournaments and player statistics. The frontend is built using React, and the backend is built with Node.js and Express, connecting to a MongoDB database to store data.
