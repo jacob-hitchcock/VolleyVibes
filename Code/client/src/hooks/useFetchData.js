@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance'; // Use the custom axios instance
 
 const useFetchData = () => {
     const [matches,setMatches] = useState([]);
@@ -9,8 +9,8 @@ const useFetchData = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const matchesResponse = await axios.get('/api/matches');
-                const playersResponse = await axios.get('/api/players');
+                const matchesResponse = await axiosInstance.get('/matches');
+                const playersResponse = await axiosInstance.get('/players');
                 setMatches(matchesResponse.data);
                 setPlayers(playersResponse.data);
                 setLoading(false);
