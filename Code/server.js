@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS configuration
-const allowedOrigins = ['https://volleyvibes.vercel.app']; // Add your Vercel domain here
+const allowedOrigins = ['https://www.jacobhitchcock.com/','https://volleyvibes.vercel.app']; // Add your Vercel domain here
 
 app.use(cors({
     origin: allowedOrigins,

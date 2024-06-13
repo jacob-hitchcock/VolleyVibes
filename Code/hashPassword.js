@@ -11,6 +11,6 @@ const hashPassword = async (password) => {
 };
 
 // Replace 'your_password_here' with the password you want to hash
-const password = 'insertpasswordhere';
+const password = 'your_password_here';
 
 hashPassword(password);
