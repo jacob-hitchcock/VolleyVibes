@@ -27,8 +27,6 @@ console.log('Starting server...');
 // Connect to MongoDB Atlas using environment variables
 const dbURI = process.env.MONGODB_URI;
 mongoose.connect(dbURI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     writeConcern: {
         w: 'majority',
         wtimeout: 5000,
