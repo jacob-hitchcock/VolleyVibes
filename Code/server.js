@@ -18,10 +18,16 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS configuration
-const allowedOrigins = ['https://www.jacobhitchcock.com/','https://volleyvibes.vercel.app']; // Add your Vercel domain here
+const allowedOrigins = ['https://volleyvibes.vercel.app','https://jacobhitchcock.com','https://www.jacobhitchcock.com']; // Add your Vercel domain here
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin,callback) => {
+        if(!origin || allowedOrigins.includes(origin)) {
+            callback(null,true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow credentials (cookies) to be sent and received
 }));
