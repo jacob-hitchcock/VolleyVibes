@@ -22,8 +22,7 @@ import {
 import '../styles.css';
 
 const AdminDashboard = () => {
-    const [matches,setMatches] = useState([]);
-    const { players,loading,setPlayers } = useFetchData();
+    const { matches,players,loading,setMatches,setPlayers } = useFetchData();
     const {
         filterMatchDate,
         setFilterMatchDate,
@@ -33,28 +32,9 @@ const AdminDashboard = () => {
     const [isModalOpen,setIsModalOpen] = useState(false);
     const [isEditing,setIsEditing] = useState(false);
 
-    const [selectedDate,setSelectedDate] = useState('');
-
     useEffect(() => {
-        fetchMatches();
-    },[selectedDate]);
-
-    const fetchMatches = async () => {
-        try {
-            const response = await axios.get('/api/matches');
-            if(selectedDate) {
-                const filtered = response.data.filter(match => {
-                    const matchDate = new Date(match.date).toISOString().split('T')[0];
-                    return matchDate === selectedDate;
-                });
-                setMatches(filtered);
-            } else {
-                setMatches(response.data);
-            }
-        } catch(error) {
-            console.error('Error fetching matches:',error);
-        }
-    };
+        console.log('Selected Date:',filterMatchDate);
+    },[filterMatchDate]);
 
     const handleEdit = (match) => {
         setSelectedMatch(match);
@@ -110,10 +90,10 @@ const AdminDashboard = () => {
                     <div id="match-management" className="dashboard-card section">
                         <FilterBar
                             context="adminMatches"
-                            filterMatchDate={selectedDate}
-                            setFilterMatchDate={setSelectedDate}
+                            filterMatchDate={filterMatchDate}
+                            setFilterMatchDate={setFilterMatchDate}
                             resetFilters={() => {
-                                setSelectedDate('');
+                                setFilterMatchDate('');
                                 setMatches([]);
                             }}
                         />
