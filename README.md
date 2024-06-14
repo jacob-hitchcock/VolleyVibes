@@ -48,7 +48,7 @@ VolleyVibe is a comprehensive volleyball match management application designed t
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/your-username/volleyvibe.git
+    git clone https://github.com/jacob-hitchcock/volleyvibe.git
     cd volleyvibe
     ```
 
