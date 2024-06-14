@@ -48,13 +48,18 @@ const Combos = () => {
                     handleGenerateSelectedCombos={handleGenerateSelectedCombos}
                     handleClearCombos={handleClearCombos}
                 />
-                {playerNumberList.length > 0 && (
+                {playerNumberList.length > 0 && ( // if things break delete this
                     <div>
                         <h3>Player Number Assignments</h3>
                         <ul>
-                            {playerNumberList.map(({ playerId,number }) => (
-                                <li key={playerId}>{players.find(player => player.id === playerId).name}: {number}</li>
-                            ))}
+                            {playerNumberList.map(({ playerId,number }) => {
+                                const player = players.find(player => player.id === playerId);
+                                return (
+                                    <li key={playerId}>
+                                        {player ? `${player.name}: ${number}` : `Unknown Player (ID: ${playerId}): ${number}`}
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 )}
