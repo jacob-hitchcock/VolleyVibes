@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect } from 'react';
 import useFetchData from '../hooks/useFetchData';
 import useComboData from '../hooks/useComboData';
 import NavBar from '../components/NavBar';
@@ -48,7 +48,7 @@ const Combos = () => {
                     handleGenerateSelectedCombos={handleGenerateSelectedCombos}
                     handleClearCombos={handleClearCombos}
                 />
-                {playerNumberList.length > 0 && ( // if things break delete this
+                {playerNumberList.length > 0 && (
                     <div>
                         <h3>Player Number Assignments</h3>
                         <ul>

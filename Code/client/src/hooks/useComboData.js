@@ -66,12 +66,18 @@ const useComboData = (players) => {
                     return combo;
                 });
 
-            const playerNumberMap = selectedPlayers.reduce((acc,playerId,index) => {
-                acc[playerId] = index + 1;
-                return acc;
-            },{});
+            // Assign random numbers to players
+            const playerNumberMap = {};
+            selectedPlayers.forEach((playerId,index) => {
+                playerNumberMap[playerId] = index + 1;
+            });
 
-            const playerNumberList = selectedPlayers.map(playerId => ({
+            const shuffledPlayers = [...selectedPlayers].sort(() => 0.5 - Math.random());
+            shuffledPlayers.forEach((playerId,index) => {
+                playerNumberMap[playerId] = index + 1;
+            });
+
+            const playerNumberList = shuffledPlayers.map(playerId => ({
                 playerId,
                 number: playerNumberMap[playerId]
             }));
