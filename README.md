@@ -1,112 +1,153 @@
-# VolleyVibes
+# VolleyVibe
 
-VolleyVibes is a web application designed to manage volleyball bjerring tournaments and player statistics. The frontend is built using React, and the backend is built with Node.js and Express, connecting to a MongoDB database to store data.
+VolleyVibe is a comprehensive volleyball match management application designed to streamline the process of organizing matches, tracking player statistics, and generating player combinations for future matches. The application features a user-friendly interface with robust functionalities for administrators to manage matches and players efficiently.
+
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Running the Application](#running-the-application)
+- [Components Overview](#components-overview)
+- [Routes](#routes)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
-### Player Management
-- Add, view, update, and delete player information.
-
 ### Match Management
-- Record match details.
-- Update player statistics based on match outcomes.
-- View match history.
+- **Add and Manage Matches**: Administrators can add new matches, update match details, and delete matches.
+- **Filter and Sort Matches**: Matches can be filtered by dates and locations. Sorting options are available for various match attributes.
+- **View Match Details**: Detailed information about each match is accessible through a modal dialog.
 
-### User Profile
-- Manage user profiles.
+### Player Management
+- **Add and Manage Players**: Administrators can add new players, edit player information, and delete players.
+- **Track Player Statistics**: The application calculates and displays player statistics such as wins, losses, points for, points against, and winning percentage.
 
-### Leaderboard
-- View a leaderboard of players ranked by wins.
-- Sort the leaderboard by different columns (name, wins, points for, points against, point differential).
+### Combination Generator
+- **Generate Player Combinations**: Users can select players and generate random match combinations.
+- **Display Matchups**: The generated combinations are displayed, and users can mark matchups as completed.
+- **Save and Load Combinations**: Generated combinations are saved to local storage, allowing persistence across sessions.
 
 ## Tech Stack
 
 ### Frontend
-- **React**: Provides the user interface for the application.
-- **react-router-dom**: Used for routing between different pages in the application.
-- **axios**: Used for making HTTP requests to the backend.
+- **React**: The main JavaScript library for building the user interface.
+- **React Router**: Used for navigation and routing within the application.
+- **Axios**: Used for making HTTP requests to the backend API.
+- **CSS**: For styling the application.
 
 ### Backend
-- **Node.js**: JavaScript runtime.
-- **Express**: Web framework for Node.js.
-- **Mongoose**: Used for modeling and managing MongoDB data.
+- **Node.js**: The runtime environment for the backend server.
+- **Express**: The web framework used for building the API.
+- **MongoDB**: The database for storing match and player data.
+- **Mongoose**: An ODM library for MongoDB, used to define schemas and interact with the database.
 
-### Database
-- **MongoDB**: NoSQL database for storing application data.
+## Installation
 
-## Directory Structure
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/your-username/volleyvibe.git
+    cd volleyvibe
+    ```
 
-```bash
-├── client                   # Frontend code (React)
-│   ├── public               # Public assets
-│   └── src                  # Source code
-│       ├── components       # Reusable React components
-│       ├── pages            # React components representing different pages
-│       │   ├── HomePage.js
-│       │   ├── MatchManagement.js
-│       │   ├── PlayerManagement.js
-│       │   └── UserProfile.js
-│       ├── App.js           # Main application component
-│       └── index.js         # Entry point for the React application
-├── fonts                    # Font styles
-├── models                   # Mongoose models
-│   ├── Player.js
-│   └── Match.js
-├──server.js                 # Main server file
-├── package.json             # Backend dependencies and scripts
-└── .gitignore               # Git ignore file
+2. Install the dependencies for both the frontend and backend:
+    ```sh
+    npm install
+    cd client
+    npm install
+    cd ..
+    ```
+
+## Environment Variables
+
+Create a `.env` file in the root of the project and add the following environment variables:
+
+```
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+NODE_ENV=development
 ```
 
-## Installation and Setup
+For the frontend, create a `.env` file in the `client` directory and add:
 
-### Prerequisites
-- Node.js
-- MongoDB
-
-### Setup Instructions
-1. Clone the repository
-2. Install dependencies for both frontend and backend:
-```bash
-# Install backend dependencies
-cd server
-npm install
-
-# Install frontend dependencies
-cd ../client
-npm install
 ```
-3. Set up MongoDB:
-   - Make sure MongoDB is running on your local machine or provide a MongoDB URI in the environment variables.
-4. Run the application:
-```bash
-# Start the backend server
-cd server
-npm start
-
-# Start the frontend development server
-cd ../client
-npm start
+REACT_APP_API_BASE_URL=your_backend_api_base_url
 ```
-5. Open your browser and navigate to http://localhost:3000 to view the application.
 
-## API Endpoints
+## Running the Application
 
-### Player Routes
-- GET /api/players: Get all players.
-- POST /api/players: Add a new player.
-- GET /api/players/:id: Get player by ID.
-- PUT /api/players/:id: Update player by ID.
-- DELETE /api/players/:id: Delete player by ID.
+1. Start the backend server:
+    ```sh
+    npm start
+    ```
 
-### Match Routes
-- GET /api/matches: Get all matches.
-- POST /api/matches: Add a new match.
-- GET /api/matches/:id: Get match by ID.
-- PUT /api/matches/:id: Update match by ID.
-- DELETE /api/matches/:id: Delete match by ID.
+2. Start the frontend development server:
+    ```sh
+    cd client
+    npm start
+    ```
 
-## Contributions
-Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
+## Components Overview
+
+### Frontend Components
+- **NavBar**: Navigation bar component.
+- **Sidebar**: Sidebar component for navigation.
+- **ManagePlayers**: Component for managing players.
+- **LogoutButton**: Button for logging out.
+- **AddMatch**: Component for adding matches.
+- **ReturnToTop**: Button for returning to the top of the page.
+- **FilterBar**: Component for filtering matches and players.
+- **MatchGrid**: Component for displaying matches in a grid format.
+- **MatchDetailsModal**: Modal dialog for viewing match details.
+- **AdminPlayerTable**: Component for adding, editing, and deleting players.
+- **ComboControls**: Controls for specifying number of desired combo matchups.
+- **Dropdown**: Drop component for filtering.
+- **Footer**: Footer component.
+- **Leaderboard**: Component for displaying aggregated player stats.
+- **MatchCard**: Component for displaying basic match details.
+- **MatchupCard**: Component for displaying random combination matchup.
+- **MatchupList**: Component for displaying list of combination matchups.
+- **PlayerCheckboxList**: Checkboxes for selecting players for generating matchups.
+- **PlayerForm**: Form for creating new players.
+- **PlayerTable**: Component for displaying all existing players.
+- **ProtectedRoute**: Route for designating pages as protected.
+- **SearchBar**: Component for searching player table.
+- **TeamSelection**: Component for assigning players to teams.
+
+### Backend Components
+- **Player**: Mongoose model for player data.
+- **Match**: Mongoose model for match data.
+- **User**: Mongoose model for user data.
+
+## Routes
+
+### Public Routes
+- `GET /api/matches`: Get all matches.
+- `GET /api/matches/:id`: Get a specific match by ID.
+- `GET /api/players`: Get all players.
+- `GET /api/players/:id`: Get a specific player by ID.
+
+### Protected Routes (Require Authentication)
+- `POST /api/players`: Add a new player.
+- `PUT /api/players/:id`: Update player information.
+- `DELETE /api/players/:id`: Delete a player.
+- `POST /api/matches`: Add a new match.
+- `PUT /api/matches/:id`: Update match information.
+- `DELETE /api/matches/:id`: Delete a match.
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature-name`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature/your-feature-name`).
+6. Create a new Pull Request.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+
+This project is licensed under the MIT License.
