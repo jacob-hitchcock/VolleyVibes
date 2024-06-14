@@ -52,39 +52,32 @@ const useComboData = (players) => {
     const handleGenerateSelectedCombos = () => {
         if(matchups.length > 0 && numberOfCombos > 0) {
             const totalPlayers = selectedPlayers.length;
+            const playerNumberMap = {};
+            const shuffledPlayers = [...selectedPlayers].sort(() => 0.5 - Math.random());
+
+            shuffledPlayers.forEach((playerId,index) => {
+                playerNumberMap[playerId] = index + 1;
+            });
+
+            const playerNumberList = shuffledPlayers.map(playerId => ({
+                playerId,
+                number: playerNumberMap[playerId]
+            }));
+
             const selectedCombos = matchups
                 .sort(() => 0.5 - Math.random())
                 .slice(0,numberOfCombos)
                 .map((combo) => {
-                    // Only flip teams if the number of total players is even
-                    if(totalPlayers % 2 === 0) {
-                        const flipTeams = Math.random() > 0.5;
-                        return flipTeams
-                            ? { teamA: combo.teamB,teamB: combo.teamA,completed: combo.completed }
-                            : combo;
-                    }
-                    return combo;
+                    const teamA = combo.teamA.map(playerId => ({
+                        playerId,
+                        number: playerNumberMap[playerId]
+                    }));
+                    const teamB = combo.teamB.map(playerId => ({
+                        playerId,
+                        number: playerNumberMap[playerId]
+                    }));
+                    return { teamA,teamB,completed: combo.completed };
                 });
-
-            // Assign random numbers to players based on selected combos
-            const playerNumberMap = {};
-            selectedCombos.forEach((combo) => {
-                combo.teamA.forEach((player,index) => {
-                    if(!playerNumberMap[player]) {
-                        playerNumberMap[player] = index + 1;
-                    }
-                });
-                combo.teamB.forEach((player,index) => {
-                    if(!playerNumberMap[player]) {
-                        playerNumberMap[player] = index + 1;
-                    }
-                });
-            });
-
-            const playerNumberList = Object.keys(playerNumberMap).map(playerId => ({
-                playerId,
-                number: playerNumberMap[playerId]
-            }));
 
             setGeneratedCombos(selectedCombos);
             setPlayerNumberList(playerNumberList);
