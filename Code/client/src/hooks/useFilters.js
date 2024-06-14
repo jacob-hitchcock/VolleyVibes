@@ -7,7 +7,7 @@ const didPlayerTeamWin = (match,playerTeamIndex) => {
     return teamScore > opponentScore;
 };
 
-const useFilters = (matches = [],players = [],selectedDate = '') => {
+const useFilters = (matches = [],players = [],selectedDate = '',context = 'default') => {
     // Ensure matches and players are arrays
     matches = Array.isArray(matches) ? matches : [];
     players = Array.isArray(players) ? players : [];
@@ -32,8 +32,8 @@ const useFilters = (matches = [],players = [],selectedDate = '') => {
 
     // Filtered matches
     const filteredMatches = useMemo(() => {
-        if(!filterMatchDate) {
-            return []; // Return empty array when no date filter is selected
+        if(context === 'admin' && !filterMatchDate) {
+            return []; // Return empty array when no date filter is selected in admin context
         }
         return matches.filter(match => {
             const matchDate = new Date(match.date);
@@ -47,7 +47,7 @@ const useFilters = (matches = [],players = [],selectedDate = '') => {
             const allLosersPresent = filterLosers.every(loser => losingTeam.includes(loser));
 
             const locationMatch = !filterMatchLocation || match.location === filterMatchLocation;
-            const dateMatch = doesDateMatchFilter(matchDate,filterMatchDate);
+            const dateMatch = !filterMatchDate || doesDateMatchFilter(matchDate,filterMatchDate);
 
             console.log('Match:',match);
             console.log('Location Match:',locationMatch);
@@ -60,7 +60,7 @@ const useFilters = (matches = [],players = [],selectedDate = '') => {
                 locationMatch
             );
         }).sort((a,b) => new Date(b.date) - new Date(a.date));
-    },[matches,filterWinners,filterLosers,filterMatchDate,filterMatchLocation]);
+    },[matches,filterWinners,filterLosers,filterMatchDate,filterMatchLocation,context]);
 
     // Aggregated player stats
     const aggregatedPlayerStats = useMemo(() => {
