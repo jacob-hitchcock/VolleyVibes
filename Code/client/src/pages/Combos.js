@@ -1,4 +1,4 @@
-import React,{ useEffect } from 'react';
+import React from 'react';
 import useFetchData from '../hooks/useFetchData';
 import useComboData from '../hooks/useComboData';
 import NavBar from '../components/NavBar';
@@ -24,10 +24,6 @@ const Combos = () => {
         toggleCompleted,
     } = useComboData(players);
 
-    useEffect(() => {
-        console.log(players);
-    },[players]);
-
     const noop = () => { }; // No operation function for possible matchups
 
     return (
@@ -52,13 +48,12 @@ const Combos = () => {
                     handleGenerateSelectedCombos={handleGenerateSelectedCombos}
                     handleClearCombos={handleClearCombos}
                 />
-                {playerNumberList.length > 0 && (
+                {playerNumberList.length > 0 && ( // if things break delete this
                     <div>
                         <h3>Player Number Assignments</h3>
                         <ul>
                             {playerNumberList.map(({ playerId,number }) => {
-                                const player = players.find(player => player.id === playerId);
-                                console.log(playerId,player); // Log for debugging
+                                const player = players.find(player => player._id === playerId);
                                 return (
                                     <li key={playerId}>
                                         {player ? `${player.name}: ${number}` : `Unknown Player (ID: ${playerId}): ${number}`}
