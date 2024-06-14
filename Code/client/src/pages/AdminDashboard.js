@@ -23,14 +23,16 @@ import '../styles.css';
 
 const AdminDashboard = () => {
     const { matches,players,loading,setMatches,setPlayers } = useFetchData();
+    const [selectedMatch,setSelectedMatch] = useState(null);
+    const [isModalOpen,setIsModalOpen] = useState(false);
+    const [isEditing,setIsEditing] = useState(false);
+
+    const [selectedDate,setSelectedDate] = useState('');
     const {
         filterMatchDate,
         setFilterMatchDate,
         filteredMatches,
-    } = useFilters(matches,players);
-    const [selectedMatch,setSelectedMatch] = useState(null);
-    const [isModalOpen,setIsModalOpen] = useState(false);
-    const [isEditing,setIsEditing] = useState(false);
+    } = useFilters(matches,players,selectedDate);
 
     useEffect(() => {
         console.log('Selected Date:',filterMatchDate);
@@ -94,6 +96,7 @@ const AdminDashboard = () => {
                             setFilterMatchDate={setFilterMatchDate}
                             resetFilters={() => {
                                 setFilterMatchDate('');
+                                setSelectedDate('');
                                 setMatches([]);
                             }}
                         />

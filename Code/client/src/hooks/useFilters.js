@@ -7,7 +7,7 @@ const didPlayerTeamWin = (match,playerTeamIndex) => {
     return teamScore > opponentScore;
 };
 
-const useFilters = (matches = [],players = []) => {
+const useFilters = (matches = [],players = [],selectedDate = '') => {
     // Ensure matches and players are arrays
     matches = Array.isArray(matches) ? matches : [];
     players = Array.isArray(players) ? players : [];
@@ -15,7 +15,7 @@ const useFilters = (matches = [],players = []) => {
     // Match filters
     const [filterWinners,setFilterWinners] = useState([]);
     const [filterLosers,setFilterLosers] = useState([]);
-    const [filterMatchDate,setFilterMatchDate] = useState('');
+    const [filterMatchDate,setFilterMatchDate] = useState(selectedDate);
     const [filterMatchLocation,setFilterMatchLocation] = useState('');
 
     // Player filters
@@ -32,6 +32,9 @@ const useFilters = (matches = [],players = []) => {
 
     // Filtered matches
     const filteredMatches = useMemo(() => {
+        if(!filterMatchDate) {
+            return []; // Return empty array when no date filter is selected
+        }
         return matches.filter(match => {
             const matchDate = new Date(match.date);
 
@@ -44,7 +47,7 @@ const useFilters = (matches = [],players = []) => {
             const allLosersPresent = filterLosers.every(loser => losingTeam.includes(loser));
 
             const locationMatch = !filterMatchLocation || match.location === filterMatchLocation;
-            const dateMatch = !filterMatchDate || doesDateMatchFilter(matchDate,filterMatchDate);
+            const dateMatch = doesDateMatchFilter(matchDate,filterMatchDate);
 
             console.log('Match:',match);
             console.log('Location Match:',locationMatch);
