@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { AuthProvider } from './context/AuthContext';
 import HomePage from './pages/HomePage';
 import PlayerManagement from './pages/PlayerManagement';
@@ -28,6 +29,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      <Analytics />
     </AuthProvider>
   );
 }
