@@ -54,7 +54,7 @@ const MatchManagement = () => {
         (!selectedLocations.length || selectedLocations.includes(match.location))
     );
 
-    const matchesToShow = filteredMatchesByLocationAndDate.length > 0 ? filteredMatchesByLocationAndDate : matches;
+    const matchesToShow = filteredMatchesByLocationAndDate.length > 0 || selectedLocations.length > 0 || filterMatchDate ? filteredMatchesByLocationAndDate : matches;
 
     const groupedMatches = groupMatchesByDate(matchesToShow);
 
