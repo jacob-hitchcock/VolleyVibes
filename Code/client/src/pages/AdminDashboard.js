@@ -33,11 +33,14 @@ const AdminDashboard = () => {
     const [isModalOpen,setIsModalOpen] = useState(false);
     const [isEditing,setIsEditing] = useState(false);
 
+    const [selectedDate,setSelectedDate] = useState('');
+
     useEffect(() => {
-        if(filterMatchDate) {
+        console.log('Selected Date:',selectedDate);
+        if(selectedDate) {
             fetchMatches();
         }
-    },[filterMatchDate]);
+    },[selectedDate]);
 
     const fetchMatches = async () => {
         try {
@@ -102,10 +105,10 @@ const AdminDashboard = () => {
                     <div id="match-management" className="dashboard-card section">
                         <FilterBar
                             context="adminMatches"
-                            filterMatchDate={filterMatchDate}
-                            setFilterMatchDate={setFilterMatchDate}
+                            filterMatchDate={selectedDate}
+                            setFilterMatchDate={setSelectedDate}
                             resetFilters={() => {
-                                setFilterMatchDate('');
+                                setSelectedDate('');
                                 setMatches([]);
                             }}
                         />
