@@ -25,7 +25,7 @@ const MatchManagement = () => {
         setFilterLosers,
         filterMatchDate,
         setFilterMatchDate,
-        filteredMatches: baseFilteredMatches,
+        filteredMatches,
         resetMatchFilters,
     } = useFilters(matches,players);
 
@@ -50,12 +50,14 @@ const MatchManagement = () => {
         setSelectedMatch(null);
     };
 
-    const filteredMatches = baseFilteredMatches.filter(match =>
-        (!selectedLocations.length || selectedLocations.includes(match.location)) &&
-        (!filterMatchDate || new Date(match.date).toISOString().split('T')[0] === filterMatchDate)
+    // Filter matches based on the selected date and location
+    const filteredMatchesByLocationAndDate = filteredMatches.filter(match =>
+        (!selectedLocations.length || selectedLocations.includes(match.location))
     );
 
-    const groupedMatches = groupMatchesByDate(filteredMatches);
+    const matchesToShow = filterMatchDate || selectedLocations.length ? filteredMatchesByLocationAndDate : matches;
+
+    const groupedMatches = groupMatchesByDate(matchesToShow);
 
     // Debug logs to check the filtering
     console.log('Filter Locations:',selectedLocations);
