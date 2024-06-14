@@ -1,4 +1,4 @@
-import React,{ useEffect } from 'react';
+import React from 'react';
 import useFetchData from '../hooks/useFetchData';
 import useComboData from '../hooks/useComboData';
 import NavBar from '../components/NavBar';
@@ -15,7 +15,6 @@ const Combos = () => {
         matchups,
         numberOfCombos,
         generatedCombos,
-        playerNumberList,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,
@@ -48,21 +47,6 @@ const Combos = () => {
                     handleGenerateSelectedCombos={handleGenerateSelectedCombos}
                     handleClearCombos={handleClearCombos}
                 />
-                {playerNumberList.length > 0 && (
-                    <div>
-                        <h3>Player Number Assignments</h3>
-                        <ul>
-                            {playerNumberList.map(({ playerId,number }) => {
-                                const player = players.find(player => player._id === playerId);
-                                return (
-                                    <li key={playerId}>
-                                        {player ? `${player.name}: ${number}` : `Unknown Player (ID: ${playerId}): ${number}`}
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
-                )}
                 {generatedCombos.length === 0 && matchups.length > 0 && (
                     <div>
                         <h3 className="num-matchups">Total Possible Matchups: {matchups.length}</h3>

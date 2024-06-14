@@ -141,13 +141,11 @@ export const calculateMatchups = (selectedPlayerIds,players) => {
 export const getSavedCombos = () => {
     const savedMatchups = JSON.parse(localStorage.getItem('matchups')) || [];
     const savedGeneratedCombos = JSON.parse(localStorage.getItem('generatedCombos')) || [];
-    const savedPlayerNumberList = JSON.parse(localStorage.getItem('playerNumberList')) || [];
-    return { savedMatchups,savedGeneratedCombos,savedPlayerNumberList };
+    return { savedMatchups,savedGeneratedCombos };
 };
 
 // Function to save combos to local storage
-export const saveCombos = (matchups,generatedCombos,playerNumberList) => {
+export const saveCombos = (matchups,generatedCombos) => {
     localStorage.setItem('matchups',JSON.stringify(matchups));
     localStorage.setItem('generatedCombos',JSON.stringify(generatedCombos));
-    localStorage.setItem('playerNumberList',JSON.stringify(playerNumberList));
 };

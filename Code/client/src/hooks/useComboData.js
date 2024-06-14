@@ -6,24 +6,20 @@ const useComboData = (players) => {
     const [matchups,setMatchups] = useState([]);
     const [numberOfCombos,setNumberOfCombos] = useState(0);
     const [generatedCombos,setGeneratedCombos] = useState([]);
-    const [playerNumberList,setPlayerNumberList] = useState([]);
 
     useEffect(() => {
-        const { savedMatchups,savedGeneratedCombos,savedPlayerNumberList } = getSavedCombos();
+        const { savedMatchups,savedGeneratedCombos } = getSavedCombos();
         if(savedMatchups.length > 0) {
             setMatchups(savedMatchups);
         }
         if(savedGeneratedCombos.length > 0) {
             setGeneratedCombos(savedGeneratedCombos);
         }
-        if(savedPlayerNumberList.length > 0) {
-            setPlayerNumberList(savedPlayerNumberList);
-        }
     },[]);
 
     useEffect(() => {
-        saveCombos(matchups,generatedCombos,playerNumberList);
-    },[matchups,generatedCombos,playerNumberList]);
+        saveCombos(matchups,generatedCombos);
+    },[matchups,generatedCombos]);
 
     const handlePlayerSelect = (playerId) => {
         setSelectedPlayers((prevSelected) =>
@@ -41,7 +37,6 @@ const useComboData = (players) => {
         const combos = calculateMatchups(selectedPlayers,players);
         setMatchups(combos);
         setGeneratedCombos([]);
-        setPlayerNumberList([]);
     };
 
     const handleSelectNumberOfCombos = (e) => {
@@ -52,45 +47,29 @@ const useComboData = (players) => {
     const handleGenerateSelectedCombos = () => {
         if(matchups.length > 0 && numberOfCombos > 0) {
             const totalPlayers = selectedPlayers.length;
-            const playerNumberMap = {};
-            const shuffledPlayers = [...selectedPlayers].sort(() => 0.5 - Math.random());
-
-            shuffledPlayers.forEach((playerId,index) => {
-                playerNumberMap[playerId] = index + 1;
-            });
-
-            const playerNumberList = shuffledPlayers.map(playerId => ({
-                playerId,
-                number: playerNumberMap[playerId]
-            }));
-
             const selectedCombos = matchups
                 .sort(() => 0.5 - Math.random())
                 .slice(0,numberOfCombos)
                 .map((combo) => {
-                    const teamA = combo.teamA.map(playerId => ({
-                        playerId,
-                        number: playerNumberMap[playerId]
-                    }));
-                    const teamB = combo.teamB.map(playerId => ({
-                        playerId,
-                        number: playerNumberMap[playerId]
-                    }));
-                    return { teamA,teamB,completed: combo.completed };
+                    // Only flip teams if the number of total players is even
+                    if(totalPlayers % 2 === 0) {
+                        const flipTeams = Math.random() > 0.5;
+                        return flipTeams
+                            ? { teamA: combo.teamB,teamB: combo.teamA,completed: combo.completed }
+                            : combo;
+                    }
+                    return combo;
                 });
 
             setGeneratedCombos(selectedCombos);
-            setPlayerNumberList(playerNumberList);
         }
     };
 
     const handleClearCombos = () => {
         setMatchups([]);
         setGeneratedCombos([]);
-        setPlayerNumberList([]);
         localStorage.removeItem('matchups');
         localStorage.removeItem('generatedCombos');
-        localStorage.removeItem('playerNumberList');
     };
 
     const toggleCompleted = (index) => {
@@ -104,7 +83,6 @@ const useComboData = (players) => {
         matchups,
         numberOfCombos,
         generatedCombos,
-        playerNumberList,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,
@@ -114,4 +92,4 @@ const useComboData = (players) => {
     };
 };
 
-export default useComboData;
+export default useComboData;    
