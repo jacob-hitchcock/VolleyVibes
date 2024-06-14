@@ -15,6 +15,7 @@ const Combos = () => {
         matchups,
         numberOfCombos,
         generatedCombos,
+        playerNumberList,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,
@@ -47,6 +48,16 @@ const Combos = () => {
                     handleGenerateSelectedCombos={handleGenerateSelectedCombos}
                     handleClearCombos={handleClearCombos}
                 />
+                {playerNumberList.length > 0 && (
+                    <div>
+                        <h3>Player Number Assignments</h3>
+                        <ul>
+                            {playerNumberList.map(({ playerId,number }) => (
+                                <li key={playerId}>{players.find(player => player.id === playerId).name}: {number}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
                 {generatedCombos.length === 0 && matchups.length > 0 && (
                     <div>
                         <h3 className="num-matchups">Total Possible Matchups: {matchups.length}</h3>
