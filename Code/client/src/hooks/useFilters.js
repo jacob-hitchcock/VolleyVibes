@@ -32,6 +32,9 @@ const useFilters = (matches = [],players = [],selectedDate = '') => {
 
     // Filtered matches
     const filteredMatches = useMemo(() => {
+        if(!filterMatchDate) {
+            return []; // Return empty array when no date filter is selected
+        }
         return matches.filter(match => {
             const matchDate = new Date(match.date);
 
@@ -44,7 +47,7 @@ const useFilters = (matches = [],players = [],selectedDate = '') => {
             const allLosersPresent = filterLosers.every(loser => losingTeam.includes(loser));
 
             const locationMatch = !filterMatchLocation || match.location === filterMatchLocation;
-            const dateMatch = !filterMatchDate || doesDateMatchFilter(matchDate,filterMatchDate);
+            const dateMatch = doesDateMatchFilter(matchDate,filterMatchDate);
 
             console.log('Match:',match);
             console.log('Location Match:',locationMatch);
