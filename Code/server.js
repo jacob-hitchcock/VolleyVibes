@@ -210,22 +210,4 @@ const updatePlayerStats = async (match) => {
         }
     };
 
-    // Update stats for Team A
-    for(const playerId of teamA) {
-        await updatePlayer(playerId,scoreA,scoreB);
-    }
-
-    // Update stats for Team B
-    for(const playerId of teamB) {
-        await updatePlayer(playerId,scoreB,scoreA);
-    }
-};
-
-// Basic route for testing
-app.get('/',(req,res) => {
-    res.send('Hello World!');
-});
-
-app.listen(port,() => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+    // Up
