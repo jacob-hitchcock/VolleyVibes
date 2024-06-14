@@ -36,16 +36,21 @@ const AdminDashboard = () => {
     const [selectedDate,setSelectedDate] = useState('');
 
     useEffect(() => {
-        console.log('Selected Date:',selectedDate);
-        if(selectedDate) {
-            fetchMatches();
-        }
+        fetchMatches();
     },[selectedDate]);
 
     const fetchMatches = async () => {
         try {
             const response = await axios.get('/api/matches');
-            setMatches(response.data);
+            if(selectedDate) {
+                const filtered = response.data.filter(match => {
+                    const matchDate = new Date(match.date).toISOString().split('T')[0];
+                    return matchDate === selectedDate;
+                });
+                setMatches(filtered);
+            } else {
+                setMatches(response.data);
+            }
         } catch(error) {
             console.error('Error fetching matches:',error);
         }
