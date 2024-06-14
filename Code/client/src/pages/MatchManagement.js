@@ -23,6 +23,8 @@ const MatchManagement = () => {
         setFilterWinners,
         filterLosers,
         setFilterLosers,
+        filterMatchDate,
+        setFilterMatchDate,
         filteredMatches: baseFilteredMatches,
         resetMatchFilters,
     } = useFilters(matches,players);
@@ -30,14 +32,13 @@ const MatchManagement = () => {
     const [selectedMatch,setSelectedMatch] = useState(null);
     const [isModalOpen,setIsModalOpen] = useState(false);
     const [selectedLocations,setSelectedLocations] = useState([]); // Local state for location filter
-    const [selectedDate,setSelectedDate] = useState(''); // Local state for date filter
 
     const availableLocations = ['Grass','Beach','Indoor Court'];
 
     useEffect(() => {
         console.log('Selected Locations:',selectedLocations);
-        console.log('Selected Date:',selectedDate);
-    },[selectedLocations,selectedDate]);
+        console.log('Selected Date:',filterMatchDate);
+    },[selectedLocations,filterMatchDate]);
 
     const openModal = (match) => {
         setSelectedMatch(match);
@@ -49,19 +50,16 @@ const MatchManagement = () => {
         setSelectedMatch(null);
     };
 
-    // Filter matches based on the selected date and location
     const filteredMatches = baseFilteredMatches.filter(match =>
         (!selectedLocations.length || selectedLocations.includes(match.location)) &&
-        (!selectedDate || new Date(match.date).toISOString().split('T')[0] === selectedDate)
+        (!filterMatchDate || new Date(match.date).toISOString().split('T')[0] === filterMatchDate)
     );
 
-    const matchesToShow = selectedDate || selectedLocations.length ? filteredMatches : matches;
-
-    const groupedMatches = groupMatchesByDate(matchesToShow);
+    const groupedMatches = groupMatchesByDate(filteredMatches);
 
     // Debug logs to check the filtering
     console.log('Filter Locations:',selectedLocations);
-    console.log('Filter Date:',selectedDate);
+    console.log('Filter Date:',filterMatchDate);
     console.log('Filtered Matches:',filteredMatches);
 
     return (
@@ -80,12 +78,12 @@ const MatchManagement = () => {
                 availableLocations={availableLocations}
                 filterLocations={selectedLocations}
                 setFilterLocations={setSelectedLocations}
-                filterDate={selectedDate}
-                setFilterDate={setSelectedDate}
+                filterDate={filterMatchDate}
+                setFilterDate={setFilterMatchDate}
                 resetFilters={() => {
                     resetMatchFilters();
                     setSelectedLocations([]);
-                    setSelectedDate('');
+                    setFilterMatchDate('');
                 }}
             />
             {loading ? (
