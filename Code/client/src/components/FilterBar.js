@@ -81,7 +81,7 @@ const FilterBar = ({
                             id="filter-date"
                             type="date"
                             className="date-input"
-                            value={filterDate}
+                            value={filterMatchDate}
                             onChange={(e) => {
                                 setFilterMatchDate(e.target.value);
                                 closeAllDropdowns();
