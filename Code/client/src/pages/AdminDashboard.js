@@ -32,7 +32,7 @@ const AdminDashboard = () => {
         filterMatchDate,
         setFilterMatchDate,
         filteredMatches,
-    } = useFilters(matches,players,selectedDate);
+    } = useFilters(matches,players,selectedDate,'admin');
 
     useEffect(() => {
         console.log('Selected Date:',filterMatchDate);
