@@ -1,5 +1,5 @@
 import React,{ useState,useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 import Sidebar from '../components/Sidebar';
 import NavBar from '../components/NavBar';
 import ManagePlayers from '../components/ManagePlayers';
@@ -47,7 +47,7 @@ const AdminDashboard = () => {
     const handleDelete = async (matchId) => {
         if(window.confirm('Are you sure you want to delete this match?')) {
             try {
-                await axios.delete(`/api/matches/${matchId}`);
+                await axiosInstance.delete(`/api/matches/${matchId}`);
                 setMatches(matches.filter((match) => match._id !== matchId));
             } catch(error) {
                 console.error('Error deleting match:',error);
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
 
     const handleUpdate = async (matchId,updatedMatch) => {
         try {
-            const response = await axios.put(`/api/matches/${matchId}`,updatedMatch);
+            const response = await axiosInstance.put(`/api/matches/${matchId}`,updatedMatch);
             setMatches(matches.map((match) => (match._id === matchId ? response.data : match)));
             setIsModalOpen(false);
             setSelectedMatch(null);
