@@ -27,21 +27,26 @@ const PlayerDashboard = () => {
     // Group matches by date
     const matchesByDate = groupMatchesByDate(playerMatches);
 
-    let wins = 0;
-    let gamesPlayed = 0;
+    let cumulativeWins = 0;
+    let cumulativeGamesPlayed = 0;
     const performanceOverTime = [];
 
     Object.keys(matchesByDate).forEach(date => {
       const dailyMatches = matchesByDate[date];
+      let dailyWins = 0;
+      let dailyGamesPlayed = 0;
 
       dailyMatches.forEach(match => {
-        gamesPlayed++;
+        dailyGamesPlayed++;
         const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
         const isWinningTeam = match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
-        if(isWinningTeam) wins++;
+        if(isWinningTeam) dailyWins++;
       });
 
-      const winningPercentage = (wins / gamesPlayed) * 100;
+      cumulativeGamesPlayed += dailyGamesPlayed;
+      cumulativeWins += dailyWins;
+      const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
+
       performanceOverTime.push({
         date: formatDate(date),
         winningPercentage: winningPercentage.toFixed(2),
