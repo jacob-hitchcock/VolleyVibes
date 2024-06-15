@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import PlayerCheckboxList from '../components/PlayerCheckboxList';
 import MatchupList from '../components/MatchupList';
 import ComboControls from '../components/ComboControls';
+import Button from '@mui/material/Button';
 import '../styles.css';
 
 const Combos = () => {
@@ -40,7 +41,22 @@ const Combos = () => {
                             handlePlayerSelect={handlePlayerSelect}
                         />
                     )}
-                <button onClick={handleGenerateCombos}>Generate Combos</button>
+                <Button sx={{
+                        backgroundColor: '#E7552B',
+                        color: '#fff5d6',
+                        border: 'none',
+                        fontFamily: 'Coolvetica',
+                        textTransform: 'none',
+                        height: '50px',
+                        borderRadius: '10px',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        margin: '10px 0',
+                        '&:hover': {
+                            backgroundColor: '#e03e00',,
+                        },
+                    }}
+                    onClick={handleGenerateCombos}>Generate Combos</Button>
                 <ComboControls
                     numberOfCombos={numberOfCombos}
                     handleSelectNumberOfCombos={handleSelectNumberOfCombos}
@@ -69,7 +85,7 @@ const Combos = () => {
                 )}
             </div>
             <Footer />
-        </div>
+        </div >
     );
 };
 

@@ -873,7 +873,7 @@ input[type="checkbox"]:disabled + label {
 }
 
 .match-title {
-    font-family: 'Mahoda Display', sans-serif;
+    font-family: 'Coolvetica', sans-serif;
     color: #e7552b;
     font-size: 48px;
     line-height: 1;
@@ -881,14 +881,14 @@ input[type="checkbox"]:disabled + label {
 }
 
 .player-title {
-    font-family: 'Mahoda Display', sans-serif;
+    font-family: 'Coolvetica', sans-serif;
     color: #e7552b;
     font-size: 48px;
     line-height: 1;
 }
 
 .leader-title {
-    font-family: 'Mahoda Display', sans-serif;
+    font-family: 'Coolvetica', sans-serif;
     color: #e7552b;
     font-size: 48px;
     line-height: 1;
@@ -899,7 +899,7 @@ input[type="checkbox"]:disabled + label {
 }
 
 .admin-title {
-    font-family: 'Mahoda Display', sans-serif;
+    font-family: 'Coolvetica', sans-serif;
     color: #e7552b;
     font-size: 48px;
     line-height: 1;
