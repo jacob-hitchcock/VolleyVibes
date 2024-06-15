@@ -8,7 +8,7 @@ import PlayerManagement from './pages/PlayerManagement';
 import MatchManagement from './pages/MatchManagement';
 import TermsOfService from './pages/TermsOfService';
 import Contact from './pages/Contact';
-import PlayerProfile from './pages/PlayerProfile';
+import PlayerProfile from './pages/PlayerDashboard';
 import Combos from './pages/Combos';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/AdminDashboard';

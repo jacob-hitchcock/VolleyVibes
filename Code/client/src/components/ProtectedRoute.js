@@ -13,7 +13,7 @@ const ProtectedRoute = () => {
     },[auth]);
 
     if(loading) {
-        return <div>Loading...</div>;
+        return <div>Loading...try logging back in.</div>;
     }
 
     return auth.user ? <Outlet /> : <Navigate to="/login" />;
