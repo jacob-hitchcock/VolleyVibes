@@ -70,7 +70,6 @@ const FilterBar = ({
                                 onChange={(e) => {
                                     setFilterDate(e.target.value);
                                     closeAllDropdowns();
-                                    console.log('Date selected:',e.target.value);
                                 }}
                             />
                         </div>
@@ -86,7 +85,6 @@ const FilterBar = ({
                             onChange={(e) => {
                                 setFilterMatchDate(e.target.value);
                                 closeAllDropdowns();
-                                console.log('Admin date selected:',e.target.value);
                             }}
                         />
                     </div>
@@ -111,7 +109,6 @@ const FilterBar = ({
                                 onChange={(e) => {
                                     setFilterPlayerDate(e.target.value);
                                     closeAllDropdowns();
-                                    console.log('Player date selected:',e.target.value);
                                 }}
                             />
                         </div>
@@ -143,7 +140,6 @@ const FilterBar = ({
                         closeAllDropdowns();
                         setFilterLocations([]); // Reset location filter
                         setFilterDate(''); // Reset date filter
-                        console.log('Filters reset');
                     }}
                 >
                     Reset Filters

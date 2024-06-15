@@ -58,11 +58,6 @@ const MatchManagement = () => {
 
     const groupedMatches = groupMatchesByDate(matchesToShow);
 
-    // Debug logs to check the filtering
-    console.log('Filter Locations:',selectedLocations);
-    console.log('Filter Date:',filterMatchDate);
-    console.log('Filtered Matches:',filteredMatches);
-
     return (
         <div>
             <NavBar />

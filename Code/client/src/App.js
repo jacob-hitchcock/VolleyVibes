@@ -23,7 +23,6 @@ function App() {
           <Route path="/matches" element={<MatchManagement />} />
           <Route path="/combos" element={<Combos />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<LoginPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/protected" element={<AdminDashboard />} />

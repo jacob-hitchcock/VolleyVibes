@@ -12,13 +12,10 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Attempting to log in"); // Log form submission
         const success = await login(email,password);
         if(success) {
-            console.log("Navigation to protected route"); // Log navigation
             navigate('/protected');
         } else {
-            console.log("Login failed, setting error"); // Log login failure
             setError('Invalid email or password');
         }
     };
@@ -34,7 +31,6 @@ const LoginPage = () => {
                         type="email"
                         value={email}
                         onChange={(e) => {
-                            console.log("Email changed:",e.target.value); // Log email change
                             setEmail(e.target.value);
                         }}
                         required
@@ -46,7 +42,6 @@ const LoginPage = () => {
                         type="password"
                         value={password}
                         onChange={(e) => {
-                            console.log("Password changed:",e.target.value); // Log password change
                             setPassword(e.target.value);
                         }}
                         required

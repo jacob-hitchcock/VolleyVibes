@@ -22,14 +22,6 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
     const [filterPlayerDate,setFilterPlayerDate] = useState('');
     const [filterPlayerLocations,setFilterPlayerLocations] = useState([]);
 
-    // Log state updates
-    console.log('FilterWinners State:',filterWinners);
-    console.log('FilterLosers State:',filterLosers);
-    console.log('FilterMatchDate State:',filterMatchDate);
-    console.log('FilterMatchLocation State:',filterMatchLocation);
-    console.log('Matches:',matches);
-    console.log('Players:',players);
-
     // Filtered matches
     const filteredMatches = useMemo(() => {
         if(context === 'admin' && !filterMatchDate) {
@@ -48,10 +40,6 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
 
             const locationMatch = !filterMatchLocation || match.location === filterMatchLocation;
             const dateMatch = !filterMatchDate || doesDateMatchFilter(matchDate,filterMatchDate);
-
-            console.log('Match:',match);
-            console.log('Location Match:',locationMatch);
-            console.log('Date Match:',dateMatch);
 
             return (
                 (!filterWinners.length || allWinnersPresent) &&
@@ -107,14 +95,12 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
         setFilterLosers([]);
         setFilterMatchDate('');
         setFilterMatchLocation('');
-        console.log('Match filters reset');
     };
 
     // Reset player filters
     const resetPlayerFilters = () => {
         setFilterPlayerDate('');
         setFilterPlayerLocations([]);
-        console.log('Player filters reset');
     };
 
     return {

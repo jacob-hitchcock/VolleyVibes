@@ -7,7 +7,7 @@ function Footer() {
         <footer className="footer">
             <div className="footer-content">
                 <p>
-                    <Link to="/terms-of-service">Terms of Service</Link> |
+                    <Link to="/login">Login</Link> |
                     <Link to="/protected">Admin Dashboard</Link>
                 </p>
             </div>
