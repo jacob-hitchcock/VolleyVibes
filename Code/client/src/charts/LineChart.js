@@ -2,11 +2,7 @@
 
 import React from 'react';
 import { LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,Legend,ResponsiveContainer } from 'recharts';
-
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US',{ month: '2-digit',day: '2-digit',year: '2-digit' }).format(date);
-};
+import { formatDate } from '../utils/utils';
 
 const CustomTooltip = ({ active,payload,label }) => {
     if(active && payload && payload.length) {
