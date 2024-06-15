@@ -2,6 +2,7 @@ import React,{ useState } from 'react';
 import Dropdown from './Dropdown';
 import '../styles.css';
 import Button from '@mui/material/Button';
+import { styled } from '@mui/system';
 
 const FilterBar = ({
     context,
@@ -26,6 +27,23 @@ const FilterBar = ({
     const closeAllDropdowns = () => {
         setOpenDropdown(null);
     };
+
+    const StyledButton = styled(Button)(({ theme }) => ({
+        backgroundColor: '#fff5d6',
+        color: '#E7552B',
+        border: '2px solid #fff5d6',
+        transition: 'background-color 0.3s',
+        height: '50px',
+        borderRadius: '5px',
+        fontSize: '14px',
+        cursor: 'pointer',
+        margin: '2px',
+        '&:hover': {
+            backgroundColor: '#E7552B',
+            color: '#fff5d6',
+            border: '2px solid #fff5d6',
+        },
+    }));
 
     return (
         <div className="filter-bar">
@@ -57,7 +75,7 @@ const FilterBar = ({
                             selectedItems={filterLocations}
                             setSelectedItems={setFilterLocations}
                             isActive={filterLocations.length > 0}
-                            isOpen={openDropdown === 'locations'}
+                            isOpen={openDropdown === 'locations')}
                             onToggle={() => handleToggle('locations')}
                         />
                         {/* New Date Filter */}
@@ -99,7 +117,7 @@ const FilterBar = ({
                             selectedItems={filterPlayerLocations}
                             setSelectedItems={setFilterPlayerLocations}
                             isActive={filterPlayerLocations.length > 0}
-                            isOpen={openDropdown === 'locations'}
+                            isOpen={openDropdown === 'locations')}
                             onToggle={() => handleToggle('locations')}
                         />
                         <div className="filter-date">
@@ -119,7 +137,7 @@ const FilterBar = ({
                 )}
             </div>
             <div className="filter-controls">
-                <Button variant="contained" color="primary" onClick={() => {
+                <StyledButton variant="outlined" onClick={() => {
                     resetFilters();
                     closeAllDropdowns();
                     setFilterLocations([]); // Reset location filter
@@ -127,20 +145,10 @@ const FilterBar = ({
                     console.log('Filters reset');
                 }}>
                     Reset Filters
-                </Button>
+                </StyledButton>
             </div>
         </div>
     );
 };
 
 export default FilterBar;
-
-/*
-<button className="reset-button" onClick={() => {
-    resetFilters();
-    closeAllDropdowns();
-    setFilterLocations([]); // Reset location filter
-    setFilterDate(''); // Reset date filter
-    console.log('Filters reset');
-}}>Reset Filters</button>
-*/
