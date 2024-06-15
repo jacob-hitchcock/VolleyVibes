@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { body,validationResult } = require('express-validator');
 const User = require('../models/User');
 const config = require('../config');
+const authMiddleware = require('../middlewares/authMiddleware'); // Import the auth middleware
 
 const router = express.Router();
 
@@ -69,6 +70,16 @@ router.post(
 router.post('/logout',(req,res) => {
     res.clearCookie('token');
     res.json({ message: 'Logout successful' });
+});
+
+// Add the /me route here
+router.get('/me',authMiddleware,async (req,res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        res.json({ user });
+    } catch(error) {
+        res.status(500).send('Server error');
+    }
 });
 
 module.exports = router;

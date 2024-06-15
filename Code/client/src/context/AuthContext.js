@@ -8,12 +8,10 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email,password) => {
         try {
-            console.log("Sending login request to backend");
             const response = await axiosInstance.post('/users/login',{ email,password },{ withCredentials: true });
             const { user,token } = response.data;
 
             document.cookie = `token=${token}; path=/; secure=${process.env.NODE_ENV === 'production'}; SameSite=Strict`;
-            console.log('Token set in cookie:',token);
 
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
@@ -29,11 +27,23 @@ export const AuthProvider = ({ children }) => {
         try {
             await axiosInstance.post('/users/logout',{},{ withCredentials: true });
             setAuth({ user: null });
-            console.log('Logout successful');
         } catch(error) {
             console.error('Logout failed:',error.response ? error.response.data : error.message);
         }
     };
+
+    const checkAuth = async () => {
+        try {
+            const response = await axiosInstance.get('/users/me',{ withCredentials: true });
+            setAuth({ user: response.data.user });
+        } catch(error) {
+            console.error('Auth check failed:',error.response ? error.response.data : error.message);
+        }
+    };
+
+    useEffect(() => {
+        checkAuth();
+    },[]);
 
     return (
         <AuthContext.Provider value={{ auth,login,logout }}>

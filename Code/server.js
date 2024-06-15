@@ -7,6 +7,7 @@ const Match = require('./models/Match');
 const loginRoute = require('./routes/login');
 const authMiddleware = require('./middlewares/authMiddleware');
 const adminMiddleware = require('./middlewares/adminMiddleware');
+const userRoute = require('./routes/user'); // Import the new route
 
 const app = express();
 const port = process.env.PORT || 3000; // Use the environment variable PORT or default to 3000
@@ -53,6 +54,7 @@ mongoose.connect(dbURI,{
 
 // Use the login route
 app.use('/api/users',loginRoute);
+app.use('/api/users',userRoute); // Use the new route
 
 // Protect the routes using the auth middleware
 
