@@ -1,19 +1,19 @@
 // src/components/PlayerDashboard.js
 
-import React,{ useMemo,useState } from 'react';
+import React,{ useMemo,useState,useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import LineChart from '../charts/LineChart';
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext'; // Adjust the path as needed
-import { useContext } from 'react';
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
+  const { playerId } = useParams();
   const { matches,players,loading } = useFetchData();
   const [error,setError] = useState(null);
 
-  const playerId = '666673a66bb8ee4ede1edbf9';
   const playerData = players.find(player => player._id === playerId);
 
   const playerStats = useMemo(() => {

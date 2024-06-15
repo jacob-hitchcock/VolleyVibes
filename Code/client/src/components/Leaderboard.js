@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Leaderboard = ({ players,sortConfig,requestSort,getSortIndicator,initialLoad,loading }) => (
     <div className="leaderboard-table-wrapper">
@@ -64,7 +65,9 @@ const Leaderboard = ({ players,sortConfig,requestSort,getSortIndicator,initialLo
                             className={initialLoad ? "flip-in" : ""}
                             style={initialLoad ? { animationDelay: `${index * 0.1}s` } : {}}
                         >
-                            <td className="sticky-column">{player.name}</td>
+                            <td className="sticky-column">
+                                <Link to={`/profile/${player._id}`}>{player.name}</Link>
+                            </td>
                             <td>{player.gamesPlayed}</td>
                             <td>{player.wins}</td>
                             <td>{player.gamesPlayed - player.wins}</td>
