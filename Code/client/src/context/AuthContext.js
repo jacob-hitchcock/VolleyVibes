@@ -1,13 +1,10 @@
 import React,{ createContext,useState,useEffect } from 'react';
 import axiosInstance from '../axiosInstance';
-import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [auth,setAuth] = useState({ user: null });
-    const navigate = useNavigate();
 
     const login = async (email,password) => {
         try {
@@ -30,7 +27,6 @@ export const AuthProvider = ({ children }) => {
         try {
             await axiosInstance.post('/users/logout',{},{ withCredentials: true });
             setAuth({ user: null });
-            navigate('/login');
         } catch(error) {
             console.error('Logout failed:',error.response ? error.response.data : error.message);
         }
@@ -48,26 +44,8 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const checkTokenExpiration = () => {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token='));
-        if(token) {
-            const decoded = jwtDecode(token.split('=')[1]);
-            const currentTime = Date.now() / 1000; // in seconds
-            if(decoded.exp < currentTime) {
-                // Token is expired, log out the user
-                logout();
-            }
-        }
-    };
-
     useEffect(() => {
         checkAuth();
-        checkTokenExpiration();
-        const interval = setInterval(() => {
-            checkTokenExpiration();
-        },60000); // Check token expiration every 60 seconds
-
-        return () => clearInterval(interval); // Cleanup interval on unmount
     },[]);
 
     return (
