@@ -7,7 +7,7 @@ import LineChart from '../charts/LineChart';
 import useFetchData from '../hooks/useFetchData'; // Adjust the path as needed
 
 const PlayerDashboard = () => {
-  const playerId = '666673a66bb8ee4ede1edbf9';
+  const playerId = '6666738f6bb8ee4ede1edbf1';
   const { matches,players,loading } = useFetchData();
   const [error,setError] = useState(null);
 
