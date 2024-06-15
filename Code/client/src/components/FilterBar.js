@@ -38,11 +38,6 @@ const FilterBar = ({
         fontSize: '14px',
         cursor: 'pointer',
         margin: '2px',
-        '&:hover': {
-            backgroundColor: '#E7552B',
-            color: '#fff5d6',
-            border: '2px solid #fff5d6',
-        },
     }));
 
     return (
