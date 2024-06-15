@@ -2,7 +2,7 @@
 
 import React,{ useEffect,useState,useMemo } from 'react';
 import axiosInstance from '../axiosInstance';
-import LineChart from './charts/LineChart';
+import LineChart from '../charts/LineChart';
 // Import other chart components as needed
 
 const PlayerDashboard = () => {
