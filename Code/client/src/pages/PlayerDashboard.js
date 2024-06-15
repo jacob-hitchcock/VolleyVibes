@@ -1,6 +1,8 @@
 // src/components/PlayerDashboard.js
 
 import React,{ useEffect,useState,useMemo } from 'react';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 import axiosInstance from '../axiosInstance';
 import LineChart from '../charts/LineChart';
 // Import other chart components as needed
@@ -36,15 +38,31 @@ const PlayerDashboard = () => {
       match.teams.some(team => team.includes(playerId))
     );
 
-    const gamesPlayed = playerMatches.length;
+    let wins = 0;
+    let gamesPlayed = 0;
 
-    const wins = playerMatches.filter(match => {
+    const performanceOverTime = playerMatches.map(match => {
+      gamesPlayed++;
+      const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
+      const isWinningTeam = match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
+      if(isWinningTeam) wins++;
+      const winningPercentage = (wins / gamesPlayed) * 100;
+
+      return {
+        date: match.date,
+        winningPercentage: winningPercentage.toFixed(2),
+      };
+    });
+
+    const totalGamesPlayed = playerMatches.length;
+
+    const totalWins = playerMatches.filter(match => {
       const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
       const isWinningTeam = match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
       return isWinningTeam;
     }).length;
 
-    const losses = gamesPlayed - wins;
+    const totalLosses = totalGamesPlayed - totalWins;
 
     const pointsFor = playerMatches.reduce((acc,match) => {
       const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
@@ -59,13 +77,7 @@ const PlayerDashboard = () => {
 
     const pointDifferential = pointsFor - pointsAgainst;
 
-    const winningPercentage = gamesPlayed ? ((wins / gamesPlayed) * 100).toFixed(2) : '0.00';
-
-    // Prepare data for charts
-    const performanceOverTime = playerMatches.map(match => ({
-      date: match.date,
-      winningPercentage: match.scores[match.teams.findIndex(team => team.includes(playerId))] > match.scores[1 - match.teams.findIndex(team => team.includes(playerId))] ? 100 : 0,
-    }));
+    const winningPercentage = totalGamesPlayed ? ((totalWins / totalGamesPlayed) * 100).toFixed(2) : '0.00';
 
     const matchResults = playerMatches.map(match => ({
       match: match.date,
@@ -73,16 +85,16 @@ const PlayerDashboard = () => {
     }));
 
     const performanceMetrics = [
-      { metric: 'Games Played',value: gamesPlayed },
-      { metric: 'Wins',value: wins },
-      { metric: 'Losses',value: losses },
+      { metric: 'Games Played',value: totalGamesPlayed },
+      { metric: 'Wins',value: totalWins },
+      { metric: 'Losses',value: totalLosses },
       { metric: 'Points For',value: pointsFor },
       { metric: 'Points Against',value: pointsAgainst },
       { metric: 'Point Differential',value: pointDifferential },
       { metric: 'Winning Percentage',value: parseFloat(winningPercentage) }
     ];
 
-    return { gamesPlayed,wins,losses,pointsFor,pointsAgainst,pointDifferential,winningPercentage,performanceOverTime,matchResults,performanceMetrics };
+    return { totalGamesPlayed,totalWins,totalLosses,pointsFor,pointsAgainst,pointDifferential,winningPercentage,performanceOverTime,matchResults,performanceMetrics };
   },[playerData,matches,playerId]);
 
   if(loading) return <div>Loading...</div>;
@@ -90,11 +102,13 @@ const PlayerDashboard = () => {
 
   return (
     <div className="player-dashboard">
+      <NavBar />
       <h1>{playerData.name}'s Dashboard</h1>
       <div className="charts-container">
         <LineChart data={playerStats.performanceOverTime} />
         {/* Add other charts as needed */}
       </div>
+      <Footer />
     </div>
   );
 };
