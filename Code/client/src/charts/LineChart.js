@@ -17,26 +17,28 @@ const CustomTooltip = ({ active,payload,label }) => {
     return null;
 };
 
-const LineChartComponent = ({ data }) => (
-    <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-            <XAxis dataKey="date" tickFormatter={formatDate} />
-            <YAxis />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend verticalAlign="top" height={36} />
-            <Line
-                type="monotone"
-                dataKey="winningPercentage"
-                stroke="#e7552b"
-                dot={false}
-                isAnimationActive={true}
-                animationDuration={1500}
-                strokeWidth={3}
-                strokeLinecap="round"
-            />
-        </LineChart>
-    </ResponsiveContainer>
+const LineChartComponent = ({ data,title }) => (
+    <div>
+        {title && <h3 style={{ textAlign: 'center' }}>{title}</h3>}
+        <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+                <XAxis dataKey="date" tickFormatter={formatDate} />
+                <YAxis />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend verticalAlign="top" height={36} />
+                <Line
+                    type="monotone"
+                    stroke="#e7552b"
+                    dot={false}
+                    isAnimationActive={true}
+                    animationDuration={1500}
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                />
+            </LineChart>
+        </ResponsiveContainer>
+    </div>
 );
 
 export default LineChartComponent;
