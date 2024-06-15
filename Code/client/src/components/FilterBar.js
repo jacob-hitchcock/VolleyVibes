@@ -1,6 +1,7 @@
 import React,{ useState } from 'react';
 import Dropdown from './Dropdown';
 import '../styles.css';
+import Button from '@mui/material/Button';
 
 const FilterBar = ({
     context,
@@ -118,16 +119,28 @@ const FilterBar = ({
                 )}
             </div>
             <div className="filter-controls">
-                <button className="reset-button" onClick={() => {
+                <Button variant="contained" color="primary" onClick={() => {
                     resetFilters();
                     closeAllDropdowns();
                     setFilterLocations([]); // Reset location filter
                     setFilterDate(''); // Reset date filter
                     console.log('Filters reset');
-                }}>Reset Filters</button>
+                }}>
+                    Reset Filters
+                </Button>
             </div>
         </div>
     );
 };
 
 export default FilterBar;
+
+/*
+<button className="reset-button" onClick={() => {
+    resetFilters();
+    closeAllDropdowns();
+    setFilterLocations([]); // Reset location filter
+    setFilterDate(''); // Reset date filter
+    console.log('Filters reset');
+}}>Reset Filters</button>
+*/
