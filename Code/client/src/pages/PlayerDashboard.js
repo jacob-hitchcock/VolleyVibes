@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import LineChart from '../charts/LineChart';
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext'; // Adjust the path as needed
+import { groupMatchesByDate,formatDate } from '../utils'; // Import utility functions
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
@@ -23,32 +24,37 @@ const PlayerDashboard = () => {
       match.teams.some(team => team.includes(playerId))
     );
 
+    // Group matches by date
+    const matchesByDate = groupMatchesByDate(playerMatches);
+
     let wins = 0;
     let gamesPlayed = 0;
+    const performanceOverTime = [];
 
-    const performanceOverTime = playerMatches.map(match => {
-      gamesPlayed++;
-      const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
-      const isWinningTeam = match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
-      if(isWinningTeam) wins++;
+    Object.keys(matchesByDate).forEach(date => {
+      const dailyMatches = matchesByDate[date];
+
+      dailyMatches.forEach(match => {
+        gamesPlayed++;
+        const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
+        const isWinningTeam = match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
+        if(isWinningTeam) wins++;
+      });
+
       const winningPercentage = (wins / gamesPlayed) * 100;
-
-      return {
-        date: match.date,
+      performanceOverTime.push({
+        date: formatDate(date),
         winningPercentage: winningPercentage.toFixed(2),
-      };
+      });
     });
 
     const totalGamesPlayed = playerMatches.length;
-
     const totalWins = playerMatches.filter(match => {
       const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
-      const isWinningTeam = match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
-      return isWinningTeam;
+      return match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
     }).length;
 
     const totalLosses = totalGamesPlayed - totalWins;
-
     const pointsFor = playerMatches.reduce((acc,match) => {
       const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
       return acc + match.scores[playerTeamIndex];
@@ -61,7 +67,6 @@ const PlayerDashboard = () => {
     },0);
 
     const pointDifferential = pointsFor - pointsAgainst;
-
     const winningPercentage = totalGamesPlayed ? ((totalWins / totalGamesPlayed) * 100).toFixed(2) : '0.00';
 
     const matchResults = playerMatches.map(match => ({
