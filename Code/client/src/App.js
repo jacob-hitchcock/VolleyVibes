@@ -25,7 +25,7 @@ function App() {
           <Route path="/combos" element={<Combos />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/profile/:playerId" component={PlayerDashboard} />
+          <Route path="/profile/:playerId" element={<PlayerDashboard />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/protected" element={<AdminDashboard />} />
           </Route>
