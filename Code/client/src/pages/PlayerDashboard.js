@@ -8,12 +8,15 @@ import LineChart from '../charts/LineChart';
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext'; // Adjust the path as needed
 import { groupMatchesByDate,formatDate } from '../utils/utils'; // Import utility functions
+import useFilters from '../hooks/useFilters'; // Import the useFilters hook
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
   const { playerId } = useParams();
   const { matches,players,loading } = useFetchData();
   const [error,setError] = useState(null);
+
+  const { didPlayerTeamWin } = useFilters(); // Get the didPlayerTeamWin function from useFilters
 
   const playerData = players.find(player => player._id === playerId);
 
@@ -39,8 +42,7 @@ const PlayerDashboard = () => {
       dailyMatches.forEach(match => {
         dailyGamesPlayed++;
         const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
-        const isWinningTeam = match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
-        if(isWinningTeam) dailyWins++;
+        if(didPlayerTeamWin(match,playerTeamIndex)) dailyWins++;
       });
 
       cumulativeGamesPlayed += dailyGamesPlayed;
@@ -56,7 +58,7 @@ const PlayerDashboard = () => {
     const totalGamesPlayed = playerMatches.length;
     const totalWins = playerMatches.filter(match => {
       const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
-      return match.scores[playerTeamIndex] > match.scores[1 - playerTeamIndex];
+      return didPlayerTeamWin(match,playerTeamIndex);
     }).length;
 
     const totalLosses = totalGamesPlayed - totalWins;
@@ -90,7 +92,7 @@ const PlayerDashboard = () => {
     ];
 
     return { totalGamesPlayed,totalWins,totalLosses,pointsFor,pointsAgainst,pointDifferential,winningPercentage,performanceOverTime,matchResults,performanceMetrics };
-  },[playerData,matches,playerId]);
+  },[playerData,matches,playerId,didPlayerTeamWin]);
 
   if(loading) return <div>Loading...</div>;
   if(error) return <div>Error loading player data.</div>;
