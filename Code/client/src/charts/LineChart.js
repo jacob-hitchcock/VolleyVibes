@@ -8,7 +8,7 @@ const formatDate = (dateString) => {
     return new Intl.DateTimeFormat('en-US',{ month: '2-digit',day: '2-digit',year: '2-digit' }).format(date);
 };
 
-const LineChart = ({ data }) => (
+const LineChartComponent = ({ data }) => (
     <LineChart width={600} height={300} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" tickFormatter={formatDate} />
@@ -19,4 +19,4 @@ const LineChart = ({ data }) => (
     </LineChart>
 );
 
-export default LineChart;
+export default LineChartComponent;
