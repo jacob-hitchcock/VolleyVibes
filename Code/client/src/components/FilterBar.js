@@ -125,6 +125,7 @@ const FilterBar = ({
                         color: '#E7552B',
                         border: '2px solid #fff5d6',
                         fontFamily: 'Coolvetica',
+                        textTransform: 'none',
                         transition: 'background-color 0.3s',
                         height: '50px',
                         borderRadius: '5px',
