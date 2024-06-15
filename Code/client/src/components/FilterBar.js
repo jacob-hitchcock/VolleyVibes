@@ -32,7 +32,7 @@ const FilterBar = ({
         backgroundColor: '#fff5d6',
         color: '#E7552B',
         border: '2px solid #fff5d6',
-        transition: 'background-color 0.3s',
+        fontFamily: 'Coolvetica',
         height: '50px',
         borderRadius: '5px',
         fontSize: '14px',
@@ -137,7 +137,7 @@ const FilterBar = ({
                 )}
             </div>
             <div className="filter-controls">
-                <StyledButton variant="outlined" onClick={() => {
+                <StyledButton onClick={() => {
                     resetFilters();
                     closeAllDropdowns();
                     setFilterLocations([]); // Reset location filter
