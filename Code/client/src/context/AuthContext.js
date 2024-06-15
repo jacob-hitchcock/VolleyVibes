@@ -33,11 +33,14 @@ export const AuthProvider = ({ children }) => {
     };
 
     const checkAuth = async () => {
-        try {
-            const response = await axiosInstance.get('/users/me',{ withCredentials: true });
-            setAuth({ user: response.data.user });
-        } catch(error) {
-            console.error('Auth check failed:',error.response ? error.response.data : error.message);
+        const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+        if(token) {
+            try {
+                const response = await axiosInstance.get('/users/me',{ withCredentials: true });
+                setAuth({ user: response.data.user });
+            } catch(error) {
+                console.error('Auth check failed:',error.response ? error.response.data : error.message);
+            }
         }
     };
 
