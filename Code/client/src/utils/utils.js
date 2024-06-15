@@ -6,6 +6,10 @@ export const getPlayerName = (id,players) => {
     return player ? player.name : '';
 };
 
+export const getPossessiveForm = (name) => {
+    return name.endsWith('s') ? `${name}'` : `${name}'s`;
+};
+
 export const formatDate = (dateString) => {
     const date = new Date(dateString);
     // Adjust for local timezone offset

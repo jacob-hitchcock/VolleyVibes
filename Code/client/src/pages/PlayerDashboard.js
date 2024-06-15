@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import LineChart from '../charts/LineChart';
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext'; // Adjust the path as needed
-import { groupMatchesByDate,formatDate } from '../utils/utils'; // Import utility functions
+import { groupMatchesByDate,formatDate,getPossessiveForm } from '../utils/utils'; // Import utility functions
 import useFilters from '../hooks/useFilters'; // Import the useFilters hook
 
 const PlayerDashboard = () => {
@@ -29,6 +29,7 @@ const PlayerDashboard = () => {
 
     // Group matches by date
     const matchesByDate = groupMatchesByDate(playerMatches);
+    const totalDatesPlayed = Object.keys(matchesByDate).length;
 
     let cumulativeWins = 0;
     let cumulativeGamesPlayed = 0;
@@ -43,16 +44,29 @@ const PlayerDashboard = () => {
         dailyGamesPlayed++;
         const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
         if(didPlayerTeamWin(match,playerTeamIndex)) dailyWins++;
+
+        if(totalDatesPlayed <= 2) {
+          // Recalculate after every match if the player has played on 2 or fewer dates
+          cumulativeGamesPlayed++;
+          cumulativeWins += didPlayerTeamWin(match,playerTeamIndex) ? 1 : 0;
+          const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
+          performanceOverTime.push({
+            date: formatDate(match.date),
+            winningPercentage: winningPercentage.toFixed(2),
+          });
+        }
       });
 
-      cumulativeGamesPlayed += dailyGamesPlayed;
-      cumulativeWins += dailyWins;
-      const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
-
-      performanceOverTime.push({
-        date: formatDate(date),
-        winningPercentage: winningPercentage.toFixed(2),
-      });
+      if(totalDatesPlayed > 2) {
+        // Recalculate after every date
+        cumulativeGamesPlayed += dailyGamesPlayed;
+        cumulativeWins += dailyWins;
+        const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
+        performanceOverTime.push({
+          date: formatDate(date),
+          winningPercentage: winningPercentage.toFixed(2),
+        });
+      }
     });
 
     const totalGamesPlayed = playerMatches.length;
@@ -110,7 +124,7 @@ const PlayerDashboard = () => {
   return (
     <div className="player-dashboard">
       <NavBar />
-      <h1>{playerData?.name}'s Dashboard</h1>
+      <h1>{getPossessiveForm(playerData?.name)} Dashboard</h1>
       <div className="charts-container">
         {playerStats && <LineChart data={playerStats.performanceOverTime} />}
         {/* Add other charts as needed */}
