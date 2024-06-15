@@ -15,8 +15,8 @@ const PlayerDashboard = () => {
   useEffect(() => {
     const fetchPlayerData = async () => {
       try {
-        const playerResponse = await axiosInstance.get(`/api/players/${playerId}`);
-        const matchesResponse = await axiosInstance.get(`/api/matches`);
+        const playerResponse = await axiosInstance.get(`/players/${playerId}`);
+        const matchesResponse = await axiosInstance.get(`/matches`);
         setPlayerData(playerResponse.data);
         setMatches(matchesResponse.data);
         setLoading(false);
