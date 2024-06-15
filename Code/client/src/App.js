@@ -8,6 +8,7 @@ import PlayerManagement from './pages/PlayerManagement';
 import MatchManagement from './pages/MatchManagement';
 import TermsOfService from './pages/TermsOfService';
 import Contact from './pages/Contact';
+import PlayerProfile from './pages/PlayerProfile';
 import Combos from './pages/Combos';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/AdminDashboard';
@@ -24,6 +25,7 @@ function App() {
           <Route path="/combos" element={<Combos />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/profile" element={<PlayerProfile />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/protected" element={<AdminDashboard />} />
           </Route>

@@ -1,6 +1,6 @@
 import React,{ createContext,useState,useEffect } from 'react';
 import axiosInstance from '../axiosInstance';
-import jwt_decode from 'jwt-decode';
+import { decode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     const checkTokenExpiration = () => {
         const token = document.cookie.split('; ').find(row => row.startsWith('token='));
         if(token) {
-            const decoded = jwt_decode(token.split('=')[1]);
+            const decoded = decode(token.split('=')[1]);
             const currentTime = Date.now() / 1000; // in seconds
             if(decoded.exp < currentTime) {
                 // Token is expired, log out the user
