@@ -75,7 +75,7 @@ const FilterBar = ({
                             selectedItems={filterLocations}
                             setSelectedItems={setFilterLocations}
                             isActive={filterLocations.length > 0}
-                            isOpen={openDropdown === 'locations')}
+                            isOpen={openDropdown === ('locations')}
                             onToggle={() => handleToggle('locations')}
                         />
                         {/* New Date Filter */}
