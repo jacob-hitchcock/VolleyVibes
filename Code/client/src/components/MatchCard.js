@@ -13,7 +13,7 @@ const MatchCard = ({ match,getWinners,getLosers,formatDate,openModal,handleEdit,
         <div className="match-card">
             <div>Winners: {getWinners(match)}</div>
             <div>Losers: {getLosers(match)}</div>
-            <div>Score: {higherScore} - {lowerScore} | ± {scoreDifference}</div>
+            <div>Score: {higherScore} - {lowerScore} (± {scoreDifference})</div>
             <Button sx={{
                 backgroundColor: '#E7552B',
                 color: '#fff5d6',
