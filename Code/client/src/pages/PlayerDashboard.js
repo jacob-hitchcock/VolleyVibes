@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import LineChart from '../charts/LineChart';
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext'; // Adjust the path as needed
-import { groupMatchesByDate,formatDate } from '../utils'; // Import utility functions
+import { groupMatchesByDate,formatDate } from '../utils/utils'; // Import utility functions
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
