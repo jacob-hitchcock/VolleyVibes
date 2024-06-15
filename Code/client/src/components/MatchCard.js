@@ -6,7 +6,7 @@ const MatchCard = ({ match,getWinners,getLosers,formatDate,openModal,handleEdit,
     <div className="match-card">
         <div>Winners: {getWinners(match)}</div>
         <div>Losers: {getLosers(match)}</div>
-        <div>Date: {formatDate(match.date)}</div>
+        <div>Score: {match.scores[0]}</div>
         <Button sx={{
             backgroundColor: '#E7552B',
             color: '#fff5d6',
@@ -33,3 +33,5 @@ const MatchCard = ({ match,getWinners,getLosers,formatDate,openModal,handleEdit,
 );
 
 export default MatchCard;
+
+// <div>Date: {formatDate(match.date)}</div>
