@@ -186,7 +186,7 @@ html {
 }
 
 h1, h2, h3 {
-    font-family: 'Mahoda Display', 'Coolvetica', sans-serif;
+    font-family: 'Coolvetica', sans-serif;
     color: #E7552B;
     margin-bottom: 20px;
 }
@@ -878,7 +878,6 @@ input[type="checkbox"]:disabled + label {
     font-size: 48px;
     line-height: 1;
     margin-top: 40px;
-    margin-bottom: 5px;
 }
 
 .player-title {
@@ -886,7 +885,6 @@ input[type="checkbox"]:disabled + label {
     color: #e7552b;
     font-size: 48px;
     line-height: 1;
-    margin-bottom: 5px;
 }
 
 .leader-title {
@@ -894,7 +892,6 @@ input[type="checkbox"]:disabled + label {
     color: #e7552b;
     font-size: 48px;
     line-height: 1;
-    margin-bottom: 5px;
 }
 
 .home-content {

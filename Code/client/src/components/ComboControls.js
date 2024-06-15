@@ -23,6 +23,7 @@ const ComboControls = ({
             fontSize: '14px',
             cursor: 'pointer',
             margin: '10px 0',
+            marginRight: '5px',
             '&:hover': {
                 backgroundColor: '#e03e00',
             },
