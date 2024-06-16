@@ -8,6 +8,8 @@ const loginRoute = require('./routes/login');
 const authMiddleware = require('./middlewares/authMiddleware');
 const adminMiddleware = require('./middlewares/adminMiddleware');
 
+console.log('JWT_SECRET:',process.env.JWT_SECRET ? 'Loaded' : 'Missing');
+
 const app = express();
 const port = process.env.PORT || 3000; // Use the environment variable PORT or default to 3000
 
@@ -38,8 +40,6 @@ console.log('Starting server...');
 // Connect to MongoDB Atlas using environment variables
 const dbURI = process.env.MONGODB_URI;
 mongoose.connect(dbURI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     writeConcern: {
         w: 'majority',
         wtimeout: 5000,
