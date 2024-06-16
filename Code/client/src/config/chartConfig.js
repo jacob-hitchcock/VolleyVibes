@@ -1,7 +1,7 @@
 // src/config/chartConfig.js
 
 import React from 'react';
-import { CartesianGrid,XAxis,YAxis,Tooltip,Legend,Line } from 'recharts';
+import { Tooltip,Legend,Line } from 'recharts';
 import { formatDate } from '../utils/utils';
 
 // Custom tooltip component
@@ -19,9 +19,6 @@ const CustomTooltip = ({ active,payload,label }) => {
 };
 
 export const getChartConfig = (dataKey,strokeColor = "#e7552b",title,displayName) => ({
-    grid: <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />,
-    xAxis: <XAxis dataKey="date" tickFormatter={formatDate} />,
-    yAxis: <YAxis />,
     tooltip: <Tooltip content={<CustomTooltip />} />,
     legend: <Legend verticalAlign="top" height={36} />,
     line: (
