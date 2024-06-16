@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { LineChart,ResponsiveContainer } from 'recharts';
-import { getChartConfig } from '../../config/chartConfig'; // Import the chart configuration function
+import { getChartConfig } from '../config/chartConfig'; // Import the chart configuration function
 
 const LineChartComponent = ({ data,dataKey,title,strokeColor }) => {
     const chartConfig = getChartConfig(dataKey,strokeColor,title);
