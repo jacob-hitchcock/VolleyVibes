@@ -5,8 +5,7 @@ import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
     width: '100%',
-    marginLeft: '10px',
-    marginRight: '10px',
+    margin: '10px', // Adjust margin to 10px for equal spacing on all sides
     boxShadow: '3',
     border: '1px solid #e7552b',
     borderRadius: '5px',
@@ -18,6 +17,7 @@ const StyledCard = styled(Card)({
     },
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center', // Add justifyContent to center horizontally
     flexDirection: 'column',
 });
 
@@ -27,10 +27,12 @@ const StatTypography = styled(Typography)(({ theme }) => ({
 
 const TitleTypography = styled(StatTypography)({
     color: 'black',
+    textAlign: 'center', // Center text within the container
 });
 
 const ValueTypography = styled(StatTypography)({
     color: '#e7552b',
+    textAlign: 'center', // Center text within the container
 });
 
 const StatCard = ({ title,value }) => {
