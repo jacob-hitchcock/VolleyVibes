@@ -1,4 +1,3 @@
-// src/components/PlayerDashboard.js
 import React,{ useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Grid,Typography,Box } from '@mui/material';
@@ -72,6 +71,7 @@ const PlayerDashboard = () => {
               title="Winning Percentage Over Time"
               strokeColor="#e7552b"
               displayName="Winning Percentage"
+              overallWinningPercentage={playerStats.winningPercentage}
             />
           )}
         </Box>

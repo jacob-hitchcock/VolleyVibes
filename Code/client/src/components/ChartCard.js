@@ -4,11 +4,12 @@ import { Card,CardContent } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
-    width: '45%',
+    width: '67%',
+    height: '450px',
     margin: '15px',
     boxShadow: '3',
     border: '1px solid #e7552b',
-    borderRadius: '5px',
+    borderRadius: '15px',
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
     display: 'flex',
     flexDirection: 'column',
