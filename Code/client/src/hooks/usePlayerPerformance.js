@@ -7,9 +7,9 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
     const playerStats = useMemo(() => {
         if(!playerId || !matches.length) return null;
 
-        const playerMatches = matches.filter(match =>
-            match.teams.some(team => team.includes(playerId))
-        );
+        const playerMatches = matches
+            .filter(match => match.teams.some(team => team.includes(playerId)))
+            .sort((a,b) => new Date(a.date) - new Date(b.date)); // Sort matches by match date
 
         const matchesByDate = groupMatchesByDate(playerMatches);
         const totalDatesPlayed = Object.keys(matchesByDate).length;
