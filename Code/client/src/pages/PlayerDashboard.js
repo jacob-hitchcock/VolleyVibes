@@ -15,17 +15,18 @@ const PlayerDashboard = () => {
   const { playerId } = useParams();
   const { matches,players,loading,error } = useFetchData();
 
-  const { didPlayerTeamWin,filteredMatches } = useFilters(matches,players);
+  const { didPlayerTeamWin } = useFilters(); // Get the didPlayerTeamWin function from useFilters
 
   const playerData = players.find(player => player._id === playerId);
 
   const playerStats = useMemo(() => {
     if(!playerData || !matches.length) return null;
 
-    const playerMatches = filteredMatches.filter(match =>
+    const playerMatches = matches.filter(match =>
       match.teams.some(team => team.includes(playerId))
     );
 
+    // Group matches by date
     const matchesByDate = groupMatchesByDate(playerMatches);
     const totalDatesPlayed = Object.keys(matchesByDate).length;
 
@@ -44,6 +45,7 @@ const PlayerDashboard = () => {
         if(didPlayerTeamWin(match,playerTeamIndex)) dailyWins++;
 
         if(totalDatesPlayed <= 2) {
+          // Recalculate after every match if the player has played on 2 or fewer dates
           cumulativeGamesPlayed++;
           cumulativeWins += didPlayerTeamWin(match,playerTeamIndex) ? 1 : 0;
           const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
@@ -55,6 +57,7 @@ const PlayerDashboard = () => {
       });
 
       if(totalDatesPlayed > 2) {
+        // Recalculate after every date
         cumulativeGamesPlayed += dailyGamesPlayed;
         cumulativeWins += dailyWins;
         const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
@@ -102,7 +105,7 @@ const PlayerDashboard = () => {
     ];
 
     return { totalGamesPlayed,totalWins,totalLosses,pointsFor,pointsAgainst,pointDifferential,winningPercentage,performanceOverTime,matchResults,performanceMetrics };
-  },[playerData,matches,playerId,didPlayerTeamWin,filteredMatches]);
+  },[playerData,matches,playerId,didPlayerTeamWin]);
 
   if(loading) return <div>Loading...</div>;
   if(error) return <div>Error loading player data.</div>;
