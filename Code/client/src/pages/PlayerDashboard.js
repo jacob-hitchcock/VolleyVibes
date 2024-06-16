@@ -42,23 +42,23 @@ const PlayerDashboard = () => {
       <Box sx={{ padding: 3 }}>
         <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '18px' }}>
           {getPossessiveForm(playerData?.name)} Dashboard
-                </Typography>
+        </Typography>
         <Grid container spacing={2} alignItems="center">
           {playerAggregatedStats && (
             <>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={2}>
                 <StatCard title="Games Played" value={playerAggregatedStats.gamesPlayed} />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={2}>
                 <StatCard title="Wins" value={playerAggregatedStats.wins} />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={2}>
                 <StatCard title="Losses" value={playerAggregatedStats.losses} />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={2}>
                 <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={2}>
                 <StatCard title="Point Differential" value={playerAggregatedStats.pointDifferential} />
               </Grid>
             </>
