@@ -3,12 +3,13 @@
 import React from 'react';
 import { LineChart,ResponsiveContainer } from 'recharts';
 import { getChartConfig } from '../config/chartConfig';
+import ChartCard from '../components/ChartCard';
 
 const LineChartComponent = ({ data,dataKey,title,strokeColor,displayName }) => {
     const chartConfig = getChartConfig(dataKey,strokeColor,title,displayName);
 
     return (
-        <div className="line-chart-container">
+        <ChartCard>
             {chartConfig.title}
             <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={data}>
@@ -17,7 +18,7 @@ const LineChartComponent = ({ data,dataKey,title,strokeColor,displayName }) => {
                     {chartConfig.line}
                 </LineChart>
             </ResponsiveContainer>
-        </div>
+        </ChartCard>
     );
 };
 
