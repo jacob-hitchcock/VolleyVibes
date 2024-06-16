@@ -31,7 +31,11 @@ const PlayerDashboard = () => {
         <NavBar />
         <Container>
           <Box my={4}>
-            <Typography variant="h4" align="center">
+            <Typography variant="h4" sx={{
+              fontSize: '28px',
+              fontFamily: 'Coolvetica',
+              color: '#e7552b'
+            }} align="center">
               New and exciting things coming soon!
             </Typography>
           </Box>
@@ -49,7 +53,7 @@ const PlayerDashboard = () => {
           <Typography
             variant="h4"
             sx={{
-              fontSize: '18px',
+              fontSize: '28px',
               fontFamily: 'Coolvetica',
               color: '#e7552b',
               textAlign: 'left',
