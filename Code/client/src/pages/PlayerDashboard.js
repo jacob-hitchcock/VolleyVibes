@@ -6,11 +6,13 @@ import { Grid,Typography,Container,Box } from '@mui/material';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import LineChart from '../charts/LineChart';
+import StatCard from '../components/StatCard'; // Import the StatCard component
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext';
 import { getPossessiveForm } from '../utils/utils';
 import useFilters from '../hooks/useFilters';
 import usePlayerPerformance from '../hooks/usePlayerPerformance';
+import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined'; // Example icon
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
@@ -31,11 +33,13 @@ const PlayerDashboard = () => {
         <NavBar />
         <Container>
           <Box my={4}>
-            <Typography variant="h4" sx={{
-              fontSize: '28px',
-              fontFamily: 'Coolvetica',
-              color: '#e7552b'
-            }} align="center">
+            <Typography variant="h4"
+              sx={{
+                fontSize: '28px',
+                fontFamily: 'Coolvetica',
+                color: '#e7552b'
+              }}
+              align="center">
               New and exciting things coming soon!
             </Typography>
           </Box>
@@ -77,7 +81,15 @@ const PlayerDashboard = () => {
               </Box>
             )}
           </Grid>
-          {/* Add more Grid items here for other charts and components */}
+        </Grid>
+        <Grid container spacing={3}>
+          <StatCard icon={<InsertChartOutlinedIcon />} title="Games Played" value={playerStats.totalGamesPlayed} />
+          <StatCard icon={<InsertChartOutlinedIcon />} title="Wins" value={playerStats.totalWins} />
+          <StatCard icon={<InsertChartOutlinedIcon />} title="Losses" value={playerStats.totalLosses} />
+          <StatCard icon={<InsertChartOutlinedIcon />} title="Points For" value={playerStats.pointsFor} />
+          <StatCard icon={<InsertChartOutlinedIcon />} title="Points Against" value={playerStats.pointsAgainst} />
+          <StatCard icon={<InsertChartOutlinedIcon />} title="Point Differential" value={playerStats.pointDifferential} />
+          <StatCard icon={<InsertChartOutlinedIcon />} title="Winning Percentage" value={`${playerStats.winningPercentage}%`} />
         </Grid>
       </Container>
       <Footer />
