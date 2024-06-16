@@ -4,8 +4,8 @@ import { Card,CardContent,Typography } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
-    width: '100%',
-    marginRight: '30px', // Adjust margin to 10px for equal spacing on all sides
+    width: '220px',
+    marginRight: '10px', // Adjust margin to 10px for equal spacing on all sides
     boxShadow: '3',
     border: '1px solid #e7552b',
     borderRadius: '5px',
