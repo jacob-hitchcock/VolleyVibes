@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Card,CardContent,Typography,Box } from '@mui/material';
-import Icon from '@mui/icons-material/InsertChartOutlined'; // Replace with the appropriate icon
 
 const StatCard = ({ icon,title,value }) => {
     return (
