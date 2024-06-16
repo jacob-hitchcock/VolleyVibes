@@ -1,7 +1,7 @@
 // src/config/chartConfig.js
 
 import React from 'react';
-import { Tooltip,Legend,Line } from 'recharts';
+import { XAxis,YAxis,Tooltip,Legend,Line } from 'recharts';
 import { formatDate } from '../utils/utils';
 
 // Custom tooltip component
@@ -19,6 +19,8 @@ const CustomTooltip = ({ active,payload,label }) => {
 };
 
 export const getChartConfig = (dataKey,strokeColor = "#e7552b",title,displayName) => ({
+    xAxis: <XAxis dataKey="date" tickFormatter={formatDate} hide={true} />,
+    yAxis: <YAxis domain={['dataMin-5','dataMax+5']} hide={true} />,
     tooltip: <Tooltip content={<CustomTooltip />} />,
     legend: <Legend verticalAlign="top" height={36} />,
     line: (

@@ -40,7 +40,7 @@ const PlayerDashboard = () => {
     <div className="player-dashboard">
       <NavBar />
       <Box sx={{ padding: 3 }}>
-        <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '28px' }}>
+        <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '38px' }}>
           {getPossessiveForm(playerData?.name)} Dashboard
         </Typography>
         <Grid container justifyContent="center">

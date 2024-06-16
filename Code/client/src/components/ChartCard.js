@@ -4,7 +4,7 @@ import { Card,CardContent } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
-    width: '100%',
+    width: '45%',
     margin: '15px',
     boxShadow: '3',
     border: '1px solid #e7552b',
