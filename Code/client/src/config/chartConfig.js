@@ -18,7 +18,7 @@ const CustomTooltip = ({ active,payload,label }) => {
     return null;
 };
 
-export const getChartConfig = (dataKey,strokeColor = "#e7552b",title) => ({
+export const getChartConfig = (dataKey,strokeColor = "#e7552b",title,displayName) => ({
     grid: <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />,
     xAxis: <XAxis dataKey="date" tickFormatter={formatDate} />,
     yAxis: <YAxis />,
@@ -34,6 +34,7 @@ export const getChartConfig = (dataKey,strokeColor = "#e7552b",title) => ({
             animationDuration={1500}
             strokeWidth={3}
             strokeLinecap="round"
+            name={displayName} // Set display name for the data key
         />
     ),
     title: <h2>{title}</h2>,

@@ -46,6 +46,7 @@ const PlayerDashboard = () => {
             dataKey="winningPercentage"
             title="Winning Percentage Over Time"
             strokeColor="#e7552b"
+            displayName="Winning Percentage" // Set display name
           />
         )}
         {/* Add other charts as needed */}
