@@ -43,7 +43,7 @@ const PlayerDashboard = () => {
         <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '18px' }}>
           {getPossessiveForm(playerData?.name)} Dashboard
         </Typography>
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={2} justifyContent="center">
           {playerAggregatedStats && (
             <>
               <Grid item xs={12} sm={6} md={2}>

@@ -5,7 +5,8 @@ import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
     width: '100%',
-    margin: '10px',
+    marginLeft: '10px',
+    marginRight: '10px',
     boxShadow: '3',
     border: '1px solid #e7552b',
     borderRadius: '5px',
@@ -16,7 +17,6 @@ const StyledCard = styled(Card)({
         boxShadow: '6',
     },
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
 });
