@@ -6,7 +6,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import LineChart from '../charts/LineChart';
 import useFetchData from '../hooks/useFetchData';
-import AuthContext from '../context/AuthContext'; // Adjust the path as needed
+import AuthContext from '../context/AuthContext';
 import { getPossessiveForm } from '../utils/utils'; // Import utility functions
 import useFilters from '../hooks/useFilters'; // Import the useFilters hook
 import usePlayerPerformance from '../hooks/usePlayerPerformance'; // Import the new hook
