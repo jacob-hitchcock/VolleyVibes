@@ -1,6 +1,6 @@
 // src/components/PlayerDashboard.js
 
-import React,{ useMemo,useState,useContext } from 'react';
+import React,{ useMemo,useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
@@ -13,21 +13,19 @@ import useFilters from '../hooks/useFilters'; // Import the useFilters hook
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
   const { playerId } = useParams();
-  const { matches,players,loading } = useFetchData();
-  const [error,setError] = useState(null);
+  const { matches,players,loading,error } = useFetchData();
 
-  const { didPlayerTeamWin } = useFilters(); // Get the didPlayerTeamWin function from useFilters
+  const { didPlayerTeamWin,filteredMatches } = useFilters(matches,players);
 
   const playerData = players.find(player => player._id === playerId);
 
   const playerStats = useMemo(() => {
     if(!playerData || !matches.length) return null;
 
-    const playerMatches = matches.filter(match =>
+    const playerMatches = filteredMatches.filter(match =>
       match.teams.some(team => team.includes(playerId))
     );
 
-    // Group matches by date
     const matchesByDate = groupMatchesByDate(playerMatches);
     const totalDatesPlayed = Object.keys(matchesByDate).length;
 
@@ -46,7 +44,6 @@ const PlayerDashboard = () => {
         if(didPlayerTeamWin(match,playerTeamIndex)) dailyWins++;
 
         if(totalDatesPlayed <= 2) {
-          // Recalculate after every match if the player has played on 2 or fewer dates
           cumulativeGamesPlayed++;
           cumulativeWins += didPlayerTeamWin(match,playerTeamIndex) ? 1 : 0;
           const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
@@ -58,7 +55,6 @@ const PlayerDashboard = () => {
       });
 
       if(totalDatesPlayed > 2) {
-        // Recalculate after every date
         cumulativeGamesPlayed += dailyGamesPlayed;
         cumulativeWins += dailyWins;
         const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
@@ -106,7 +102,7 @@ const PlayerDashboard = () => {
     ];
 
     return { totalGamesPlayed,totalWins,totalLosses,pointsFor,pointsAgainst,pointDifferential,winningPercentage,performanceOverTime,matchResults,performanceMetrics };
-  },[playerData,matches,playerId,didPlayerTeamWin]);
+  },[playerData,matches,playerId,didPlayerTeamWin,filteredMatches]);
 
   if(loading) return <div>Loading...</div>;
   if(error) return <div>Error loading player data.</div>;
