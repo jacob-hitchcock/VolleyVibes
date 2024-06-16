@@ -4,8 +4,7 @@ import { Card,CardContent,Typography } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
-    width: '220px',
-    margin: '10px', // Adjust margin to 10px for equal spacing on all sides
+    width: '220px', // Set a specific width
     boxShadow: '3',
     border: '1px solid #e7552b',
     borderRadius: '5px',
@@ -17,8 +16,9 @@ const StyledCard = styled(Card)({
     },
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center', // Add justifyContent to center horizontally
+    justifyContent: 'center', // Center horizontally
     flexDirection: 'column',
+    margin: '15px', // Adjust margin to ensure spacing between cards
 });
 
 const StatTypography = styled(Typography)(({ theme }) => ({
