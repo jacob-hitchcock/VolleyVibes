@@ -14,6 +14,7 @@ const LineChartComponent = ({ data,dataKey,title,strokeColor,displayName }) => {
             <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={data}>
                     {chartConfig.tooltip}
+                    {chartConfig.legend}
                     {chartConfig.line}
                 </LineChart>
             </ResponsiveContainer>

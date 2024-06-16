@@ -1,7 +1,7 @@
 // src/config/chartConfig.js
 
 import React from 'react';
-import { Tooltip,Line } from 'recharts';
+import { Tooltip,Legend,Line } from 'recharts';
 import { formatDate } from '../utils/utils';
 
 // Custom tooltip component
@@ -20,12 +20,13 @@ const CustomTooltip = ({ active,payload,label }) => {
 
 export const getChartConfig = (dataKey,strokeColor = "#e7552b",title,displayName) => ({
     tooltip: <Tooltip content={<CustomTooltip />} />,
+    legend: <Legend verticalAlign="top" height={36} />,
     line: (
         <Line
             type="monotone"
             dataKey={dataKey}
             stroke={strokeColor}
-            dot={true}
+            dot={false}
             isAnimationActive={true}
             animationDuration={1500}
             strokeWidth={3}
