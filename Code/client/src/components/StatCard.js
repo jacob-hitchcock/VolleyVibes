@@ -4,12 +4,17 @@ import { Card,CardContent,Typography } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
-    minWidth: 150,
-    margin: 2,
-    boxShadow: 3,
+    minWidth: 'calc(100% / 5 - 20px)', // Adjust the width to fit five cards equally with some spacing
+    margin: '10px',
+    boxShadow: '3',
     border: '1px solid #e7552b',
     borderRadius: 5,
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+        transform: 'scale(1.05)',
+        boxShadow: '6',
+    },
 });
 
 const StatTypography = styled(Typography)(({ theme }) => ({
