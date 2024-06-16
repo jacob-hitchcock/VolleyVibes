@@ -40,7 +40,14 @@ const PlayerDashboard = () => {
       <NavBar />
       <h1>{getPossessiveForm(playerData?.name)} Dashboard</h1>
       <div className="charts-container">
-        {playerStats && <LineChart data={playerStats.performanceOverTime} />}
+        {playerStats && (
+          <LineChart
+            data={playerStats.performanceOverTime}
+            dataKey="winningPercentage"
+            title="Winning Percentage Over Time"
+            strokeColor="#e7552b"
+          />
+        )}
         {/* Add other charts as needed */}
       </div>
       <Footer />

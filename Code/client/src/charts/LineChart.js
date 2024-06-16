@@ -1,42 +1,27 @@
 // src/components/charts/LineChart.js
 
 import React from 'react';
-import { LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,Legend,ResponsiveContainer } from 'recharts';
-import { formatDate } from '../utils/utils';
+import { LineChart,ResponsiveContainer } from 'recharts';
+import { getChartConfig } from '../../config/chartConfig'; // Import the chart configuration function
 
-const CustomTooltip = ({ active,payload,label }) => {
-    if(active && payload && payload.length) {
-        return (
-            <div className="custom-tooltip">
-                <p className="label">{`Date: ${formatDate(label)}`}</p>
-                <p className="intro">{`Winning Percentage: ${payload[0].value}%`}</p>
-            </div>
-        );
-    }
+const LineChartComponent = ({ data,dataKey,title,strokeColor }) => {
+    const chartConfig = getChartConfig(dataKey,strokeColor,title);
 
-    return null;
+    return (
+        <div className="line-chart-container">
+            {chartConfig.title}
+            <ResponsiveContainer width="100%" height={400}>
+                <LineChart data={data}>
+                    {chartConfig.grid}
+                    {chartConfig.xAxis}
+                    {chartConfig.yAxis}
+                    {chartConfig.tooltip}
+                    {chartConfig.legend}
+                    {chartConfig.line}
+                </LineChart>
+            </ResponsiveContainer>
+        </div>
+    );
 };
-
-const LineChartComponent = ({ data }) => (
-    <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-            <XAxis dataKey="date" tickFormatter={formatDate} />
-            <YAxis />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend verticalAlign="top" height={36} />
-            <Line
-                type="monotone"
-                dataKey="winningPercentage"
-                stroke="#e7552b"
-                dot={false}
-                isAnimationActive={true}
-                animationDuration={1500}
-                strokeWidth={3}
-                strokeLinecap="round"
-            />
-        </LineChart>
-    </ResponsiveContainer>
-);
 
 export default LineChartComponent;
