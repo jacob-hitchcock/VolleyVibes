@@ -10,11 +10,6 @@ const StyledCard = styled(Card)({
     border: '1px solid #e7552b',
     borderRadius: '5px',
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-    '&:hover': {
-        transform: 'scale(1.05)',
-        boxShadow: '6',
-    },
     display: 'flex',
     flexDirection: 'column',
 });
