@@ -646,6 +646,10 @@ input[type="checkbox"]:disabled + label {
     margin: 10px;
 }
 
+.name-link {
+    color: black
+}
+
 .match-card:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);

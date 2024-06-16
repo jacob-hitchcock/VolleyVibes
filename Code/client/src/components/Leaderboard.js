@@ -66,7 +66,7 @@ const Leaderboard = ({ players,sortConfig,requestSort,getSortIndicator,initialLo
                             style={initialLoad ? { animationDelay: `${index * 0.1}s` } : {}}
                         >
                             <td className="sticky-column">
-                                <Link to={`/profile/${player._id}`}>{player.name}</Link>
+                                <Link className="name-link" to={`/profile/${player._id}`}>{player.name}</Link>
                             </td>
                             <td>{player.gamesPlayed}</td>
                             <td>{player.wins}</td>
