@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { CartesianGrid,XAxis,YAxis,Tooltip,Legend,Line } from 'recharts';
-import { formatDate } from '../utils/utils'; // Ensure to import the utility function
+import { formatDate } from '../utils/utils';
 
 // Custom tooltip component
 const CustomTooltip = ({ active,payload,label }) => {
@@ -34,8 +34,8 @@ export const getChartConfig = (dataKey,strokeColor = "#e7552b",title,displayName
             animationDuration={1500}
             strokeWidth={3}
             strokeLinecap="round"
-            name={displayName} // Set display name for the data key
+            name={displayName}
         />
     ),
-    title: <h2>{title}</h2>,
+    title: <h2 style={{ paddingLeft: '16px' }}>{title}</h2>,
 });

@@ -46,20 +46,31 @@ const PlayerDashboard = () => {
       <NavBar />
       <Container>
         <Box my={4}>
-          <Typography variant="h4" align="center">
+          <Typography
+            variant="h4"
+            sx={{
+              fontSize: '18px',
+              fontFamily: 'Coolvetica',
+              color: '#e7552b',
+              textAlign: 'left',
+              paddingLeft: '16px'
+            }}
+          >
             {getPossessiveForm(playerData?.name)} Dashboard
           </Typography>
         </Box>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             {playerStats && (
-              <LineChart
-                data={playerStats.performanceOverTime}
-                dataKey="winningPercentage"
-                title="Winning Percentage Over Time"
-                strokeColor="#e7552b"
-                displayName="Winning Percentage"
-              />
+              <Box sx={{ paddingLeft: '16px' }}>
+                <LineChart
+                  data={playerStats.performanceOverTime}
+                  dataKey="winningPercentage"
+                  title="Winning Percentage Over Time"
+                  strokeColor="#e7552b"
+                  displayName="Winning Percentage"
+                />
+              </Box>
             )}
           </Grid>
           {/* Add more Grid items here for other charts and components */}
