@@ -159,3 +159,40 @@ export const saveCombos = (matchups,generatedCombos,numberedPlayers) => {
     localStorage.setItem('generatedCombos',JSON.stringify(generatedCombos));
     localStorage.setItem('numberedPlayers',JSON.stringify(numberedPlayers));
 };
+
+export const getMostPlayedWithPlayer = (playerId,matches,players) => {
+    const teammateCount = {};
+
+    matches.forEach(match => {
+        const playerInMatch = match.teams.flat().includes(playerId);
+
+        if(playerInMatch) {
+            match.teams.forEach(team => {
+                if(team.includes(playerId)) {
+                    team.forEach(teammateId => {
+                        if(teammateId !== playerId) {
+                            if(!teammateCount[teammateId]) {
+                                teammateCount[teammateId] = 0;
+                            }
+                            teammateCount[teammateId]++;
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    const mostPlayedWithPlayerId = Object.keys(teammateCount).reduce((a,b) => teammateCount[a] > teammateCount[b] ? a : b,null);
+
+    if(mostPlayedWithPlayerId) {
+        const mostPlayedWithPlayer = players.find(player => player._id === mostPlayedWithPlayerId);
+        return {
+            name: mostPlayedWithPlayer ? mostPlayedWithPlayer.name : null,
+            gamesPlayed: teammateCount[mostPlayedWithPlayerId] || 0,
+        };
+    }
+
+    return { name: null,gamesPlayed: 0 };
+};
+
+

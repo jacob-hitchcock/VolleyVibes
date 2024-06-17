@@ -7,9 +7,10 @@ import LineChart from '../charts/LineChart';
 import StatCard from '../components/StatCard';
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext';
-import { getPossessiveForm } from '../utils/utils';
+import { getPossessiveForm,getMostPlayedWithPlayer } from '../utils/utils';
 import useFilters from '../hooks/useFilters';
 import usePlayerPerformance from '../hooks/usePlayerPerformance';
+import MostPlayedWithCard from '../components/MostPlayedWithCard';
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
@@ -21,6 +22,8 @@ const PlayerDashboard = () => {
   const playerData = players.find(player => player._id === playerId);
   const playerStats = usePlayerPerformance(playerId,matches,didPlayerTeamWin);
   const playerAggregatedStats = aggregatedPlayerStats.find(player => player._id === playerId);
+
+  const { name: mostPlayedWithPlayer,gamesPlayed } = getMostPlayedWithPlayer(playerId,matches,players);
 
   if(loading) return <div>Loading...</div>;
   if(error) return <div>Error loading player data.</div>;
@@ -63,19 +66,24 @@ const PlayerDashboard = () => {
             </>
           )}
         </Grid>
-        <Box mt={4}>
-          {playerStats && (
-            <LineChart
-              data={playerStats.performanceOverTime}
-              dataKey="winningPercentage"
-              title="Winning Percentage Over Time"
-              strokeColor="#e7552b"
-              displayName="Winning Percentage"
-              overallWinningPercentage={playerStats.winningPercentage}
-            />
-          )}
-          <h1>More things coming soon</h1>
-        </Box>
+        <Grid container spacing={1} marginTop="10px">
+          <Grid item xs={12} md={6}>
+            {playerStats && (
+              <LineChart
+                data={playerStats.performanceOverTime}
+                dataKey="winningPercentage"
+                title="Winning Percentage Over Time"
+                strokeColor="#e7552b"
+                displayName="Winning Percentage"
+                overallWinningPercentage={playerStats.winningPercentage}
+              />
+            )}
+          </Grid>
+          <Grid item xs={12} md={6} marginTop="-20px">
+            <MostPlayedWithCard playerName={mostPlayedWithPlayer} gamesPlayed={gamesPlayed} />
+          </Grid>
+        </Grid>
+        <h1>More things coming soon</h1>
       </Box>
       <Footer />
     </div>
