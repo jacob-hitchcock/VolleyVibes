@@ -138,18 +138,24 @@ export const calculateMatchups = (selectedPlayerIds,players) => {
         }
     });
 
-    return uniqueMatchups;
+    return { matchups: uniqueMatchups,numberedPlayers };
 };
 
-// Function to retrieve saved combos from local storage
 export const getSavedCombos = () => {
-    const savedMatchups = JSON.parse(localStorage.getItem('matchups')) || [];
-    const savedGeneratedCombos = JSON.parse(localStorage.getItem('generatedCombos')) || [];
-    return { savedMatchups,savedGeneratedCombos };
+    try {
+        const savedMatchups = JSON.parse(localStorage.getItem('matchups')) || [];
+        const savedGeneratedCombos = JSON.parse(localStorage.getItem('generatedCombos')) || [];
+        const savedNumberedPlayers = JSON.parse(localStorage.getItem('numberedPlayers')) || [];
+        return { savedMatchups,savedGeneratedCombos,savedNumberedPlayers };
+    } catch(error) {
+        console.error('Error parsing saved combos from localStorage:',error);
+        return { savedMatchups: [],savedGeneratedCombos: [],savedNumberedPlayers: [] };
+    }
 };
 
 // Function to save combos to local storage
-export const saveCombos = (matchups,generatedCombos) => {
+export const saveCombos = (matchups,generatedCombos,numberedPlayers) => {
     localStorage.setItem('matchups',JSON.stringify(matchups));
     localStorage.setItem('generatedCombos',JSON.stringify(generatedCombos));
+    localStorage.setItem('numberedPlayers',JSON.stringify(numberedPlayers));
 };

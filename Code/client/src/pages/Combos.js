@@ -16,6 +16,7 @@ const Combos = () => {
         matchups,
         numberOfCombos,
         generatedCombos,
+        playerNumbers,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,
@@ -63,6 +64,20 @@ const Combos = () => {
                     handleGenerateSelectedCombos={handleGenerateSelectedCombos}
                     handleClearCombos={handleClearCombos}
                 />
+                {playerNumbers.length > 0 && (
+                    <div>
+                        <h3>Selected Players and their Numbers</h3>
+                        <ul>
+                            {playerNumbers
+                                .sort((a,b) => a.number - b.number)
+                                .map(player => (
+                                    <li key={player.id}>
+                                        {player.number}. {player.name}
+                                    </li>
+                                ))}
+                        </ul>
+                    </div>
+                )}
                 {generatedCombos.length === 0 && matchups.length > 0 && (
                     <div>
                         <h3 className="num-matchups">Total Possible Matchups: {matchups.length}</h3>
@@ -85,7 +100,7 @@ const Combos = () => {
                 )}
             </div>
             <Footer />
-        </div >
+        </div>
     );
 };
 

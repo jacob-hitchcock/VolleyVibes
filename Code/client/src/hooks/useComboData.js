@@ -4,22 +4,26 @@ import { calculateMatchups,getSavedCombos,saveCombos } from '../utils/utils';
 const useComboData = (players) => {
     const [selectedPlayers,setSelectedPlayers] = useState([]);
     const [matchups,setMatchups] = useState([]);
-    const [numberOfCombos,setNumberOfCombos] = useState(0);
+    const [numberOfCombos,setNumberOfCombos] = useState(1);
     const [generatedCombos,setGeneratedCombos] = useState([]);
+    const [playerNumbers,setPlayerNumbers] = useState([]);
 
     useEffect(() => {
-        const { savedMatchups,savedGeneratedCombos } = getSavedCombos();
+        const { savedMatchups,savedGeneratedCombos,savedNumberedPlayers } = getSavedCombos();
         if(savedMatchups.length > 0) {
             setMatchups(savedMatchups);
         }
         if(savedGeneratedCombos.length > 0) {
             setGeneratedCombos(savedGeneratedCombos);
         }
+        if(savedNumberedPlayers.length > 0) {
+            setPlayerNumbers(savedNumberedPlayers);
+        }
     },[]);
 
     useEffect(() => {
-        saveCombos(matchups,generatedCombos);
-    },[matchups,generatedCombos]);
+        saveCombos(matchups,generatedCombos,playerNumbers);
+    },[matchups,generatedCombos,playerNumbers]);
 
     const handlePlayerSelect = (playerId) => {
         setSelectedPlayers((prevSelected) =>
@@ -34,8 +38,9 @@ const useComboData = (players) => {
             console.error('No players available for generating combos.');
             return;
         }
-        const combos = calculateMatchups(selectedPlayers,players);
-        setMatchups(combos);
+        const { matchups,numberedPlayers } = calculateMatchups(selectedPlayers,players);
+        setMatchups(matchups);
+        setPlayerNumbers(numberedPlayers);
         setGeneratedCombos([]);
     };
 
@@ -68,8 +73,10 @@ const useComboData = (players) => {
     const handleClearCombos = () => {
         setMatchups([]);
         setGeneratedCombos([]);
+        setPlayerNumbers([]);
         localStorage.removeItem('matchups');
         localStorage.removeItem('generatedCombos');
+        localStorage.removeItem('numberedPlayers');
     };
 
     const toggleCompleted = (index) => {
@@ -83,6 +90,7 @@ const useComboData = (players) => {
         matchups,
         numberOfCombos,
         generatedCombos,
+        playerNumbers,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,
@@ -92,4 +100,4 @@ const useComboData = (players) => {
     };
 };
 
-export default useComboData;    
+export default useComboData;
