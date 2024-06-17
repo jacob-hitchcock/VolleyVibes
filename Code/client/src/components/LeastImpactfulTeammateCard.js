@@ -3,7 +3,7 @@ import { Card,CardContent,Typography } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
-    width: '100%',
+    width: '100%', // Set a specific width
     height: '100%',
     boxShadow: '3',
     border: '1px solid #e7552b',
@@ -16,7 +16,7 @@ const StyledCard = styled(Card)({
     },
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center', // Center horizontally
     flexDirection: 'column',
 });
 
@@ -32,32 +32,34 @@ const ValueTypography = styled(Typography)({
     textAlign: 'center',
 });
 
-const ContributionPercentageTypography = styled(Typography)({
+const LossPercentageTypography = styled(Typography)({
     fontFamily: 'Coolvetica',
     color: 'gray',
     textAlign: 'center',
     marginTop: '10px',
 });
 
-const HighestContributingTeammateCard = ({ playerName,contributionPercentage,yourWins }) => {
-    const wins = contributionPercentage !== undefined ? (contributionPercentage * yourWins / 100).toFixed(0) : null;
+const LeastImpactfulTeammateCard = ({ playerName,lossPercentage,gamesPlayed }) => {
+    const losses = lossPercentage !== undefined ? (lossPercentage * gamesPlayed / 100).toFixed(0) : null;
     return (
         <StyledCard>
             <CardContent>
                 <TitleTypography variant="h6" component="div">
-                    Key Contributor
+                    Difficult Duo
             </TitleTypography>
                 <ValueTypography variant="h4" component="div">
                     {playerName || 'No data available'}
                 </ValueTypography>
                 {playerName && (
-                    <ContributionPercentageTypography variant="body1" component="div">
-                        Teammates for {wins} of your {yourWins} wins
-                    </ContributionPercentageTypography>
+                    <>
+                        <LossPercentageTypography variant="body1" component="div">
+                            Teammates for {losses} of your {gamesPlayed} losses
+                    </LossPercentageTypography>
+                    </>
                 )}
             </CardContent>
         </StyledCard>
     );
 };
 
-export default HighestContributingTeammateCard;
+export default LeastImpactfulTeammateCard;

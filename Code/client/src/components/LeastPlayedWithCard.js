@@ -43,14 +43,14 @@ const LeastPlayedWithCard = ({ playerName,gamesPlayed }) => (
     <StyledCard>
         <CardContent>
             <TitleTypography variant="h6" component="div">
-                Least Common Teammate
+                Rarest Pair
             </TitleTypography>
             <ValueTypography variant="h4" component="div">
                 {playerName || 'No data available'}
             </ValueTypography>
             {playerName && (
                 <GamesPlayedTypography variant="body1" component="div">
-                    Played {gamesPlayed} games together
+                    Played just {gamesPlayed} games together
                 </GamesPlayedTypography>
             )}
         </CardContent>

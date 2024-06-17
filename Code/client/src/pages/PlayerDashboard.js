@@ -15,6 +15,7 @@ import LeastPlayedWithCard from '../components/LeastPlayedWithCard';
 import HighestWinningPercentageTeammateCard from '../components/HighestWinningPercentageTeammateCard';
 import LowestWinningPercentageTeammateCard from '../components/LowestWinningPercentageTeammateCard';
 import HighestContributingTeammateCard from '../components/HighestContributingTeammateCard';
+import LeastImpactfulTeammateCard from '../components/LeastImpactfulTeammateCard';
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
@@ -29,7 +30,7 @@ const PlayerDashboard = () => {
 
   const { name: mostPlayedWithPlayer,gamesPlayed } = getMostPlayedWithPlayer(playerId,matches,players);
   const { name: leastPlayedWithPlayer,gamesPlayed: leastPlayedGames } = getLeastPlayedWithPlayer(playerId,matches,players);
-  const { highestWinningPercentageTeammate,lowestWinningPercentageTeammate,highestContributingTeammate } = getWinningPercentageTeammates(playerId,matches,players);
+  const { highestWinningPercentageTeammate,lowestWinningPercentageTeammate,highestContributingTeammate,leastImpactfulTeammate } = getWinningPercentageTeammates(playerId,matches,players);
 
   if(loading) return <div>Loading...</div>;
   if(error) return <div>Error loading player data.</div>;
@@ -91,6 +92,9 @@ const PlayerDashboard = () => {
               </Grid>
               <Grid item xs={6} marginBottom="15px">
                 <HighestContributingTeammateCard playerName={highestContributingTeammate.name} contributionPercentage={highestContributingTeammate.contributionPercentage} yourWins={playerAggregatedStats.wins} />
+              </Grid>
+              <Grid item xs={6} marginBottom="15px">
+                <LeastImpactfulTeammateCard playerName={leastImpactfulTeammate.name} lossPercentage={leastImpactfulTeammate.lossPercentage} gamesPlayed={playerAggregatedStats.losses} />
               </Grid>
             </Grid>
           </Grid>

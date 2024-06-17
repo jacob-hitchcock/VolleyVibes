@@ -43,7 +43,7 @@ const MostPlayedWithCard = ({ playerName,gamesPlayed }) => (
     <StyledCard>
         <CardContent>
             <TitleTypography variant="h6" component="div">
-                Most Common Teammate
+                Common Companion
             </TitleTypography>
             <ValueTypography variant="h4" component="div">
                 {playerName || 'No data available'}
