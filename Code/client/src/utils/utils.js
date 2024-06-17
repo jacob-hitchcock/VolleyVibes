@@ -195,4 +195,37 @@ export const getMostPlayedWithPlayer = (playerId,matches,players) => {
     return { name: null,gamesPlayed: 0 };
 };
 
+export const getLeastPlayedWithPlayer = (playerId,matches,players) => {
+    const teammateCount = {};
 
+    matches.forEach(match => {
+        const playerInMatch = match.teams.flat().includes(playerId);
+
+        if(playerInMatch) {
+            match.teams.forEach(team => {
+                if(team.includes(playerId)) {
+                    team.forEach(teammateId => {
+                        if(teammateId !== playerId) {
+                            if(!teammateCount[teammateId]) {
+                                teammateCount[teammateId] = 0;
+                            }
+                            teammateCount[teammateId]++;
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    const leastPlayedWithPlayerId = Object.keys(teammateCount).reduce((a,b) => teammateCount[a] < teammateCount[b] ? a : b,null);
+
+    if(leastPlayedWithPlayerId) {
+        const leastPlayedWithPlayer = players.find(player => player._id === leastPlayedWithPlayerId);
+        return {
+            name: leastPlayedWithPlayer ? leastPlayedWithPlayer.name : null,
+            gamesPlayed: teammateCount[leastPlayedWithPlayerId] || 0,
+        };
+    }
+
+    return { name: null,gamesPlayed: 0 };
+};

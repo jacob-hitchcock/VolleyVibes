@@ -7,10 +7,11 @@ import LineChart from '../charts/LineChart';
 import StatCard from '../components/StatCard';
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext';
-import { getPossessiveForm,getMostPlayedWithPlayer } from '../utils/utils';
+import { getPossessiveForm,getMostPlayedWithPlayer,getLeastPlayedWithPlayer } from '../utils/utils';
 import useFilters from '../hooks/useFilters';
 import usePlayerPerformance from '../hooks/usePlayerPerformance';
 import MostPlayedWithCard from '../components/MostPlayedWithCard';
+import LeastPlayedWithCard from '../components/LeastPlayedWithCard';
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
@@ -24,6 +25,7 @@ const PlayerDashboard = () => {
   const playerAggregatedStats = aggregatedPlayerStats.find(player => player._id === playerId);
 
   const { name: mostPlayedWithPlayer,gamesPlayed } = getMostPlayedWithPlayer(playerId,matches,players);
+  const { name: leastPlayedWithPlayer,gamesPlayed: leastPlayedGames } = getLeastPlayedWithPlayer(playerId,matches,players);
 
   if(loading) return <div>Loading...</div>;
   if(error) return <div>Error loading player data.</div>;
@@ -41,11 +43,11 @@ const PlayerDashboard = () => {
   return (
     <div className="player-dashboard">
       <NavBar />
-      <Box sx={{ padding: 2 }}>
-        <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '38px' }}>
+      <Box sx={{ padding: 1 }}>
+        <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '38px',marginBottom: '15px' }}>
           {getPossessiveForm(playerData?.name)} Dashboard
         </Typography>
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" spacing={4}>
           {playerAggregatedStats && (
             <>
               <Grid item>
@@ -66,7 +68,7 @@ const PlayerDashboard = () => {
             </>
           )}
         </Grid>
-        <Grid container spacing={1} marginTop="10px">
+        <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             {playerStats && (
               <LineChart
@@ -79,8 +81,15 @@ const PlayerDashboard = () => {
               />
             )}
           </Grid>
-          <Grid item xs={12} md={6} marginTop="-20px">
-            <MostPlayedWithCard playerName={mostPlayedWithPlayer} gamesPlayed={gamesPlayed} />
+          <Grid item xs={12} md={6}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <MostPlayedWithCard playerName={mostPlayedWithPlayer} gamesPlayed={gamesPlayed} />
+              </Grid>
+              <Grid item xs={6}>
+                <LeastPlayedWithCard playerName={leastPlayedWithPlayer} gamesPlayed={leastPlayedGames} />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
         <h1>More things coming soon</h1>

@@ -39,11 +39,11 @@ const GamesPlayedTypography = styled(Typography)({
     marginTop: '10px',
 });
 
-const MostPlayedWithCard = ({ playerName,gamesPlayed }) => (
+const LeastPlayedWithCard = ({ playerName,gamesPlayed }) => (
     <StyledCard>
         <CardContent>
             <TitleTypography variant="h6" component="div">
-                Most Frequent Teammate
+                Least Frequent Teammate
             </TitleTypography>
             <ValueTypography variant="h5" component="div">
                 {playerName || 'No data available'}
@@ -57,4 +57,4 @@ const MostPlayedWithCard = ({ playerName,gamesPlayed }) => (
     </StyledCard>
 );
 
-export default MostPlayedWithCard;
+export default LeastPlayedWithCard;

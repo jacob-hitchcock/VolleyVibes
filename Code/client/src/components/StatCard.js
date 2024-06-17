@@ -4,10 +4,10 @@ import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
     width: '220px', // Set a specific width
-    height: '75%',
+    height: '80%',
     boxShadow: '3',
     border: '1px solid #e7552b',
-    borderRadius: '5px',
+    borderRadius: '15px',
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
     transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     '&:hover': {
@@ -18,8 +18,6 @@ const StyledCard = styled(Card)({
     alignItems: 'center',
     justifyContent: 'center', // Center horizontally
     flexDirection: 'column',
-    marginTop: '15px',
-    marginRight: '40px', // Adjust margin to ensure spacing between cards
 });
 
 const StatTypography = styled(Typography)(({ theme }) => ({
