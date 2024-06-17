@@ -18,7 +18,7 @@ const LineChartComponent = ({ data,dataKey,title,strokeColor,displayName,overall
     const recentData = data.length > 1 ? data[data.length - 1] : null;
     const previousData = data.length > 1 ? data[data.length - 2] : null;
     const changeInWinningPercentage = recentData && previousData
-        ? (recentData.winningPercentage - previousData.winningPercentage).toFixed(3)
+        ? (recentData.winningPercentage - previousData.winningPercentage).toFixed(2)
         : '0.000';
     const previousDate = previousData ? formatDateWithoutYear(previousData.date) : '';
 

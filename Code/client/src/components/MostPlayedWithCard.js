@@ -34,7 +34,7 @@ const ValueTypography = styled(Typography)({
 
 const GamesPlayedTypography = styled(Typography)({
     fontFamily: 'Coolvetica',
-    color: '#333',
+    color: 'gray',
     textAlign: 'center',
     marginTop: '10px',
 });
@@ -43,9 +43,9 @@ const MostPlayedWithCard = ({ playerName,gamesPlayed }) => (
     <StyledCard>
         <CardContent>
             <TitleTypography variant="h6" component="div">
-                Most Frequent Teammate
+                Most Common Teammate
             </TitleTypography>
-            <ValueTypography variant="h5" component="div">
+            <ValueTypography variant="h4" component="div">
                 {playerName || 'No data available'}
             </ValueTypography>
             {playerName && (
