@@ -25,20 +25,20 @@ const PlayerDashboard = () => {
   if(loading) return <div>Loading...</div>;
   if(error) return <div>Error loading player data.</div>;
 
-  if(!auth.user || auth.user.role !== 'admin') {
-    return (
-      <div className="player-dashboard">
-        <NavBar />
-        <h1>New and exciting things coming soon!</h1>
-        <Footer />
-      </div>
-    );
-  }
+  //if(!auth.user || auth.user.role !== 'admin') {
+  //  return (
+  //    <div className="player-dashboard">
+  //      <NavBar />
+  //      <h1>New and exciting things coming soon!</h1>
+  //      <Footer />
+  //    </div>
+  //  );
+  //}
 
   return (
     <div className="player-dashboard">
       <NavBar />
-      <Box sx={{ padding: 3 }}>
+      <Box sx={{ padding: 2 }}>
         <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '38px' }}>
           {getPossessiveForm(playerData?.name)} Dashboard
         </Typography>
@@ -74,6 +74,7 @@ const PlayerDashboard = () => {
               overallWinningPercentage={playerStats.winningPercentage}
             />
           )}
+          <h1>More things coming soon</h1>
         </Box>
       </Box>
       <Footer />
