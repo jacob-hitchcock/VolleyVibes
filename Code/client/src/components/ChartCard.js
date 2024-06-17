@@ -5,7 +5,7 @@ import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
     width: '100%',
-    height: '430px',
+    height: '97%',
     boxShadow: '3',
     border: '1px solid #e7552b',
     borderRadius: '15px',

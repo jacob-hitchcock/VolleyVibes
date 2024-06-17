@@ -7,11 +7,13 @@ import LineChart from '../charts/LineChart';
 import StatCard from '../components/StatCard';
 import useFetchData from '../hooks/useFetchData';
 import AuthContext from '../context/AuthContext';
-import { getPossessiveForm,getMostPlayedWithPlayer,getLeastPlayedWithPlayer } from '../utils/utils';
+import { getPossessiveForm,getMostPlayedWithPlayer,getLeastPlayedWithPlayer,getWinningPercentageTeammates } from '../utils/utils';
 import useFilters from '../hooks/useFilters';
 import usePlayerPerformance from '../hooks/usePlayerPerformance';
 import MostPlayedWithCard from '../components/MostPlayedWithCard';
 import LeastPlayedWithCard from '../components/LeastPlayedWithCard';
+import HighestWinningPercentageTeammateCard from '../components/HighestWinningPercentageTeammateCard';
+import LowestWinningPercentageTeammateCard from '../components/LowestWinningPercentageTeammateCard';
 
 const PlayerDashboard = () => {
   const { auth } = useContext(AuthContext);
@@ -26,19 +28,10 @@ const PlayerDashboard = () => {
 
   const { name: mostPlayedWithPlayer,gamesPlayed } = getMostPlayedWithPlayer(playerId,matches,players);
   const { name: leastPlayedWithPlayer,gamesPlayed: leastPlayedGames } = getLeastPlayedWithPlayer(playerId,matches,players);
+  const { highestWinningPercentageTeammate,lowestWinningPercentageTeammate } = getWinningPercentageTeammates(playerId,matches,players);
 
   if(loading) return <div>Loading...</div>;
   if(error) return <div>Error loading player data.</div>;
-
-  //if(!auth.user || auth.user.role !== 'admin') {
-  //  return (
-  //    <div className="player-dashboard">
-  //      <NavBar />
-  //      <h1>New and exciting things coming soon!</h1>
-  //      <Footer />
-  //    </div>
-  //  );
-  //}
 
   return (
     <div className="player-dashboard">
@@ -82,12 +75,18 @@ const PlayerDashboard = () => {
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
+            <Grid container spacing={2} alignItems="center" justifyContent="center">
+              <Grid item xs={6} marginBottom="15px">
                 <MostPlayedWithCard playerName={mostPlayedWithPlayer} gamesPlayed={gamesPlayed} />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} marginBottom="15px">
                 <LeastPlayedWithCard playerName={leastPlayedWithPlayer} gamesPlayed={leastPlayedGames} />
+              </Grid>
+              <Grid item xs={6} marginBottom="15px">
+                <HighestWinningPercentageTeammateCard playerName={highestWinningPercentageTeammate.name} winningPercentage={highestWinningPercentageTeammate.winningPercentage} />
+              </Grid>
+              <Grid item xs={6} marginBottom="15px">
+                <LowestWinningPercentageTeammateCard playerName={lowestWinningPercentageTeammate.name} winningPercentage={lowestWinningPercentageTeammate.winningPercentage} />
               </Grid>
             </Grid>
           </Grid>
@@ -100,3 +99,12 @@ const PlayerDashboard = () => {
 };
 
 export default PlayerDashboard;
+/*
+
+              <Grid item xs={6} marginBottom="15px">
+                <LowestWinningPercentageTeammateCard playerName={lowestWinningPercentageTeammate.name} winningPercentage={lowestWinningPercentageTeammate.winningPercentage} />
+              </Grid>
+              <Grid item xs={6} marginBottom="15px">
+                <LowestWinningPercentageTeammateCard playerName={lowestWinningPercentageTeammate.name} winningPercentage={lowestWinningPercentageTeammate.winningPercentage} />
+              </Grid>
+*/

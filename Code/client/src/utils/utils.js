@@ -229,3 +229,78 @@ export const getLeastPlayedWithPlayer = (playerId,matches,players) => {
 
     return { name: null,gamesPlayed: 0 };
 };
+
+export const getWinningPercentageTeammates = (playerId,matches,players) => {
+    const teammateStats = {};
+
+    matches.forEach(match => {
+        const playerInMatch = match.teams.flat().includes(playerId);
+
+        if(playerInMatch) {
+            const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
+            const playerTeam = match.teams[playerTeamIndex];
+            const isWin = didPlayerTeamWin(match,playerTeamIndex);
+
+            playerTeam.forEach(teammateId => {
+                if(teammateId !== playerId) {
+                    if(!teammateStats[teammateId]) {
+                        teammateStats[teammateId] = { wins: 0,losses: 0,games: 0 };
+                    }
+                    teammateStats[teammateId].games += 1;
+                    if(isWin) {
+                        teammateStats[teammateId].wins += 1;
+                    } else {
+                        teammateStats[teammateId].losses += 1;
+                    }
+                }
+            });
+        }
+    });
+
+    if(Object.keys(teammateStats).length === 0) {
+        return {
+            highestWinningPercentageTeammate: { name: null,winningPercentage: 0 },
+            lowestWinningPercentageTeammate: { name: null,winningPercentage: 0 },
+        };
+    }
+
+    const highestWinningPercentageTeammateId = Object.keys(teammateStats).reduce((a,b) => {
+        const aStats = teammateStats[a];
+        const bStats = teammateStats[b];
+        const aPercentage = aStats.wins / aStats.games;
+        const bPercentage = bStats.wins / bStats.games;
+        return aPercentage > bPercentage ? a : b;
+    });
+
+    const lowestWinningPercentageTeammateId = Object.keys(teammateStats).reduce((a,b) => {
+        const aStats = teammateStats[a];
+        const bStats = teammateStats[b];
+        const aPercentage = aStats.wins / aStats.games;
+        const bPercentage = bStats.wins / bStats.games;
+        return aPercentage < bPercentage ? a : b;
+    });
+
+    const getTeammateDetails = (teammateId) => {
+        if(teammateId) {
+            const teammate = players.find(player => player._id === teammateId);
+            const winningPercentage = (teammateStats[teammateId].wins / teammateStats[teammateId].games) * 100;
+            return {
+                name: teammate ? teammate.name : null,
+                winningPercentage: winningPercentage.toFixed(2),
+            };
+        }
+        return { name: null,winningPercentage: 0 };
+    };
+
+    const highestWinningPercentageTeammate = getTeammateDetails(highestWinningPercentageTeammateId);
+    const lowestWinningPercentageTeammate = getTeammateDetails(lowestWinningPercentageTeammateId);
+
+    return { highestWinningPercentageTeammate,lowestWinningPercentageTeammate };
+};
+
+// Define didPlayerTeamWin function based on your provided logic
+const didPlayerTeamWin = (match,playerTeamIndex) => {
+    const teamScore = Number(match.scores[playerTeamIndex]);
+    const opponentScore = Number(match.scores[playerTeamIndex === 0 ? 1 : 0]);
+    return teamScore > opponentScore;
+};
