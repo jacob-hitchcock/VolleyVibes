@@ -46,19 +46,19 @@ const PlayerDashboard = () => {
           {playerAggregatedStats && (
             <>
               <Grid item>
-                <StatCard title="Games Played" value={playerAggregatedStats.gamesPlayed} />
+                <StatCard title="Games Played" value={playerAggregatedStats.gamesPlayed} rank={playerAggregatedStats.gamesPlayedRank} />
               </Grid>
               <Grid item>
-                <StatCard title="Wins" value={playerAggregatedStats.wins} />
+                <StatCard title="Wins" value={playerAggregatedStats.wins} rank={playerAggregatedStats.winsRank} />
               </Grid>
               <Grid item>
-                <StatCard title="Losses" value={playerAggregatedStats.losses} />
+                <StatCard title="Losses" value={playerAggregatedStats.losses} rank={playerAggregatedStats.lossesRank} />
               </Grid>
               <Grid item>
-                <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} />
+                <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} rank={playerAggregatedStats.winningPercentageRank} />
               </Grid>
               <Grid item>
-                <StatCard title="Point Differential" value={playerAggregatedStats.pointDifferential} />
+                <StatCard title="Point Differential" value={playerAggregatedStats.pointDifferential} rank={playerAggregatedStats.pointDifferentialRank} />
               </Grid>
             </>
           )}

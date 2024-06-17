@@ -1,10 +1,10 @@
-// src/components/StatCard.js
 import React from 'react';
 import { Card,CardContent,Typography } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
     width: '220px', // Set a specific width
+    height: '75%',
     boxShadow: '3',
     border: '1px solid #e7552b',
     borderRadius: '5px',
@@ -18,7 +18,8 @@ const StyledCard = styled(Card)({
     alignItems: 'center',
     justifyContent: 'center', // Center horizontally
     flexDirection: 'column',
-    margin: '15px', // Adjust margin to ensure spacing between cards
+    marginTop: '15px',
+    marginRight: '40px', // Adjust margin to ensure spacing between cards
 });
 
 const StatTypography = styled(Typography)(({ theme }) => ({
@@ -35,7 +36,12 @@ const ValueTypography = styled(StatTypography)({
     textAlign: 'center', // Center text within the container
 });
 
-const StatCard = ({ title,value }) => {
+const RankTypography = styled(StatTypography)({
+    color: 'Gray',
+    textAlign: 'center', // Center text within the container
+});
+
+const StatCard = ({ title,value,rank }) => {
     return (
         <StyledCard>
             <CardContent>
@@ -45,6 +51,9 @@ const StatCard = ({ title,value }) => {
                 <ValueTypography variant="h4" component="div">
                     {value}
                 </ValueTypography>
+                <RankTypography>
+                    Rank: {rank}
+                </RankTypography>
             </CardContent>
         </StyledCard>
     );

@@ -50,9 +50,9 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
         }).sort((a,b) => new Date(b.date) - new Date(a.date));
     },[matches,filterWinners,filterLosers,filterMatchDate,filterMatchLocation,context]);
 
-    // Aggregated player stats
+    // Aggregated player stats with rankings
     const aggregatedPlayerStats = useMemo(() => {
-        return players.map(player => {
+        const stats = players.map(player => {
             const playerMatches = matches.filter(match =>
                 Array.isArray(match.teams) &&
                 match.teams.some(team => Array.isArray(team) && team.includes(player._id)) &&
@@ -87,6 +87,42 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
 
             return { ...player,gamesPlayed,wins,losses,pointsFor,pointsAgainst,pointDifferential,winningPercentage };
         });
+
+        const calculateRank = (key) => {
+            const sortedPlayers = stats
+                .map((player) => ({ ...player }))
+                .sort((a,b) => {
+                    if(key === 'losses') {
+                        return a[key] - b[key]; // Sort ascending for losses
+                    }
+                    return b[key] - a[key]; // Sort descending for all other keys
+                });
+
+            let rank = 1;
+            for(let i = 0;i < sortedPlayers.length;i++) {
+                if(i > 0 && sortedPlayers[i][key] !== sortedPlayers[i - 1][key]) {
+                    rank = i + 1;
+                }
+                sortedPlayers[i].rank = rank;
+            }
+
+            return sortedPlayers;
+        };
+
+        const gamesPlayedRank = calculateRank('gamesPlayed');
+        const winsRank = calculateRank('wins');
+        const lossesRank = calculateRank('losses');
+        const winningPercentageRank = calculateRank('winningPercentage');
+        const pointDifferentialRank = calculateRank('pointDifferential');
+
+        return stats.map(player => ({
+            ...player,
+            gamesPlayedRank: gamesPlayedRank.find(p => p._id === player._id).rank,
+            winsRank: winsRank.find(p => p._id === player._id).rank,
+            lossesRank: lossesRank.find(p => p._id === player._id).rank,
+            winningPercentageRank: winningPercentageRank.find(p => p._id === player._id).rank,
+            pointDifferentialRank: pointDifferentialRank.find(p => p._id === player._id).rank,
+        }));
     },[players,matches,filterPlayerDate,filterPlayerLocations]);
 
     // Reset match filters

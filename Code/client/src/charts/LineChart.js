@@ -11,7 +11,7 @@ const LineChartComponent = ({ data,dataKey,title,strokeColor,displayName,overall
         <ChartCard>
             <Box sx={{ display: 'flex',padding: 2 }}>
                 <Box sx={{ marginRight: 4 }}>
-                    <Typography variant="h6" sx={{ color: '#e7552b',fontFamily: 'Coolvetica' }}>
+                    <Typography variant="h6" sx={{ color: 'black',fontFamily: 'Coolvetica' }}>
                         Winning Percentage:
                     </Typography>
                     <Typography variant="h4" sx={{ color: '#e7552b',fontFamily: 'Coolvetica' }}>
