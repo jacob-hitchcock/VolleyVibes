@@ -232,6 +232,7 @@ export const getLeastPlayedWithPlayer = (playerId,matches,players) => {
 
 export const getWinningPercentageTeammates = (playerId,matches,players) => {
     const teammateStats = {};
+    let totalWins = 0;
 
     matches.forEach(match => {
         const playerInMatch = match.teams.flat().includes(playerId);
@@ -240,6 +241,8 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
             const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
             const playerTeam = match.teams[playerTeamIndex];
             const isWin = didPlayerTeamWin(match,playerTeamIndex);
+
+            if(isWin) totalWins++;
 
             playerTeam.forEach(teammateId => {
                 if(teammateId !== playerId) {
@@ -259,8 +262,9 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
 
     if(Object.keys(teammateStats).length === 0) {
         return {
-            highestWinningPercentageTeammate: { name: null,winningPercentage: 0 },
-            lowestWinningPercentageTeammate: { name: null,winningPercentage: 0 },
+            highestWinningPercentageTeammate: { name: null,winningPercentage: 0,gamesPlayed: 0 },
+            lowestWinningPercentageTeammate: { name: null,winningPercentage: 0,gamesPlayed: 0 },
+            highestContributingTeammate: { name: null,contributionPercentage: 0,gamesPlayed: 0 },
         };
     }
 
@@ -269,6 +273,10 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
         const bStats = teammateStats[b];
         const aPercentage = aStats.wins / aStats.games;
         const bPercentage = bStats.wins / bStats.games;
+
+        if(aPercentage === bPercentage) {
+            return aStats.games > bStats.games ? a : b;
+        }
         return aPercentage > bPercentage ? a : b;
     });
 
@@ -277,25 +285,46 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
         const bStats = teammateStats[b];
         const aPercentage = aStats.wins / aStats.games;
         const bPercentage = bStats.wins / bStats.games;
+
+        if(aPercentage === bPercentage) {
+            return aStats.games > bStats.games ? a : b;
+        }
         return aPercentage < bPercentage ? a : b;
+    });
+
+    const highestContributingTeammateId = Object.keys(teammateStats).reduce((a,b) => {
+        const aStats = teammateStats[a];
+        const bStats = teammateStats[b];
+        const aContribution = aStats.wins / totalWins;
+        const bContribution = bStats.wins / totalWins;
+
+        if(aContribution === bContribution) {
+            return aStats.games > bStats.games ? a : b;
+        }
+        return aContribution > bContribution ? a : b;
     });
 
     const getTeammateDetails = (teammateId) => {
         if(teammateId) {
             const teammate = players.find(player => player._id === teammateId);
-            const winningPercentage = (teammateStats[teammateId].wins / teammateStats[teammateId].games) * 100;
+            const stats = teammateStats[teammateId];
+            const winningPercentage = (stats.wins / stats.games) * 100;
+            const contributionPercentage = (stats.wins / totalWins) * 100;
             return {
                 name: teammate ? teammate.name : null,
                 winningPercentage: winningPercentage.toFixed(2),
+                contributionPercentage: contributionPercentage.toFixed(2),
+                gamesPlayed: stats.games,
             };
         }
-        return { name: null,winningPercentage: 0 };
+        return { name: null,winningPercentage: 0,contributionPercentage: 0,gamesPlayed: 0 };
     };
 
     const highestWinningPercentageTeammate = getTeammateDetails(highestWinningPercentageTeammateId);
     const lowestWinningPercentageTeammate = getTeammateDetails(lowestWinningPercentageTeammateId);
+    const highestContributingTeammate = getTeammateDetails(highestContributingTeammateId);
 
-    return { highestWinningPercentageTeammate,lowestWinningPercentageTeammate };
+    return { highestWinningPercentageTeammate,lowestWinningPercentageTeammate,highestContributingTeammate };
 };
 
 // Define didPlayerTeamWin function based on your provided logic

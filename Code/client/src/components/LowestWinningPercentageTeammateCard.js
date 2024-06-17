@@ -39,20 +39,20 @@ const WinningPercentageTypography = styled(Typography)({
     marginTop: '10px',
 });
 
-const LowestWinningPercentageTeammateCard = ({ playerName,winningPercentage }) => {
+const LowestWinningPercentageTeammateCard = ({ playerName,winningPercentage,gamesPlayed }) => {
     const losingPercentage = winningPercentage !== undefined ? (100 - winningPercentage).toFixed(2) : null;
     return (
         <StyledCard>
             <CardContent>
                 <TitleTypography variant="h6" component="div">
-                    Worst Teammate
+                    Tough Luck
             </TitleTypography>
                 <ValueTypography variant="h4" component="div">
                     {playerName || 'No data available'}
                 </ValueTypography>
                 {playerName && (
                     <WinningPercentageTypography variant="body1" component="div">
-                        Lost {losingPercentage !== null ? losingPercentage : 'No data available'}% of games played together
+                        Lost {losingPercentage !== null ? losingPercentage : 'No data available'}% of {gamesPlayed} games together
                     </WinningPercentageTypography>
                 )}
             </CardContent>
