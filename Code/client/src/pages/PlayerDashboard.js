@@ -38,11 +38,11 @@ const PlayerDashboard = () => {
   return (
     <div className="player-dashboard">
       <NavBar />
-      <Box sx={{ padding: 1 }}>
+      <Box sx={{ padding: 0 }}>
         <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '38px',marginBottom: '15px' }}>
           {getPossessiveForm(playerData?.name)} Dashboard
         </Typography>
-        <Grid container justifyContent="center" spacing={4}>
+        <Grid container justifyContent="center" spacing={3}>
           {playerAggregatedStats && (
             <>
               <Grid item>
