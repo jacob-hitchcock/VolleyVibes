@@ -55,29 +55,6 @@ const PlayerDashboard = () => {
         <Typography variant="h4" align="left" sx={{ fontFamily: 'Coolvetica',color: '#e7552b',fontSize: '38px',marginBottom: '15px' }}>
           {getPossessiveForm(playerData?.name)} Dashboard
         </Typography>
-        <Grid item xs={12} md={6}>
-          <Grid container spacing={2} alignItems="center" marginBottom="15px">
-            {playerAggregatedStats && (
-              <>
-                <Grid item xs={6} md={2.4} marginBottom="15px">
-                  <StatCard title="Games Played" value={playerAggregatedStats.gamesPlayed} rank={playerAggregatedStats.gamesPlayedRank} />
-                </Grid>
-                <Grid item xs={6} md={2.4} marginBottom="15px">
-                  <StatCard title="Wins" value={playerAggregatedStats.wins} rank={playerAggregatedStats.winsRank} />
-                </Grid>
-                <Grid item xs={6} md={2.4} marginBottom="15px">
-                  <StatCard title="Losses" value={playerAggregatedStats.losses} rank={playerAggregatedStats.lossesRank} />
-                </Grid>
-                <Grid item xs={6} md={2.4} marginBottom="15px">
-                  <StatCard title="Point Differential" value={playerAggregatedStats.pointDifferential} rank={playerAggregatedStats.pointDifferentialRank} />
-                </Grid>
-                <Grid item xs={12} md={2.4} marginBottom="15px">
-                  <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} rank={playerAggregatedStats.winningPercentageRank} />
-                </Grid>
-              </>
-            )}
-          </Grid>
-        </Grid>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <AnimatedChartWrapper>
@@ -94,23 +71,23 @@ const PlayerDashboard = () => {
             </AnimatedChartWrapper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={6} md={6} marginBottom="15px">
+            <Grid container spacing={4.5} alignItems="center">
+              <Grid item xs={6} md={6}>
                 <MostPlayedWithCard playerName={mostPlayedWithPlayer} gamesPlayed={gamesPlayed} />
               </Grid>
-              <Grid item xs={6} md={6} marginBottom="15px">
+              <Grid item xs={6} md={6}>
                 <LeastPlayedWithCard playerName={leastPlayedWithPlayer} gamesPlayed={leastPlayedGames} />
               </Grid>
-              <Grid item xs={6} md={6} marginBottom="15px">
+              <Grid item xs={6} md={6}>
                 <HighestWinningPercentageTeammateCard playerName={highestWinningPercentageTeammate.name} winningPercentage={highestWinningPercentageTeammate.winningPercentage} gamesPlayed={highestWinningPercentageTeammate.gamesPlayed} />
               </Grid>
-              <Grid item xs={6} md={6} marginBottom="15px">
+              <Grid item xs={6} md={6}>
                 <LowestWinningPercentageTeammateCard playerName={lowestWinningPercentageTeammate.name} winningPercentage={lowestWinningPercentageTeammate.winningPercentage} gamesPlayed={lowestWinningPercentageTeammate.gamesPlayed} />
               </Grid>
-              <Grid item xs={6} md={6} marginBottom="15px">
+              <Grid item xs={6} md={6}>
                 <HighestContributingTeammateCard playerName={highestContributingTeammate.name} contributionPercentage={highestContributingTeammate.contributionPercentage} yourWins={playerAggregatedStats.wins} />
               </Grid>
-              <Grid item xs={6} md={6} marginBottom="15px">
+              <Grid item xs={6} md={6}>
                 <LeastImpactfulTeammateCard playerName={leastImpactfulTeammate.name} lossPercentage={leastImpactfulTeammate.lossPercentage} gamesPlayed={playerAggregatedStats.losses} />
               </Grid>
             </Grid>
@@ -136,6 +113,29 @@ const PlayerDashboard = () => {
                   <h1>More things coming soon</h1>
                 </ChartCard>
               </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <Grid container spacing={2} alignItems="center" marginBottom="15px">
+              {playerAggregatedStats && (
+                <>
+                  <Grid item xs={12} md={2.4} marginBottom="15px">
+                    <StatCard title="Games Played" value={playerAggregatedStats.gamesPlayed} rank={playerAggregatedStats.gamesPlayedRank} />
+                  </Grid>
+                  <Grid item xs={12} md={2.4} marginBottom="15px">
+                    <StatCard title="Wins" value={playerAggregatedStats.wins} rank={playerAggregatedStats.winsRank} />
+                  </Grid>
+                  <Grid item xs={12} md={2.4} marginBottom="15px">
+                    <StatCard title="Losses" value={playerAggregatedStats.losses} rank={playerAggregatedStats.lossesRank} />
+                  </Grid>
+                  <Grid item xs={12} md={2.4} marginBottom="15px">
+                    <StatCard title="Point Differential" value={playerAggregatedStats.pointDifferential} rank={playerAggregatedStats.pointDifferentialRank} />
+                  </Grid>
+                  <Grid item xs={12} md={2.4} marginBottom="15px">
+                    <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} rank={playerAggregatedStats.winningPercentageRank} />
+                  </Grid>
+                </>
+              )}
             </Grid>
           </Grid>
         </Grid>
