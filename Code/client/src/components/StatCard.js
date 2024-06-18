@@ -3,8 +3,8 @@ import { Card,CardContent,Typography } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledCard = styled(Card)({
-    width: '200px', // Set a specific width
-    height: '80%',
+    width: '100%', // Set a specific width
+    height: '100%',
     boxShadow: '3',
     borderRadius: '15px',
     backgroundColor: '#e7552b',

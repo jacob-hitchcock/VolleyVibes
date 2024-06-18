@@ -1,7 +1,7 @@
-// src/hooks/usePlayerPerformance.js
-
 import { useMemo } from 'react';
 import { groupMatchesByDate,formatDate } from '../utils/utils'; // Import utility functions
+
+const normalizeLocation = (location) => location.toLowerCase().replace(/\s+/g,'');
 
 const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
     const playerStats = useMemo(() => {
@@ -17,6 +17,11 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
         let cumulativeWins = 0;
         let cumulativeGamesPlayed = 0;
         const performanceOverTime = [];
+        const statsByLocation = {
+            grass: { wins: 0,losses: 0,pointDifferential: 0 },
+            indoorcourt: { wins: 0,losses: 0,pointDifferential: 0 },
+            beach: { wins: 0,losses: 0,pointDifferential: 0 },
+        };
 
         Object.keys(matchesByDate).forEach(date => {
             const dailyMatches = matchesByDate[date];
@@ -27,6 +32,14 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
                 dailyGamesPlayed++;
                 const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
                 if(didPlayerTeamWin(match,playerTeamIndex)) dailyWins++;
+
+                // Update location-based statistics
+                const location = normalizeLocation(match.location);
+                if(statsByLocation[location]) {
+                    statsByLocation[location].wins += didPlayerTeamWin(match,playerTeamIndex) ? 1 : 0;
+                    statsByLocation[location].losses += didPlayerTeamWin(match,playerTeamIndex) ? 0 : 1;
+                    statsByLocation[location].pointDifferential += match.scores[playerTeamIndex] - match.scores[playerTeamIndex === 0 ? 1 : 0];
+                }
 
                 if(totalDatesPlayed <= 2) {
                     cumulativeGamesPlayed++;
@@ -80,6 +93,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
             pointDifferential,
             winningPercentage,
             performanceOverTime,
+            statsByLocation, // Include the location-based statistics
         };
     },[playerId,matches,didPlayerTeamWin]);
 
