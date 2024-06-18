@@ -52,7 +52,7 @@ const renderCustomLabel = ({ viewBox,total }) => {
     );
 };
 
-const DoughnutChartComponent = ({ data,dataKey,title }) => {
+const DoughnutChartComponent = ({ data,dataKey,title,animate }) => {
     const total = data.reduce((acc,entry) => acc + entry.value,0);
     return (
         <div style={{ width: '100%',height: '100%' }}>
@@ -70,6 +70,7 @@ const DoughnutChartComponent = ({ data,dataKey,title }) => {
                         fill="#8884d8"
                         paddingAngle={2}
                         activeShape={renderActiveShape}
+                        isAnimationActive={animate}
                         label
                     >
                         {data.map((entry,index) => (

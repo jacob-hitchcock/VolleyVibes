@@ -18,7 +18,7 @@ const CustomTooltip = ({ active,payload,label }) => {
     return null;
 };
 
-export const getChartConfig = (dataKey,strokeColor = "#e7552b",title,displayName) => ({
+export const getChartConfig = (dataKey,strokeColor = "#e7552b",title,displayName,animate) => ({
     xAxis: <XAxis dataKey="date" tickFormatter={formatDate} hide={true} />,
     yAxis: <YAxis domain={['dataMin-5','dataMax+5']} hide={true} />, // add cases to stop at 0 and 100
     tooltip: <Tooltip content={<CustomTooltip />} />,
@@ -29,7 +29,7 @@ export const getChartConfig = (dataKey,strokeColor = "#e7552b",title,displayName
             dataKey={dataKey}
             stroke={strokeColor}
             dot={true}
-            isAnimationActive={true}
+            isAnimationActive={animate}
             animationDuration={1500}
             strokeWidth={3}
             strokeLinecap="round"

@@ -11,8 +11,8 @@ const formatDateWithoutYear = (dateString) => {
     return date.toLocaleDateString(undefined,options);
 };
 
-const LineChartComponent = ({ data,dataKey,title,strokeColor,displayName,overallWinningPercentage }) => {
-    const chartConfig = getChartConfig(dataKey,strokeColor,title,displayName);
+const LineChartComponent = ({ data,dataKey,title,strokeColor,displayName,overallWinningPercentage,animate }) => {
+    const chartConfig = getChartConfig(dataKey,strokeColor,title,displayName,animate);
 
     // Calculate the change in winning percentage
     const recentData = data.length > 1 ? data[data.length - 1] : null;

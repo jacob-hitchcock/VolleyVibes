@@ -17,6 +17,7 @@ import HighestContributingTeammateCard from '../components/HighestContributingTe
 import LeastImpactfulTeammateCard from '../components/LeastImpactfulTeammateCard';
 import DoughnutChartComponent from '../charts/DoughnutChartComponent';
 import ChartCard from '../components/ChartCard';
+import AnimatedChartWrapper from '../components/AnimatedChartWrapper';
 
 const PlayerDashboard = () => {
   const { playerId } = useParams();
@@ -79,16 +80,18 @@ const PlayerDashboard = () => {
         </Grid>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            {playerStats && (
-              <LineChart
-                data={playerStats.performanceOverTime}
-                dataKey="winningPercentage"
-                title="Winning Percentage Over Time"
-                strokeColor="#e7552b"
-                displayName="Winning Percentage"
-                overallWinningPercentage={playerStats.winningPercentage}
-              />
-            )}
+            <AnimatedChartWrapper>
+              {playerStats && (
+                <LineChart
+                  data={playerStats.performanceOverTime}
+                  dataKey="winningPercentage"
+                  title="Winning Percentage Over Time"
+                  strokeColor="#e7552b"
+                  displayName="Winning Percentage"
+                  overallWinningPercentage={playerStats.winningPercentage}
+                />
+              )}
+            </AnimatedChartWrapper>
           </Grid>
           <Grid item xs={12} md={6}>
             <Grid container spacing={2} alignItems="center">
@@ -116,12 +119,16 @@ const PlayerDashboard = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} md={4}>
                 <ChartCard>
-                  <DoughnutChartComponent data={winData} dataKey="value" title="Winning Zones" />
+                  <AnimatedChartWrapper>
+                    <DoughnutChartComponent data={winData} dataKey="value" title="Winning Zones" />
+                  </AnimatedChartWrapper>
                 </ChartCard>
               </Grid>
               <Grid item xs={12} md={4}>
                 <ChartCard>
-                  <DoughnutChartComponent data={lossData} dataKey="value" title="Loss Locations" />
+                  <AnimatedChartWrapper>
+                    <DoughnutChartComponent data={lossData} dataKey="value" title="Loss Locations" />
+                  </AnimatedChartWrapper>
                 </ChartCard>
               </Grid>
               <Grid item xs={12} md={4}>
