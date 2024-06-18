@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState,useEffect } from 'react';
 import '../styles.css';
 import NavBar from '../components/NavBar';
 import Leaderboard from '../components/Leaderboard';
@@ -8,6 +8,8 @@ import useFetchData from '../hooks/useFetchData';
 import useFilters from '../hooks/useFilters';
 import useSortedPlayers from '../hooks/useSortedPlayers';
 import FilterBar from '../components/FilterBar';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 function HomePage() {
     const { matches,players,loading: dataLoading } = useFetchData();
@@ -22,8 +24,17 @@ function HomePage() {
         resetPlayerFilters,
     } = useFilters(matches,players);
 
-    // Apply sorting to the aggregated player stats
     const { sortedPlayers,requestSort,getSortIndicator,sortConfig } = useSortedPlayers(aggregatedPlayerStats);
+
+    const [openSnackbar,setOpenSnackbar] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setOpenSnackbar(false);
+        },10000); // 10 seconds
+
+        return () => clearTimeout(timer);
+    },[]);
 
     return (
         <div>
@@ -53,6 +64,12 @@ function HomePage() {
                 </div>
             </main>
             <Footer />
+
+            <Snackbar open={openSnackbar} autoHideDuration={10000} onClose={() => setOpenSnackbar(false)}>
+                <Alert onClose={() => setOpenSnackbar(false)} sx={{ width: '100%',backgroundColor: '#E7552B',color: '#fff5d6' }}>
+                    Click on a player's name to view their stats!
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

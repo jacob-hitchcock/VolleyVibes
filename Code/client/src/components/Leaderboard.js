@@ -8,7 +8,7 @@ const Leaderboard = ({ players,sortConfig,requestSort,getSortIndicator,initialLo
                 <tr>
                     <th className={`sticky-column ${sortConfig.key === 'name' ? 'sorted' : ''}`} onClick={() => requestSort('name')}>
                         <div className="header-content">
-                            <span className="header-text">Name (Click a name for stats)</span>
+                            <span className="header-text">Name</span>
                             {getSortIndicator('name')}
                         </div>
                     </th>
