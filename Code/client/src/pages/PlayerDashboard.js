@@ -56,6 +56,29 @@ const PlayerDashboard = () => {
           {getPossessiveForm(playerData?.name)} Dashboard
         </Typography>
         <Grid container spacing={2}>
+          <Grid item xs={12} md={12}>
+            <Grid container spacing={2} alignItems="center">
+              {playerAggregatedStats && (
+                <>
+                  <Grid item xs={6} md={2.4}>
+                    <StatCard title="Games Played" value={playerAggregatedStats.gamesPlayed} rank={playerAggregatedStats.gamesPlayedRank} />
+                  </Grid>
+                  <Grid item xs={6} md={2.4}>
+                    <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} rank={playerAggregatedStats.winningPercentageRank} />
+                  </Grid>
+                  <Grid item xs={6} md={2.4}>
+                    <StatCard title="Avg Points For" value={playerAggregatedStats.avgPointsPerGame} rank={playerAggregatedStats.avgPointsPerGameRank} />
+                  </Grid>
+                  <Grid item xs={6} md={2.4}>
+                    <StatCard title="Avg Points Against" value={playerAggregatedStats.avgPointsAgainstPerGame} rank={playerAggregatedStats.avgPointsAgainstPerGameRank} />
+                  </Grid>
+                  <Grid item xs={12} md={2.4}>
+                    <StatCard title="Avg Point Differential" value={playerAggregatedStats.avgPointDifferential} rank={playerAggregatedStats.avgPointDifferentialRank} />
+                  </Grid>
+                </>
+              )}
+            </Grid>
+          </Grid>
           <Grid item xs={12} md={6}>
             <AnimatedChartWrapper>
               {playerStats && (
@@ -113,29 +136,6 @@ const PlayerDashboard = () => {
                   <h1>More things coming soon</h1>
                 </ChartCard>
               </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={12}>
-            <Grid container spacing={2} alignItems="center" marginBottom="15px">
-              {playerAggregatedStats && (
-                <>
-                  <Grid item xs={12} md={2.4} marginBottom="15px">
-                    <StatCard title="Games Played" value={playerAggregatedStats.gamesPlayed} rank={playerAggregatedStats.gamesPlayedRank} />
-                  </Grid>
-                  <Grid item xs={12} md={2.4} marginBottom="15px">
-                    <StatCard title="Wins" value={playerAggregatedStats.wins} rank={playerAggregatedStats.winsRank} />
-                  </Grid>
-                  <Grid item xs={12} md={2.4} marginBottom="15px">
-                    <StatCard title="Losses" value={playerAggregatedStats.losses} rank={playerAggregatedStats.lossesRank} />
-                  </Grid>
-                  <Grid item xs={12} md={2.4} marginBottom="15px">
-                    <StatCard title="Point Differential" value={playerAggregatedStats.pointDifferential} rank={playerAggregatedStats.pointDifferentialRank} />
-                  </Grid>
-                  <Grid item xs={12} md={2.4} marginBottom="15px">
-                    <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} rank={playerAggregatedStats.winningPercentageRank} />
-                  </Grid>
-                </>
-              )}
             </Grid>
           </Grid>
         </Grid>

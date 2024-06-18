@@ -75,24 +75,29 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
                 return acc + Number(match.scores[playerTeamIndex]);
             },0);
 
+            const avgPointsPerGame = gamesPlayed ? (pointsFor / gamesPlayed).toFixed(2) : '0.00';
+
             const pointsAgainst = playerMatches.reduce((acc,match) => {
                 const playerTeamIndex = match.teams.findIndex(team => Array.isArray(team) && team.includes(player._id));
                 const opponentTeamIndex = playerTeamIndex === 0 ? 1 : 0;
                 return acc + Number(match.scores[opponentTeamIndex]);
             },0);
 
+            const avgPointsAgainstPerGame = gamesPlayed ? (pointsAgainst / gamesPlayed).toFixed(2) : '0.00';
+
             const pointDifferential = pointsFor - pointsAgainst;
+            const avgPointDifferential = gamesPlayed ? ((pointsFor - pointsAgainst) / gamesPlayed).toFixed(2) : '0.00';
 
             const winningPercentage = gamesPlayed ? ((wins / gamesPlayed) * 100).toFixed(3) : '0.000';
 
-            return { ...player,gamesPlayed,wins,losses,pointsFor,pointsAgainst,pointDifferential,winningPercentage };
+            return { ...player,gamesPlayed,wins,losses,pointsFor,avgPointsPerGame,pointsAgainst,avgPointsAgainstPerGame,pointDifferential,avgPointDifferential,winningPercentage };
         });
 
         const calculateRank = (key) => {
             const sortedPlayers = stats
                 .map((player) => ({ ...player }))
                 .sort((a,b) => {
-                    if(key === 'losses') {
+                    if(key === 'avgPointsAgainstPerGame') {
                         return a[key] - b[key]; // Sort ascending for losses
                     }
                     return b[key] - a[key]; // Sort descending for all other keys
@@ -114,6 +119,9 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
         const lossesRank = calculateRank('losses');
         const winningPercentageRank = calculateRank('winningPercentage');
         const pointDifferentialRank = calculateRank('pointDifferential');
+        const avgPointDifferentialRank = calculateRank('avgPointDifferential');
+        const avgPointsPerGameRank = calculateRank('avgPointsPerGame');
+        const avgPointsAgainstPerGameRank = calculateRank('avgPointsAgainstPerGame');
 
         return stats.map(player => ({
             ...player,
@@ -122,6 +130,9 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
             lossesRank: lossesRank.find(p => p._id === player._id).rank,
             winningPercentageRank: winningPercentageRank.find(p => p._id === player._id).rank,
             pointDifferentialRank: pointDifferentialRank.find(p => p._id === player._id).rank,
+            avgPointDifferentialRank: avgPointDifferentialRank.find(p => p._id === player._id).rank,
+            avgPointsPerGameRank: avgPointsPerGameRank.find(p => p._id === player._id).rank,
+            avgPointsAgainstPerGameRank: avgPointsAgainstPerGameRank.find(p => p._id === player._id).rank,
         }));
     },[players,matches,filterPlayerDate,filterPlayerLocations]);
 
