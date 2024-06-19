@@ -13,6 +13,7 @@ import Combos from './pages/Combos';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/AdminDashboard';
 import LoginPage from './pages/LoginPage';
+import MatchupPredictor from './pages/MatchupPredictor';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile/:playerId" element={<PlayerDashboard />} />
+          <Route path="/predictor" element={<MatchupPredictor />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/protected" element={<AdminDashboard />} />
           </Route>
