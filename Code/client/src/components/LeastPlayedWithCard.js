@@ -43,7 +43,7 @@ const LeastPlayedWithCard = ({ playerName,gamesPlayed }) => (
     <StyledCard>
         <CardContent>
             <TitleTypography variant="h6" component="div">
-                Rarest Pair
+                Rarest Combination
             </TitleTypography>
             <ValueTypography variant="h4" component="div">
                 {playerName || 'No data available'}

@@ -45,7 +45,7 @@ const LeastImpactfulTeammateCard = ({ playerName,lossPercentage,gamesPlayed }) =
         <StyledCard>
             <CardContent>
                 <TitleTypography variant="h6" component="div">
-                    Difficult Duo
+                    Difficult Partnership
             </TitleTypography>
                 <ValueTypography variant="h4" component="div">
                     {playerName || 'No data available'}
