@@ -27,7 +27,7 @@ const PlayerDashboard = () => {
   const { didPlayerTeamWin,aggregatedPlayerStats } = useFilters(matches,players);
 
   const playerData = players.find(player => player._id === playerId);
-  const playerStats = usePlayerPerformance(playerId,matches,didPlayerTeamWin);
+  const playerStats = usePlayerPerformance(playerId,matches,didPlayerTeamWin,aggregatedPlayerStats);
   const playerAggregatedStats = aggregatedPlayerStats.find(player => player._id === playerId);
 
   const { name: mostPlayedWithPlayer,gamesPlayed } = getMostPlayedWithPlayer(playerId,matches,players);
@@ -134,7 +134,7 @@ const PlayerDashboard = () => {
               </Grid>
             </Grid>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={9}>
+              <Grid item xs={12} md={12}>
                 <AnimatedChartWrapper>
                   {playerStats && (
                     <VWARChart
@@ -148,14 +148,23 @@ const PlayerDashboard = () => {
                   )}
                 </AnimatedChartWrapper>
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={12}>
                 <ChartCard>
-                  <p><strong className="orange">Volleyball Wins Above Replacement (VWAR)</strong> is a custom statistical metric designed to measure a volleyball player's overall contribution to their team's success and estimates the number of additional wins a player contributes to their team compared to a baseline replacement-level player. It combines a player's winning percentage and point differential, adjusted for the number of games played, to estimate their impact on team performance. A higher VWAR indicates a greater positive influence on the team's chances of winning, providing a comprehensive view of a player's effectiveness and value.</p>
+                  <p><strong className="orange">Volleyball Wins Above Replacement (VWAR)</strong> is a custom statistical metric designed to measure a volleyball player's overall contribution to their team's success. It estimates the number of additional wins a player contributes to their team compared to a baseline replacement-level player.</p>
+                  <h3>How VWAR is calculated:</h3>
                   <ul>
-                    <li><strong className="orange">VWAR:</strong> Number of wins above/below replacement level player</li>
-                    <li><strong className="yellow">Total Wins:</strong> Your total wins over time</li>
-                    <li><strong className="brown">Baseline Cumulative Wins:</strong> Number of estimated wins a replacement level player would have over time</li>
+                    <li><strong>Winning Percentage:</strong> A player's winning percentage over time</li>
+                    <li><strong>Point Differential:</strong> The difference between points scored and points conceded by a player's team</li>
+                    <li><strong>Games Played:</strong> The total number of games a player has participated in</li>
                   </ul>
+                  <p>These components are combined and adjusted to estimate a player's impact on their team's performance, providing a comprehensive view of their effectiveness and value.</p>
+                  <h3>Key Elements Displayed:</h3>
+                  <ul>
+                    <li><strong className="orange">VWAR:</strong> The number of wins a player is above or below a replacement-level player. A higher VWAR indicates a greater positive influence on the team's chnaces of winning.</li>
+                    <li><strong className="yellow">Total Wins:</strong> The cumulative number of wins a player has achieved over time.</li>
+                    <li><strong className="brown">Estimated Baseline Total Wins:</strong> The estimated total number of wins a replacement-level player would have over the same period.</li>
+                  </ul>
+                  <p>By considering both winning percentage and point differential and teaming that with a dynamic calculation of the groups median winning percentage, VWAR offers a nuanced insight into a player's overall performance and value to their team, helping to highlight standout contributors and areas for improvement.</p>
                 </ChartCard>
               </Grid>
             </Grid>

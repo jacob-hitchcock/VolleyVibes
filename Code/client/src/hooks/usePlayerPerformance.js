@@ -3,7 +3,15 @@ import { groupMatchesByDate,formatDate } from '../utils/utils'; // Import utilit
 
 const normalizeLocation = (location) => location.toLowerCase().replace(/\s+/g,'');
 
-const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
+const calculateMedian = (values) => {
+    if(values.length === 0) return 0;
+    values.sort((a,b) => a - b);
+    const half = Math.floor(values.length / 2);
+    if(values.length % 2) return values[half];
+    return (values[half - 1] + values[half]) / 2.0;
+};
+
+const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayerStats) => {
     const playerStats = useMemo(() => {
         if(!playerId || !matches.length) return null;
 
@@ -61,7 +69,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
                         winningPercentage: winningPercentage.toFixed(2),
                         VWAR: 'Not enough match data',
                         cumulativeWins,
-                        baseline,
+                        baseline: [],
                     });
                 }
             });
@@ -73,8 +81,25 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
                 cumulativePointsAgainst += dailyPointsAgainst;
                 const pointDifferential = cumulativePointsFor - cumulativePointsAgainst;
                 const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
-                const VWAR = ((winningPercentage / 100 - 0.353) * cumulativeGamesPlayed + 0.5 * (pointDifferential / cumulativeGamesPlayed)).toFixed(2);
-                baseline = (cumulativeGamesPlayed * 0.35).toFixed(0);
+                const currentPlayerStats = aggregatedPlayerStats
+                    .map(player => {
+                        const playerMatches = matches.filter(match =>
+                            Array.isArray(match.teams) &&
+                            match.teams.some(team => team.includes(player._id)) &&
+                            new Date(match.date) <= new Date(date)
+                        );
+                        const gamesPlayed = playerMatches.length;
+                        const wins = playerMatches.filter(match => {
+                            const playerTeamIndex = match.teams.findIndex(team => team.includes(player._id));
+                            return didPlayerTeamWin(match,playerTeamIndex);
+                        }).length;
+                        return gamesPlayed ? (wins / gamesPlayed) : null;
+                    })
+                    .filter(winningPercentage => winningPercentage !== null);
+
+                const medianWinningPercentage = calculateMedian(currentPlayerStats);
+                const VWAR = ((winningPercentage / 100 - medianWinningPercentage) * cumulativeGamesPlayed + 0.5 * (pointDifferential / cumulativeGamesPlayed)).toFixed(2);
+                baseline = (cumulativeGamesPlayed * medianWinningPercentage).toFixed(0);
                 performanceOverTime.push({
                     date: formatDate(date),
                     winningPercentage: winningPercentage.toFixed(2),

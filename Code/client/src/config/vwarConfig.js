@@ -64,7 +64,7 @@ export const vwarChartConfig = (dataKey,strokeColor = "#e7552b",title,displayNam
                 animationDuration={1500}
                 strokeWidth={3}
                 strokeLinecap="round"
-                name="Baseline Cumulative Wins"
+                name="Estimated Baseline Total Wins"
             />
         </>
     ),
