@@ -16,6 +16,9 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
 
         let cumulativeWins = 0;
         let cumulativeGamesPlayed = 0;
+        let cumulativePointsFor = 0;
+        let cumulativePointsAgainst = 0;
+
         const performanceOverTime = [];
         const statsByLocation = {
             grass: { wins: 0,losses: 0,pointDifferential: 0 },
@@ -27,6 +30,8 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
             const dailyMatches = matchesByDate[date];
             let dailyWins = 0;
             let dailyGamesPlayed = 0;
+            let dailyPointsFor = 0;
+            let dailyPointsAgainst = 0;
 
             dailyMatches.forEach(match => {
                 dailyGamesPlayed++;
@@ -44,10 +49,15 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
                 if(totalDatesPlayed <= 2) {
                     cumulativeGamesPlayed++;
                     cumulativeWins += didPlayerTeamWin(match,playerTeamIndex) ? 1 : 0;
+                    cumulativePointsFor += match.scores[playerTeamIndex];
+                    cumulativePointsAgainst += match.scores[playerTeamIndex === 0 ? 1 : 0];
                     const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
+                    const pointDifferential = cumulativePointsFor - cumulativePointsAgainst;
+                    const VWAR = ((winningPercentage / 100 - 0.35) * cumulativeGamesPlayed + 0.5 * (pointDifferential / cumulativeGamesPlayed)).toFixed(2);
                     performanceOverTime.push({
                         date: formatDate(match.date),
                         winningPercentage: winningPercentage.toFixed(2),
+                        VWAR: 'Not enough match data',
                     });
                 }
             });
@@ -55,10 +65,15 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
             if(totalDatesPlayed > 2) {
                 cumulativeGamesPlayed += dailyGamesPlayed;
                 cumulativeWins += dailyWins;
+                cumulativePointsFor += dailyPointsFor;
+                cumulativePointsAgainst += dailyPointsAgainst;
+                const pointDifferential = cumulativePointsFor - cumulativePointsAgainst;
                 const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
+                const VWAR = ((winningPercentage / 100 - 0.35) * cumulativeGamesPlayed + 0.5 * (pointDifferential / cumulativeGamesPlayed)).toFixed(2);
                 performanceOverTime.push({
                     date: formatDate(date),
                     winningPercentage: winningPercentage.toFixed(2),
+                    VWAR: VWAR,
                 });
             }
         });

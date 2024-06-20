@@ -4,6 +4,7 @@ import { Grid,Typography,Box } from '@mui/material';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import LineChart from '../charts/LineChart';
+import VWARChart from '../charts/VWARChart';
 import StatCard from '../components/StatCard';
 import useFetchData from '../hooks/useFetchData';
 import { getPossessiveForm,getMostPlayedWithPlayer,getLeastPlayedWithPlayer,getWinningPercentageTeammates } from '../utils/utils';
@@ -117,23 +118,38 @@ const PlayerDashboard = () => {
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <ChartCard>
                   <AnimatedChartWrapper>
                     <DoughnutChartComponent data={winData} dataKey="value" title="Winning Zones" />
                   </AnimatedChartWrapper>
                 </ChartCard>
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <ChartCard>
                   <AnimatedChartWrapper>
                     <DoughnutChartComponent data={lossData} dataKey="value" title="Loss Locations" />
                   </AnimatedChartWrapper>
                 </ChartCard>
               </Grid>
-              <Grid item xs={12} md={4}>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={9}>
+                <AnimatedChartWrapper>
+                  {playerStats && (
+                    <VWARChart
+                      data={playerStats.performanceOverTime}
+                      dataKey="VWAR"
+                      title="VWAR Over Time"
+                      strokeColor="#e7552b"
+                      displayName="VWAR"
+                    />
+                  )}
+                </AnimatedChartWrapper>
+              </Grid>
+              <Grid item xs={12} md={3}>
                 <ChartCard>
-                  <h1>More things coming soon</h1>
+                  <p><strong className="orange">Volleyball Wins Above Replacement (VWAR)</strong> is a custom statistical metric designed to measure a volleyball player's overall contribution to their team's success and estimates the number of additional wins a player contributes to their team compared to a baseline replacement-level player. It combines a player's winning percentage and point differential, adjusted for the number of games played, to estimate their impact on team performance. A higher VWAR indicates a greater positive influence on the team's chances of winning, providing a comprehensive view of a player's effectiveness and value.</p>
                 </ChartCard>
               </Grid>
             </Grid>

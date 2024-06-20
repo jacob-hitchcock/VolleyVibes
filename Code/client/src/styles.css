@@ -645,6 +645,10 @@ input[type="checkbox"]:disabled + label {
     margin: 10px;
 }
 
+.orange {
+    color: #E7552B;
+}
+
 .name-link {
     color: black
 }
