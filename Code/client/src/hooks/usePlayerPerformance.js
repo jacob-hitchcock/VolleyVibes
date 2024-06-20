@@ -18,6 +18,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
         let cumulativeGamesPlayed = 0;
         let cumulativePointsFor = 0;
         let cumulativePointsAgainst = 0;
+        let baseline = 0;
 
         const performanceOverTime = [];
         const statsByLocation = {
@@ -53,11 +54,14 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
                     cumulativePointsAgainst += match.scores[playerTeamIndex === 0 ? 1 : 0];
                     const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
                     const pointDifferential = cumulativePointsFor - cumulativePointsAgainst;
-                    const VWAR = ((winningPercentage / 100 - 0.35) * cumulativeGamesPlayed + 0.5 * (pointDifferential / cumulativeGamesPlayed)).toFixed(2);
+                    const VWAR = ((winningPercentage / 100 - 0.4) * cumulativeGamesPlayed + 0.5 * (pointDifferential / cumulativeGamesPlayed)).toFixed(2);
+                    baseline = (cumulativeGamesPlayed * 0.35).toFixed(0);
                     performanceOverTime.push({
                         date: formatDate(match.date),
                         winningPercentage: winningPercentage.toFixed(2),
                         VWAR: 'Not enough match data',
+                        cumulativeWins,
+                        baseline,
                     });
                 }
             });
@@ -69,11 +73,14 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin) => {
                 cumulativePointsAgainst += dailyPointsAgainst;
                 const pointDifferential = cumulativePointsFor - cumulativePointsAgainst;
                 const winningPercentage = (cumulativeWins / cumulativeGamesPlayed) * 100;
-                const VWAR = ((winningPercentage / 100 - 0.35) * cumulativeGamesPlayed + 0.5 * (pointDifferential / cumulativeGamesPlayed)).toFixed(2);
+                const VWAR = ((winningPercentage / 100 - 0.353) * cumulativeGamesPlayed + 0.5 * (pointDifferential / cumulativeGamesPlayed)).toFixed(2);
+                baseline = (cumulativeGamesPlayed * 0.35).toFixed(0);
                 performanceOverTime.push({
                     date: formatDate(date),
                     winningPercentage: winningPercentage.toFixed(2),
                     VWAR: VWAR,
+                    cumulativeWins,
+                    baseline,
                 });
             }
         });

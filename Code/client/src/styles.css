@@ -649,6 +649,14 @@ input[type="checkbox"]:disabled + label {
     color: #E7552B;
 }
 
+.yellow {
+    color:#ffc658;
+}
+
+.brown {
+    color:#977e57;
+}
+
 .name-link {
     color: black
 }

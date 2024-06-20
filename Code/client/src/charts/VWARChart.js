@@ -47,6 +47,7 @@ const VWARChart = ({ data,dataKey,title,strokeColor,displayName,overallWinningPe
                             {chartConfig.yAxis}
                             {chartConfig.tooltip}
                             {chartConfig.line}
+                            {chartConfig.legend}
                         </LineChart>
                     </ResponsiveContainer>
                 </Box>

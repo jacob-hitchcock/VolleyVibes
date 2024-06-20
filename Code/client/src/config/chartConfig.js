@@ -8,7 +8,12 @@ import { formatDate } from '../utils/utils';
 const CustomTooltip = ({ active,payload,label }) => {
     if(active && payload && payload.length) {
         return (
-            <div className="custom-tooltip">
+            <div className="custom-tooltip"
+                style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderRadius: '15px',
+                    padding: '15px',
+                }}>
                 <p className="label">{`Date: ${formatDate(label)}`}</p>
                 <p className="intro">{`${payload[0].name}: ${payload[0].value}%`}</p>
             </div>

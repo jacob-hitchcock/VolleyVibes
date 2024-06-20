@@ -139,10 +139,11 @@ const PlayerDashboard = () => {
                   {playerStats && (
                     <VWARChart
                       data={playerStats.performanceOverTime}
-                      dataKey="VWAR"
+                      dataKey={['VWAR','cumulativeWins']}
                       title="VWAR Over Time"
                       strokeColor="#e7552b"
                       displayName="VWAR"
+                      secondary={playerStats.cumulativeWins}
                     />
                   )}
                 </AnimatedChartWrapper>
@@ -150,6 +151,11 @@ const PlayerDashboard = () => {
               <Grid item xs={12} md={3}>
                 <ChartCard>
                   <p><strong className="orange">Volleyball Wins Above Replacement (VWAR)</strong> is a custom statistical metric designed to measure a volleyball player's overall contribution to their team's success and estimates the number of additional wins a player contributes to their team compared to a baseline replacement-level player. It combines a player's winning percentage and point differential, adjusted for the number of games played, to estimate their impact on team performance. A higher VWAR indicates a greater positive influence on the team's chances of winning, providing a comprehensive view of a player's effectiveness and value.</p>
+                  <ul>
+                    <li><strong className="orange">VWAR:</strong> Number of wins above/below replacement level player</li>
+                    <li><strong className="yellow">Total Wins:</strong> Your total wins over time</li>
+                    <li><strong className="brown">Baseline Cumulative Wins:</strong> Number of estimated wins a replacement level player would have over time</li>
+                  </ul>
                 </ChartCard>
               </Grid>
             </Grid>
@@ -157,7 +163,7 @@ const PlayerDashboard = () => {
         </Grid>
       </Box>
       <Footer />
-    </div>
+    </div >
   );
 };
 
