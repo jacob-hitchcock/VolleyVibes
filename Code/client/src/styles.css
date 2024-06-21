@@ -1127,7 +1127,8 @@ input[type="checkbox"]:disabled + label {
 }
 
 .combos-page .players-list {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Create two even columns */
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
@@ -1137,6 +1138,11 @@ input[type="checkbox"]:disabled + label {
     display: inline-flex;
     align-items: center;
     margin-right: 10px;
+    padding:5px 0;
+}
+
+.combos-page .player-checkbox input{
+    margin-right: 5px;
 }
 
 .combos-page label {
@@ -1144,8 +1150,8 @@ input[type="checkbox"]:disabled + label {
 }
 
 .combos-page .combos-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr; /* Single column by default */
     gap: 10px;
 }
 
@@ -1366,6 +1372,10 @@ input[type="checkbox"]:disabled + label {
         position: static; /* Disable sticky behavior on larger screens */
         z-index: initial; /* Reset z-index */
         box-shadow: none; /* Remove box shadow */
+    }
+
+    .combos-page .combos-list {
+        grid-template-columns: 1fr 1fr; /* Two columns for medium and up screens */
     }
 }
 

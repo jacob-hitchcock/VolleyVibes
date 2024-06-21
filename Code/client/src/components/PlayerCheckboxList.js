@@ -14,7 +14,7 @@ const PlayerCheckboxList = ({ players,selectedPlayers,handlePlayerSelect }) => {
         selectedPlayers.forEach(playerId => handlePlayerSelect(playerId));
     };
     return (
-        <div className='player-list-container'>
+        <div className='players-list-container'>
             <div className="players-list">
                 {players.map((player) => (
                     <div key={player._id} className="player-checkbox">
