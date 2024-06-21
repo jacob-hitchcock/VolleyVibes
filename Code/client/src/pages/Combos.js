@@ -87,7 +87,7 @@ const Combos = () => {
                     <div className="cross-reference-grid">
                         {crossReferenceGrid.length > 0 && (
                             <div>
-                                <h3>Cross Reference Grid</h3>
+                                <h3>Matchup Counts</h3>
                                 <table>
                                     <thead>
                                         <tr>
