@@ -17,6 +17,7 @@ const Combos = () => {
         numberOfCombos,
         generatedCombos,
         playerNumbers,
+        crossReferenceGrid,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,
@@ -64,20 +65,51 @@ const Combos = () => {
                     handleGenerateSelectedCombos={handleGenerateSelectedCombos}
                     handleClearCombos={handleClearCombos}
                 />
-                {playerNumbers.length > 0 && (
-                    <div>
-                        <h3>Selected Players and their Numbers</h3>
-                        <ul>
-                            {playerNumbers
-                                .sort((a,b) => a.number - b.number)
-                                .map(player => (
-                                    <li key={player.id}>
-                                        {player.number}. {player.name}
-                                    </li>
-                                ))}
-                        </ul>
+                <div className="combo-results">
+                    <div className="player-numbers">
+                        {playerNumbers.length > 0 && (
+                            <div>
+                                <h3>Selected Players and their Numbers</h3>
+                                <ul>
+                                    {playerNumbers
+                                        .sort((a,b) => a.number - b.number)
+                                        .map(player => (
+                                            <li key={player.id}>
+                                                {player.number}. {player.name}
+                                            </li>
+                                        ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
-                )}
+                    <div className="cross-reference-grid">
+                        {crossReferenceGrid.length > 0 && (
+                            <div>
+                                <h3>Cross Reference Grid</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            {playerNumbers.map(player => (
+                                                <th key={player.number}>{player.number}</th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {playerNumbers.map((player,rowIndex) => (
+                                            <tr key={player.number}>
+                                                <th>{player.number}</th>
+                                                {crossReferenceGrid[rowIndex].map((count,colIndex) => (
+                                                    <td key={colIndex}>{count}</td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
+                </div>
                 {generatedCombos.length === 0 && matchups.length > 0 && (
                     <div>
                         <h3 className="num-matchups">Total Possible Matchups: {matchups.length}</h3>

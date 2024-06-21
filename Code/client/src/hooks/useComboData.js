@@ -7,6 +7,7 @@ const useComboData = (players) => {
     const [numberOfCombos,setNumberOfCombos] = useState(1);
     const [generatedCombos,setGeneratedCombos] = useState([]);
     const [playerNumbers,setPlayerNumbers] = useState([]);
+    const [crossReferenceGrid,setCrossReferenceGrid] = useState([]);
 
     useEffect(() => {
         const { savedMatchups,savedGeneratedCombos,savedNumberedPlayers } = getSavedCombos();
@@ -22,8 +23,14 @@ const useComboData = (players) => {
     },[]);
 
     useEffect(() => {
-        saveCombos(matchups,generatedCombos,playerNumbers);
+        saveCombos(matchups,generatedCombos,playerNumbers,crossReferenceGrid);
     },[matchups,generatedCombos,playerNumbers]);
+
+    useEffect(() => {
+        if(generatedCombos.length > 0) {
+            calculateCrossReferenceGrid();
+        }
+    },[generatedCombos]);
 
     const handlePlayerSelect = (playerId) => {
         setSelectedPlayers((prevSelected) =>
@@ -74,6 +81,7 @@ const useComboData = (players) => {
         setMatchups([]);
         setGeneratedCombos([]);
         setPlayerNumbers([]);
+        setCrossReferenceGrid([]);
         localStorage.removeItem('matchups');
         localStorage.removeItem('generatedCombos');
         localStorage.removeItem('numberedPlayers');
@@ -85,12 +93,42 @@ const useComboData = (players) => {
         setGeneratedCombos(updatedCombos);
     };
 
+    const calculateCrossReferenceGrid = () => {
+        const grid = Array(playerNumbers.length)
+            .fill(null)
+            .map(() => Array(playerNumbers.length).fill(0));
+
+        generatedCombos.forEach((combo) => {
+            const teamA = combo.teamA;
+            const teamB = combo.teamB;
+
+            teamA.forEach((playerA) => {
+                teamA.forEach((playerB) => {
+                    if(playerA !== playerB) {
+                        grid[playerA.number - 1][playerB.number - 1]++;
+                    }
+                });
+            });
+
+            teamB.forEach((playerA) => {
+                teamB.forEach((playerB) => {
+                    if(playerA !== playerB) {
+                        grid[playerA.number - 1][playerB.number - 1]++;
+                    }
+                });
+            });
+        });
+
+        setCrossReferenceGrid(grid);
+    };
+
     return {
         selectedPlayers,
         matchups,
         numberOfCombos,
         generatedCombos,
         playerNumbers,
+        crossReferenceGrid,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,

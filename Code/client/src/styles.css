@@ -1173,6 +1173,69 @@ input[type="checkbox"]:disabled + label {
     text-decoration: line-through;
 }
 
+/* styles.css */
+
+/* Ensure the combos-page container displays the sections in a row */
+.combos-page {
+    flex-direction: column;
+    margin: 20px;
+}
+
+.combo-results {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Style for player numbers list */
+.player-numbers {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.player-numbers ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.player-numbers li {
+    padding: 5px 0;
+}
+
+/* Style for cross reference grid */
+.cross-reference-grid {
+    flex: 2;
+    overflow-x: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.cross-reference-grid table {
+    width: 60%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.cross-reference-grid th,
+.cross-reference-grid td {
+    padding: 8px;
+    background-color: rgba(255, 255, 255,0.6);
+    color:#000;
+    border: 2px solid#fff5d6;
+    border-radius: 55px;
+    text-align: center;
+}
+
+.cross-reference-grid th {
+    font-weight: bold;
+    background-color: #e7552b;
+    border: 2px solid #fff5d6;
+    border-radius: 55px;
+    text-align: center;
+}
+
+
 .combos-page .match-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);

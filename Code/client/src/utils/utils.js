@@ -146,18 +146,20 @@ export const getSavedCombos = () => {
         const savedMatchups = JSON.parse(localStorage.getItem('matchups')) || [];
         const savedGeneratedCombos = JSON.parse(localStorage.getItem('generatedCombos')) || [];
         const savedNumberedPlayers = JSON.parse(localStorage.getItem('numberedPlayers')) || [];
-        return { savedMatchups,savedGeneratedCombos,savedNumberedPlayers };
+        const savedReferenceGrid = JSON.parse(localStorage.getItem('referenceGrid')) || [];
+        return { savedMatchups,savedGeneratedCombos,savedNumberedPlayers,savedReferenceGrid };
     } catch(error) {
         console.error('Error parsing saved combos from localStorage:',error);
-        return { savedMatchups: [],savedGeneratedCombos: [],savedNumberedPlayers: [] };
+        return { savedMatchups: [],savedGeneratedCombos: [],savedNumberedPlayers: [],savedReferenceGrid: [],};
     }
 };
 
 // Function to save combos to local storage
-export const saveCombos = (matchups,generatedCombos,numberedPlayers) => {
+export const saveCombos = (matchups,generatedCombos,numberedPlayers,referenceGrid) => {
     localStorage.setItem('matchups',JSON.stringify(matchups));
     localStorage.setItem('generatedCombos',JSON.stringify(generatedCombos));
     localStorage.setItem('numberedPlayers',JSON.stringify(numberedPlayers));
+    localStorage.setItem('referenceGrid',JSON.stringify(referenceGrid));
 };
 
 export const getMostPlayedWithPlayer = (playerId,matches,players) => {
