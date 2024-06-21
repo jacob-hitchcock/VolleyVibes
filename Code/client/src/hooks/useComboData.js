@@ -38,6 +38,7 @@ const useComboData = (players) => {
                 ? prevSelected.filter((id) => id !== playerId)
                 : [...prevSelected,playerId]
         );
+        setCrossReferenceGrid([]);
     };
 
     const handleGenerateCombos = () => {
