@@ -14,21 +14,28 @@ const useComboData = (players) => {
     const [teamAStdDev,setTeamAStdDev] = useState(0);
 
     useEffect(() => {
-        const { savedMatchups,savedGeneratedCombos,savedNumberedPlayers } = getSavedCombos();
-        if(savedMatchups.length > 0) {
-            setMatchups(savedMatchups);
-        }
-        if(savedGeneratedCombos.length > 0) {
-            setGeneratedCombos(savedGeneratedCombos);
-        }
-        if(savedNumberedPlayers.length > 0) {
-            setPlayerNumbers(savedNumberedPlayers);
-        }
+        const {
+            savedSelectedPlayers,
+            savedMatchups,
+            savedGeneratedCombos,
+            savedNumberedPlayers,
+            savedReferenceGrid,
+            savedTeamACounts,
+            savedTeamAStdDev,
+        } = getSavedCombos();
+
+        if(savedSelectedPlayers.length > 0) setSelectedPlayers(savedSelectedPlayers);
+        if(savedMatchups.length > 0) setMatchups(savedMatchups);
+        if(savedGeneratedCombos.length > 0) setGeneratedCombos(savedGeneratedCombos);
+        if(savedNumberedPlayers.length > 0) setPlayerNumbers(savedNumberedPlayers);
+        if(savedReferenceGrid.length > 0) setCrossReferenceGrid(savedReferenceGrid);
+        if(savedTeamACounts.length > 0) setTeamACounts(savedTeamACounts);
+        if(savedTeamAStdDev !== undefined) setTeamAStdDev(savedTeamAStdDev);
     },[]);
 
     useEffect(() => {
-        saveCombos(matchups,generatedCombos,playerNumbers,crossReferenceGrid);
-    },[matchups,generatedCombos,playerNumbers]);
+        saveCombos(selectedPlayers,matchups,generatedCombos,playerNumbers,crossReferenceGrid,teamACounts,teamAStdDev);
+    },[selectedPlayers,matchups,generatedCombos,playerNumbers,crossReferenceGrid,teamACounts,teamAStdDev]);
 
     useEffect(() => {
         if(generatedCombos.length > 0) {
@@ -44,7 +51,9 @@ const useComboData = (players) => {
         );
         setCrossReferenceGrid([]);
         setCvArray([]);
-        setOverallCV([]);
+        setOverallCV(0);
+        setTeamACounts([]);
+        setTeamAStdDev(0);
     };
 
     const handleGenerateCombos = () => {
@@ -85,19 +94,22 @@ const useComboData = (players) => {
     };
 
     const handleClearCombos = () => {
+        setSelectedPlayers([]);
         setMatchups([]);
         setGeneratedCombos([]);
         setPlayerNumbers([]);
         setCrossReferenceGrid([]);
         setCvArray([]);
-        setOverallCV([]);
+        setOverallCV(0);
         setTeamACounts([]);
         setTeamAStdDev(0);
+        localStorage.removeItem('selectedPlayers');
         localStorage.removeItem('matchups');
         localStorage.removeItem('generatedCombos');
         localStorage.removeItem('numberedPlayers');
-        localStorage.removeItem('cvArray');
-        localStorage.removeItem('overallCV');
+        localStorage.removeItem('referenceGrid');
+        localStorage.removeItem('teamACounts');
+        localStorage.removeItem('teamAStdDev');
     };
 
     const toggleCompleted = (index) => {

@@ -141,26 +141,52 @@ export const calculateMatchups = (selectedPlayerIds,players) => {
     return { matchups: uniqueMatchups,numberedPlayers };
 };
 
+// Function to get saved combos from local storage
+// Function to get saved combos from local storage
 export const getSavedCombos = () => {
     try {
+        const savedSelectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers')) || [];
         const savedMatchups = JSON.parse(localStorage.getItem('matchups')) || [];
         const savedGeneratedCombos = JSON.parse(localStorage.getItem('generatedCombos')) || [];
         const savedNumberedPlayers = JSON.parse(localStorage.getItem('numberedPlayers')) || [];
         const savedReferenceGrid = JSON.parse(localStorage.getItem('referenceGrid')) || [];
-        return { savedMatchups,savedGeneratedCombos,savedNumberedPlayers,savedReferenceGrid };
+        const savedTeamACounts = JSON.parse(localStorage.getItem('teamACounts')) || [];
+        const savedTeamAStdDev = parseFloat(localStorage.getItem('teamAStdDev')) || 0;
+        return {
+            savedSelectedPlayers,
+            savedMatchups,
+            savedGeneratedCombos,
+            savedNumberedPlayers,
+            savedReferenceGrid,
+            savedTeamACounts,
+            savedTeamAStdDev,
+        };
     } catch(error) {
         console.error('Error parsing saved combos from localStorage:',error);
-        return { savedMatchups: [],savedGeneratedCombos: [],savedNumberedPlayers: [],savedReferenceGrid: [],};
+        return {
+            savedSelectedPlayers: [],
+            savedMatchups: [],
+            savedGeneratedCombos: [],
+            savedNumberedPlayers: [],
+            savedReferenceGrid: [],
+            savedTeamACounts: [],
+            savedTeamAStdDev: 0,
+        };
     }
 };
 
 // Function to save combos to local storage
-export const saveCombos = (matchups,generatedCombos,numberedPlayers,referenceGrid) => {
+export const saveCombos = (selectedPlayers,matchups,generatedCombos,numberedPlayers,referenceGrid,teamACounts,teamAStdDev) => {
+    localStorage.setItem('selectedPlayers',JSON.stringify(selectedPlayers));
     localStorage.setItem('matchups',JSON.stringify(matchups));
     localStorage.setItem('generatedCombos',JSON.stringify(generatedCombos));
     localStorage.setItem('numberedPlayers',JSON.stringify(numberedPlayers));
     localStorage.setItem('referenceGrid',JSON.stringify(referenceGrid));
+    localStorage.setItem('teamACounts',JSON.stringify(teamACounts));
+    localStorage.setItem('teamAStdDev',teamAStdDev.toString());
 };
+
+
 
 export const getMostPlayedWithPlayer = (playerId,matches,players) => {
     const teammateCount = {};

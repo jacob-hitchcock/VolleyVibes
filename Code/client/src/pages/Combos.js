@@ -110,7 +110,7 @@ const Combos = () => {
                                                 {crossReferenceGrid[rowIndex].map((count,colIndex) => (
                                                     <td key={colIndex}>{count}</td>
                                                 ))}
-                                                <td>{cvArray[rowIndex].toFixed(2)}</td>
+                                                <td>{cvArray[rowIndex] !== undefined ? cvArray[rowIndex].toFixed(2) : 'N/A'}</td>
                                                 {isOddPlayers && <td>{teamACounts[rowIndex]}</td>}
                                             </tr>
                                         ))}
