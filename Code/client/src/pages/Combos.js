@@ -7,6 +7,7 @@ import PlayerCheckboxList from '../components/PlayerCheckboxList';
 import MatchupList from '../components/MatchupList';
 import ComboControls from '../components/ComboControls';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import '../styles.css';
 
 const Combos = () => {
@@ -41,7 +42,10 @@ const Combos = () => {
                 <h2 className="leader-title">Combination Generator</h2>
                 <h3>Select Players for Combos</h3>
                 {loading ? (
-                    <p>Loading players...</p>
+                    <div className="loading-indicator">
+                        <CircularProgress sx={{ color: '#e7552b' }} />
+                        <p>Loading players...</p>
+                    </div>
                 ) : (
                         <PlayerCheckboxList
                             players={players}

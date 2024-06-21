@@ -6,6 +6,7 @@ import SearchBar from '../components/SearchBar';
 import Footer from '../components/Footer';
 import useFetchData from '../hooks/useFetchData';
 import useToggle from '../hooks/useToggle';
+import CircularProgress from '@mui/material/CircularProgress';
 import '../styles.css';
 
 function PlayerManagement() {
@@ -24,7 +25,10 @@ function PlayerManagement() {
             <NavBar />
             <h2 className="player-title">Players</h2>
             {loading ? (
-                <div className="loading-indicator">Loading players...</div>
+                <div className="loading-indicator">
+                    <CircularProgress sx={{ color: '#E7552B' }} />
+                    <p>Loading players...</p>
+                </div>
             ) : (
                     <>
                         <SearchBar

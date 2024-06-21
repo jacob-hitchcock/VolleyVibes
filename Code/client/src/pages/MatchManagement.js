@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import FilterBar from '../components/FilterBar';
 import MatchGrid from '../components/MatchGrid';
 import MatchDetailsModal from '../components/MatchDetailsModal';
+import CircularProgress from '@mui/material/CircularProgress';
 import useFetchData from '../hooks/useFetchData';
 import useFilters from '../hooks/useFilters';
 import {
@@ -83,7 +84,10 @@ const MatchManagement = () => {
                 }}
             />
             {loading ? (
-                <div className="loading-indicator">Loading matches...</div>
+                <div className="loading-indicator">
+                    <CircularProgress sx={{ color: '#E7552B' }} />
+                    <p>Loading matches...</p>
+                </div>
             ) : (
                     <MatchGrid
                         groupedMatches={groupedMatches}
