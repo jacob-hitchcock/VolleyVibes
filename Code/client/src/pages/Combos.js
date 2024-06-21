@@ -100,7 +100,7 @@ const Combos = () => {
                                                 <th key={player.number}>{player.number}</th>
                                             ))}
                                             <th>Balance</th>
-                                            {isOddPlayers && <th>Smaller Team Count</th>}
+                                            {isOddPlayers && <th>Team A Count</th>}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -118,7 +118,7 @@ const Combos = () => {
                                 </table>
                                 <div className="overall-cv">
                                     <h4>Overall Balance: {overallCV.toFixed(2)}</h4>
-                                    {isOddPlayers && <h4>Smaller Team Balance: {teamAStdDev.toFixed(2)}</h4>}
+                                    {isOddPlayers && <h4>Team A Balance: {teamAStdDev.toFixed(2)}</h4>}
                                 </div>
                             </div>
                         )}

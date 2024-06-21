@@ -1212,7 +1212,7 @@ input[type="checkbox"]:disabled + label {
 }
 
 .cross-reference-grid table {
-    width: 60%;
+    width: 100%;
     border-collapse: collapse;
     text-align: center;
 }
@@ -1235,8 +1235,10 @@ input[type="checkbox"]:disabled + label {
     font-weight: bold;
     background-color: #e7552b;
     border: 2px solid #fff5d6;
-    border-radius: 55px;
+    border-radius: 15px;
     text-align: center;
+
+    white-space: nowrap;
 }
 
 
