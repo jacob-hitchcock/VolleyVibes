@@ -1227,6 +1227,10 @@ input[type="checkbox"]:disabled + label {
     text-align: center;
 }
 
+.overall-cv {
+    color: #e7552b;
+}
+
 .cross-reference-grid th {
     font-weight: bold;
     background-color: #e7552b;

@@ -8,6 +8,8 @@ const useComboData = (players) => {
     const [generatedCombos,setGeneratedCombos] = useState([]);
     const [playerNumbers,setPlayerNumbers] = useState([]);
     const [crossReferenceGrid,setCrossReferenceGrid] = useState([]);
+    const [cvArray,setCvArray] = useState([]);
+    const [overallCV,setOverallCV] = useState([]);
 
     useEffect(() => {
         const { savedMatchups,savedGeneratedCombos,savedNumberedPlayers } = getSavedCombos();
@@ -39,6 +41,8 @@ const useComboData = (players) => {
                 : [...prevSelected,playerId]
         );
         setCrossReferenceGrid([]);
+        setCvArray([]);
+        setOverallCV([]);
     };
 
     const handleGenerateCombos = () => {
@@ -83,9 +87,13 @@ const useComboData = (players) => {
         setGeneratedCombos([]);
         setPlayerNumbers([]);
         setCrossReferenceGrid([]);
+        setCvArray([]);
+        setOverallCV([]);
         localStorage.removeItem('matchups');
         localStorage.removeItem('generatedCombos');
         localStorage.removeItem('numberedPlayers');
+        localStorage.removeItem('cvArray');
+        localStorage.removeItem('overallCV');
     };
 
     const toggleCompleted = (index) => {
@@ -120,7 +128,28 @@ const useComboData = (players) => {
             });
         });
 
+        const cvArray = grid.map((counts,index) => {
+            const filteredCounts = counts.filter((_,i) => i !== index);
+            const mean = filteredCounts.reduce((sum,count) => sum + count,0) / filteredCounts.length;
+            const variance = filteredCounts.reduce((sum,count) => sum + Math.pow(count - mean,2),0) / filteredCounts.length;
+            const standardDeviation = Math.sqrt(variance);
+            const cv = mean === 0 ? 0 : (standardDeviation / mean) * 10;
+            return cv;
+        });
+
+        const allCounts = grid.flat().filter((count,index) => {
+            const row = Math.floor(index / playerNumbers.length);
+            const col = index % playerNumbers.length;
+            return row !== col;
+        });
+        const overallMean = allCounts.reduce((sum,count) => sum + count,0) / allCounts.length;
+        const overallVariance = allCounts.reduce((sum,count) => sum + Math.pow(count - overallMean,2),0) / allCounts.length;
+        const overallStandardDeviation = Math.sqrt(overallVariance);
+        const overallCV = overallMean === 0 ? 0 : (overallStandardDeviation / overallMean) * 10;
+
         setCrossReferenceGrid(grid);
+        setCvArray(cvArray);
+        setOverallCV(overallCV);
     };
 
     return {
@@ -130,6 +159,8 @@ const useComboData = (players) => {
         generatedCombos,
         playerNumbers,
         crossReferenceGrid,
+        cvArray,
+        overallCV,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,

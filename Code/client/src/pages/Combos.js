@@ -18,6 +18,8 @@ const Combos = () => {
         generatedCombos,
         playerNumbers,
         crossReferenceGrid,
+        cvArray,
+        overallCV,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,
@@ -93,6 +95,7 @@ const Combos = () => {
                                             {playerNumbers.map(player => (
                                                 <th key={player.number}>{player.number}</th>
                                             ))}
+                                            <th>Balance</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -102,10 +105,14 @@ const Combos = () => {
                                                 {crossReferenceGrid[rowIndex].map((count,colIndex) => (
                                                     <td key={colIndex}>{count}</td>
                                                 ))}
+                                                <td>{cvArray[rowIndex].toFixed(2)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
+                                <div className="overall-cv">
+                                    <h4>Overall Balance: {overallCV.toFixed(2)}</h4>
+                                </div>
                             </div>
                         )}
                     </div>
