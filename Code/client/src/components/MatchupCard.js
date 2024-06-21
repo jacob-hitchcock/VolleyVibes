@@ -18,10 +18,10 @@ const MatchupCard = ({
             <strong>{isGenerated ? `Selected Matchup ${index + 1}` : `Matchup ${index + 1}`}:</strong>
         </div>
         <div>
-            <strong>Team A:</strong> {matchup.teamA.map(player => `${player.number}. ${player.name}`).join(', ')}
+            <strong className="orange">Team A:</strong> {matchup.teamA.map(player => `${player.number}. ${player.name}`).join(', ')}
         </div>
         <div>
-            <strong>Team B:</strong> {matchup.teamB.map(player => `${player.number}. ${player.name}`).join(', ')}
+            <strong className="orange">Team B:</strong> {matchup.teamB.map(player => `${player.number}. ${player.name}`).join(', ')}
         </div>
         {isAdmin && (
             <div className="admin-controls">
