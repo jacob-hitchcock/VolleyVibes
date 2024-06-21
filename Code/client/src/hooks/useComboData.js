@@ -9,7 +9,9 @@ const useComboData = (players) => {
     const [playerNumbers,setPlayerNumbers] = useState([]);
     const [crossReferenceGrid,setCrossReferenceGrid] = useState([]);
     const [cvArray,setCvArray] = useState([]);
-    const [overallCV,setOverallCV] = useState([]);
+    const [overallCV,setOverallCV] = useState(0);
+    const [teamACounts,setTeamACounts] = useState([]);
+    const [teamAStdDev,setTeamAStdDev] = useState(0);
 
     useEffect(() => {
         const { savedMatchups,savedGeneratedCombos,savedNumberedPlayers } = getSavedCombos();
@@ -89,6 +91,8 @@ const useComboData = (players) => {
         setCrossReferenceGrid([]);
         setCvArray([]);
         setOverallCV([]);
+        setTeamACounts([]);
+        setTeamAStdDev(0);
         localStorage.removeItem('matchups');
         localStorage.removeItem('generatedCombos');
         localStorage.removeItem('numberedPlayers');
@@ -106,6 +110,8 @@ const useComboData = (players) => {
         const grid = Array(playerNumbers.length)
             .fill(null)
             .map(() => Array(playerNumbers.length).fill(0));
+
+        const teamACounts = Array(playerNumbers.length).fill(0);
 
         generatedCombos.forEach((combo) => {
             const teamA = combo.teamA;
@@ -126,6 +132,12 @@ const useComboData = (players) => {
                     }
                 });
             });
+
+            if(teamA.length !== teamB.length) {
+                teamA.forEach((player) => {
+                    teamACounts[player.number - 1]++;
+                });
+            }
         });
 
         const cvArray = grid.map((counts,index) => {
@@ -147,9 +159,15 @@ const useComboData = (players) => {
         const overallStandardDeviation = Math.sqrt(overallVariance);
         const overallCV = overallMean === 0 ? 0 : (overallStandardDeviation / overallMean) * 10;
 
+        const teamAMean = teamACounts.reduce((sum,count) => sum + count,0) / teamACounts.length;
+        const teamAVariance = teamACounts.reduce((sum,count) => sum + Math.pow(count - teamAMean,2),0) / teamACounts.length;
+        const teamAStdDev = Math.sqrt(teamAVariance);
+
         setCrossReferenceGrid(grid);
         setCvArray(cvArray);
         setOverallCV(overallCV);
+        setTeamACounts(teamACounts);
+        setTeamAStdDev(teamAStdDev);
     };
 
     return {
@@ -161,6 +179,8 @@ const useComboData = (players) => {
         crossReferenceGrid,
         cvArray,
         overallCV,
+        teamACounts,
+        teamAStdDev,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,

@@ -20,6 +20,8 @@ const Combos = () => {
         crossReferenceGrid,
         cvArray,
         overallCV,
+        teamACounts,
+        teamAStdDev,
         handlePlayerSelect,
         handleGenerateCombos,
         handleSelectNumberOfCombos,
@@ -29,6 +31,8 @@ const Combos = () => {
     } = useComboData(players);
 
     const noop = () => { }; // No operation function for possible matchups
+
+    const isOddPlayers = selectedPlayers.length % 2 !== 0;
 
     return (
         <div>
@@ -96,6 +100,7 @@ const Combos = () => {
                                                 <th key={player.number}>{player.number}</th>
                                             ))}
                                             <th>Balance</th>
+                                            {isOddPlayers && <th>Smaller Team Count</th>}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -106,12 +111,14 @@ const Combos = () => {
                                                     <td key={colIndex}>{count}</td>
                                                 ))}
                                                 <td>{cvArray[rowIndex].toFixed(2)}</td>
+                                                {isOddPlayers && <td>{teamACounts[rowIndex]}</td>}
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                                 <div className="overall-cv">
                                     <h4>Overall Balance: {overallCV.toFixed(2)}</h4>
+                                    {isOddPlayers && <h4>Smaller Team Balance: {teamAStdDev.toFixed(2)}</h4>}
                                 </div>
                             </div>
                         )}
