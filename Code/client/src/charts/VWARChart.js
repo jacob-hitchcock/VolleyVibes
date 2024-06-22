@@ -12,11 +12,21 @@ const formatDateWithoutYear = (dateString) => {
 };
 
 const VWARChart = ({ data,dataKey,title,strokeColor,displayName,overallWinningPercentage,animate }) => {
+    if(data.length < 2) {
+        return (
+            <ChartCard>
+                <Typography variant="h6" sx={{ color: 'black',fontFamily: 'Coolvetica' }}>
+                    Not enough data to display VWAR.
+                </Typography>
+            </ChartCard>
+        );
+    }
+
     const chartConfig = vwarChartConfig(dataKey,strokeColor,title,displayName,animate);
 
-    // Calculate the change in winning percentage
-    const recentData = data.length > 1 ? data[data.length - 1] : null;
-    const previousData = data.length > 1 ? data[data.length - 2] : null;
+    // Calculate the change in VWAR
+    const recentData = data[data.length - 1];
+    const previousData = data[data.length - 2];
     const changeInVWAR = recentData && previousData
         ? (recentData.VWAR - previousData.VWAR).toFixed(2)
         : '0.000';

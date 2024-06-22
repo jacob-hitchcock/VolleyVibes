@@ -67,7 +67,7 @@ function HomePage() {
 
             <Snackbar open={openSnackbar} autoHideDuration={10000} onClose={() => setOpenSnackbar(false)}>
                 <Alert onClose={() => setOpenSnackbar(false)} sx={{ width: '100%',backgroundColor: '#E7552B',color: '#fff5d6' }}>
-                    Click on a player's name to view their stats!
+                    Track new achievements on the milestones page!
                 </Alert>
             </Snackbar>
         </div>

@@ -7,13 +7,13 @@ import HomePage from './pages/HomePage';
 import PlayerManagement from './pages/PlayerManagement';
 import MatchManagement from './pages/MatchManagement';
 import TermsOfService from './pages/TermsOfService';
-import Contact from './pages/Contact';
 import PlayerDashboard from './pages/PlayerDashboard';
 import Combos from './pages/Combos';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/AdminDashboard';
 import LoginPage from './pages/LoginPage';
 import MatchupPredictor from './pages/MatchupPredictor';
+import MilestonesPage from './pages/MilestonesPage';
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile/:playerId" element={<PlayerDashboard />} />
           <Route path="/predictor" element={<MatchupPredictor />} />
+          <Route path="/milestones" element={<MilestonesPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/protected" element={<AdminDashboard />} />
           </Route>

@@ -27,14 +27,14 @@ function NavBar() {
                 <Link to="/combos" className={location.pathname === '/combos' ? 'active' : ''}>Combos</Link>
             </nav>
             <nav className="nav-right">
-                <Link to="/players" className={location.pathname === '/players' ? 'active' : ''}>Players</Link>
+                <Link to="/milestones" className={location.pathname === '/milestones' ? 'active' : ''}>Milestones</Link>
                 <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
             </nav>
             {menuOpen && (
                 <nav className="mobile-nav">
                     <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
                     <Link to="/combos" className={location.pathname === '/combos' ? 'active' : ''}>Combos</Link>
-                    <Link to="/players" className={location.pathname === '/players' ? 'active' : ''}>Players</Link>
+                    <Link to="/milestones" className={location.pathname === '/milestones' ? 'active' : ''}>Milestones</Link>
                     <Link to="/matches" className={location.pathname === '/matches' ? 'active' : ''}>Matches</Link>
                 </nav>
             )}
