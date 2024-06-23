@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const Leaderboard = ({ players,sortConfig,requestSort,getSortIndicator,initialLoad,loading }) => (
+const Leaderboard = React.memo(({ players,sortConfig,requestSort,getSortIndicator,initialLoad,loading }) => (
     <div className="leaderboard-table-wrapper">
         <table className="leaderlist">
             <thead>
@@ -81,6 +82,15 @@ const Leaderboard = ({ players,sortConfig,requestSort,getSortIndicator,initialLo
             </tbody>
         </table>
     </div>
-);
+));
+
+Leaderboard.propTypes = {
+    players: PropTypes.array.isRequired,
+    sortConfig: PropTypes.object.isRequired,
+    requestSort: PropTypes.func.isRequired,
+    getSortIndicator: PropTypes.func.isRequired,
+    initialLoad: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
+};
 
 export default Leaderboard;

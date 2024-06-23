@@ -9,11 +9,12 @@ import useFilters from '../hooks/useFilters';
 import useSortedPlayers from '../hooks/useSortedPlayers';
 import FilterBar from '../components/FilterBar';
 import Snackbar from '@mui/material/Snackbar';
+import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 
 function HomePage() {
-    const { matches,players,loading: dataLoading } = useFetchData();
-    const initialLoad = useInitialLoad(1000); // 1 second duration for initial load animation
+    const { matches,players,loading } = useFetchData();
+    const initialLoad = useInitialLoad(1555); // About 1.555 second duration for initial load animation
 
     const {
         filterPlayerDate,
@@ -51,16 +52,23 @@ function HomePage() {
                         availableLocations={['Grass','Beach','Indoor Court']}
                         resetFilters={resetPlayerFilters}
                     />
-                    <div className="leaderboard-container">
-                        <Leaderboard
-                            players={sortedPlayers}
-                            sortConfig={sortConfig}
-                            requestSort={requestSort}
-                            getSortIndicator={getSortIndicator}
-                            initialLoad={initialLoad}
-                            loading={dataLoading}
-                        />
-                    </div>
+                    {loading ? (
+                        <div className="loading-indicator">
+                            <CircularProgress sx={{ color: '#E7552B' }} />
+                            <p>Loading players...</p>
+                        </div>
+                    ) : (
+                            <div className="leaderboard-container">
+                                <Leaderboard
+                                    players={sortedPlayers}
+                                    sortConfig={sortConfig}
+                                    requestSort={requestSort}
+                                    getSortIndicator={getSortIndicator}
+                                    initialLoad={initialLoad}
+                                    loading={loading}
+                                />
+                            </div>
+                        )}
                 </div>
             </main>
             <Footer />

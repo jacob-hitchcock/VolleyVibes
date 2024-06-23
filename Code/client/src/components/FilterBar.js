@@ -2,8 +2,9 @@ import React,{ useState } from 'react';
 import Dropdown from './Dropdown';
 import '../styles.css';
 import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
 
-const FilterBar = ({
+const FilterBar = React.memo(({
     context,
     winners = [],losers = [],
     filterWinners = [],setFilterWinners = () => { },
@@ -143,10 +144,32 @@ const FilterBar = ({
                     }}
                 >
                     Reset Filters
-</Button>
+                </Button>
             </div>
         </div>
     );
+});
+
+FilterBar.propTypes = {
+    context: PropTypes.string.isRequired,
+    winners: PropTypes.array,
+    losers: PropTypes.array,
+    filterWinners: PropTypes.array,
+    setFilterWinners: PropTypes.func,
+    filterLosers: PropTypes.array,
+    setFilterLosers: PropTypes.func,
+    filterMatchDate: PropTypes.string,
+    setFilterMatchDate: PropTypes.func,
+    filterLocations: PropTypes.array,
+    setFilterLocations: PropTypes.func,
+    filterDate: PropTypes.string,
+    setFilterDate: PropTypes.func,
+    filterPlayerDate: PropTypes.string,
+    setFilterPlayerDate: PropTypes.func,
+    filterPlayerLocations: PropTypes.array,
+    setFilterPlayerLocations: PropTypes.func,
+    availableLocations: PropTypes.array,
+    resetFilters: PropTypes.func,
 };
 
 export default FilterBar;
