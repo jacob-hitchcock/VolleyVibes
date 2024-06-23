@@ -1271,6 +1271,23 @@ input[type="checkbox"]:disabled + label {
     width: 75%;
 }
 
+
+.timeline-element .vertical-timeline-element-content:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 6px;
+    background-color: #e7552b;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.vertical-timeline-element-title {
+    color: black;
+}
+
+
 /* Ensure the parent container takes the full width */
 .leaderboard-table-wrapper {
     width: 100%;

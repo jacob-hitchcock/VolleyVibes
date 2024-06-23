@@ -9,7 +9,6 @@ const PlayerStats = ({ player,matches,didPlayerTeamWin,aggregatedPlayerStats,onM
         if(playerPerformance && playerPerformance.milestones) {
             playerPerformance.milestones.forEach((milestone) => {
                 if(!milestonesAdded[milestone.milestone]) {
-                    console.log(`Adding milestone for ${player.name}`);
                     onMilestone({
                         player: player.name,
                         date: milestone.date,

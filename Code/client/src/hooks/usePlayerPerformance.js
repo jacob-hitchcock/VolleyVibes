@@ -31,6 +31,8 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
         let nextWinMilestone = 50;
         let nextMilestoneIncrement = 50;
         let nextVWARmilestone = 10;
+        let currentStreak = 0;
+        let currentStreakStartDate = null;
 
         const performanceOverTime = [];
         const statsByLocation = {
@@ -49,7 +51,27 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
             dailyMatches.forEach(match => {
                 dailyGamesPlayed++;
                 const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
-                if(didPlayerTeamWin(match,playerTeamIndex)) dailyWins++;
+                if(didPlayerTeamWin(match,playerTeamIndex)) {
+                    dailyWins++;
+                    currentStreak++;
+                    if(currentStreakStartDate === null) {
+                        currentStreakStartDate = match.date;
+                    }
+                } else {
+                    if(currentStreak >= 5) {
+                        const startDate = formatDate(currentStreakStartDate);
+                        const endDate = formatDate(match.date);
+                        const streakDescription = startDate === endDate
+                            ? `Had A ${currentStreak} Game Win Streak On ${startDate}`
+                            : `Had A ${currentStreak} Game Win Streak From ${startDate} To ${endDate}`;
+                        milestones.push({
+                            milestone: streakDescription,
+                            date: endDate,
+                        });
+                    }
+                    currentStreak = 0;
+                    currentStreakStartDate = null;
+                }
 
                 // Update location-based statistics
                 const location = normalizeLocation(match.location);
@@ -120,6 +142,18 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                 }
             }
         });
+
+        if(currentStreak >= 5) {
+            const startDate = formatDate(currentStreakStartDate);
+            const endDate = formatDate(playerMatches[playerMatches.length - 1].date);
+            const streakDescription = startDate === endDate
+                ? `Had A ${currentStreak} Game Win Streak On ${startDate}`
+                : `Had A ${currentStreak} Game Win Streak From ${startDate} To ${endDate}`;
+            milestones.push({
+                milestone: streakDescription,
+                date: endDate,
+            });
+        }
 
         const totalGamesPlayed = playerMatches.length;
         const totalWins = playerMatches.filter(match => {

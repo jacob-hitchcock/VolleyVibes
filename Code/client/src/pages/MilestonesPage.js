@@ -5,6 +5,7 @@ import useFetchData from '../hooks/useFetchData';
 import useFilters from '../hooks/useFilters';
 import PlayerStats from '../components/PlayerStats';
 import Timeline from '../components/Timeline';
+import CircularProgress from '@mui/material/CircularProgress';
 import '../styles.css';
 
 const MilestonesPage = () => {
@@ -21,27 +22,33 @@ const MilestonesPage = () => {
         }
     };
 
-    if(loading) return <div>Loading...</div>;
-    if(error) return <div>Error loading milestone data.</div>;
-
     return (
         <div>
             <NavBar />
             <div className="milestones-page">
                 <h1>League Milestones</h1>
-                <ul>
-                    {players.map((player) => (
-                        <PlayerStats
-                            key={player._id}
-                            player={player}
-                            matches={matches}
-                            didPlayerTeamWin={didPlayerTeamWin}
-                            aggregatedPlayerStats={aggregatedPlayerStats}
-                            onMilestone={handleMilestone}
-                        />
-                    ))}
-                </ul>
-                <Timeline milestones={milestones} />
+                {loading ? (
+                    <div className="loading-indicator">
+                        <CircularProgress sx={{ color: '#E7552B' }} />
+                        <p>Loading milestones...</p>
+                    </div>
+                ) : (
+                        <div>
+                            <ul>
+                                {players.map((player) => (
+                                    <PlayerStats
+                                        key={player._id}
+                                        player={player}
+                                        matches={matches}
+                                        didPlayerTeamWin={didPlayerTeamWin}
+                                        aggregatedPlayerStats={aggregatedPlayerStats}
+                                        onMilestone={handleMilestone}
+                                    />
+                                ))}
+                            </ul>
+                            <Timeline milestones={milestones} />
+                        </div>
+                    )}
             </div>
             <Footer />
         </div>
