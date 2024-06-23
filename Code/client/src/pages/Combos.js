@@ -1,9 +1,10 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import useFetchData from '../hooks/useFetchData';
 import useComboData from '../hooks/useComboData';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import PlayerCheckboxList from '../components/PlayerCheckboxList';
+import SkeletonPlayerCheckboxList from '../components/SkeletonPlayerCheckboxList';
 import MatchupList from '../components/MatchupList';
 import ComboControls from '../components/ComboControls';
 import Button from '@mui/material/Button';
@@ -11,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import '../styles.css';
 
 const Combos = () => {
-    const { players,loading } = useFetchData();
+    const { players,loading,error } = useFetchData();
     const {
         selectedPlayers,
         matchups,
@@ -30,10 +31,21 @@ const Combos = () => {
         handleClearCombos,
         toggleCompleted,
     } = useComboData(players);
+    const [generatingCombos,setGeneratingCombos] = useState(false);
 
     const noop = () => { }; // No operation function for possible matchups
 
     const isOddPlayers = selectedPlayers.length % 2 !== 0;
+
+    const handleGenerateCombosWithLoading = async () => {
+        setGeneratingCombos(true);
+        await handleGenerateCombos();
+        setGeneratingCombos(false);
+    };
+
+    if(error) {
+        return <div className="error-message">Error loading players. Please try again later.</div>;
+    }
 
     return (
         <div>
@@ -42,10 +54,7 @@ const Combos = () => {
                 <h2 className="leader-title">Combination Generator</h2>
                 <h3>Select Players for Combos</h3>
                 {loading ? (
-                    <div className="loading-indicator">
-                        <CircularProgress sx={{ color: '#e7552b' }} />
-                        <p>Loading players...</p>
-                    </div>
+                    <SkeletonPlayerCheckboxList />
                 ) : (
                         <PlayerCheckboxList
                             players={players}
@@ -68,7 +77,11 @@ const Combos = () => {
                         backgroundColor: '#e03e00',
                     },
                 }}
-                    onClick={handleGenerateCombos}>Generate Combos</Button>
+                    onClick={handleGenerateCombosWithLoading}
+                    disabled={loading || generatingCombos || selectedPlayers.length === 0} // Add a state to handle generating combos
+                >
+                    {generatingCombos ? 'Generating...' : 'Generate Combos'}
+                </Button>
                 <ComboControls
                     numberOfCombos={numberOfCombos}
                     handleSelectNumberOfCombos={handleSelectNumberOfCombos}
