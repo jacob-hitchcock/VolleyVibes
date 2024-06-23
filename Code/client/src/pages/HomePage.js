@@ -15,7 +15,7 @@ import Alert from '@mui/material/Alert';
 
 function HomePage() {
     const { matches,players,loading } = useFetchData();
-    const initialLoad = useInitialLoad(1555); // About 1.555 second duration for initial load animation
+    const initialLoad = useInitialLoad(2000); // About 1.555 second duration for initial load animation
 
     const {
         filterPlayerDate,
