@@ -6,11 +6,14 @@ const TeamSelection = ({ teamA,teamB,players,handlePlayerSelection }) => {
     const teamAIds = Array.isArray(teamA) ? teamA : [];
     const teamBIds = Array.isArray(teamB) ? teamB : [];
 
+    // Sort players alphabetically by name
+    const sortedPlayers = [...players].sort((a,b) => a.name.localeCompare(b.name));
+
     return (
         <div className="teams">
             <div className="team">
                 <h3>Team A</h3>
-                {players.map(player => (
+                {sortedPlayers.map(player => (
                     <div key={player._id}>
                         <input
                             type="checkbox"
@@ -26,7 +29,7 @@ const TeamSelection = ({ teamA,teamB,players,handlePlayerSelection }) => {
             </div>
             <div className="team">
                 <h3>Team B</h3>
-                {players.map(player => (
+                {sortedPlayers.map(player => (
                     <div key={player._id}>
                         <input
                             type="checkbox"
