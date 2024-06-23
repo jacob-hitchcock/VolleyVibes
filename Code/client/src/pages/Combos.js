@@ -8,7 +8,6 @@ import SkeletonPlayerCheckboxList from '../components/SkeletonPlayerCheckboxList
 import MatchupList from '../components/MatchupList';
 import ComboControls from '../components/ComboControls';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
 import '../styles.css';
 
 const Combos = () => {
@@ -78,7 +77,7 @@ const Combos = () => {
                     },
                 }}
                     onClick={handleGenerateCombosWithLoading}
-                    disabled={loading || generatingCombos || selectedPlayers.length === 0} // Add a state to handle generating combos
+                    disabled={loading || generatingCombos || selectedPlayers.length < 2} // Add a state to handle generating combos
                 >
                     {generatingCombos ? 'Generating...' : 'Generate Combos'}
                 </Button>
