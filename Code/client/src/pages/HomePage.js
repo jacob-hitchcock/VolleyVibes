@@ -9,9 +9,9 @@ import useFilters from '../hooks/useFilters';
 import useSortedPlayers from '../hooks/useSortedPlayers';
 import FilterBar from '../components/FilterBar';
 import SkeletonLeaderboard from '../components/SkeletonLeaderboard';
-import SkeletonFilterBar from '../components/SkeletonFilterBar';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { Link } from 'react-router-dom';
 
 function HomePage() {
     const { matches,players,loading } = useFetchData();
@@ -73,7 +73,7 @@ function HomePage() {
 
             <Snackbar open={openSnackbar} autoHideDuration={10000} onClose={() => setOpenSnackbar(false)}>
                 <Alert onClose={() => setOpenSnackbar(false)} sx={{ width: '100%',backgroundColor: '#E7552B',color: '#fff5d6' }}>
-                    Track new achievements on the milestones page!
+                    Track new achievements on the <Link to="/milestones" style={{ color: '#fff5d6',textDecoration: 'underline' }}>milestones page</Link>!
                 </Alert>
             </Snackbar>
         </div>
