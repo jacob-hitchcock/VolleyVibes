@@ -44,19 +44,15 @@ function HomePage() {
             <main>
                 <h2 className="leader-title">Leaderboard</h2>
                 <div className="home-content">
-                    {loading ? (
-                        <SkeletonFilterBar />
-                    ) : (
-                            <FilterBar
-                                context="players"
-                                filterPlayerDate={filterPlayerDate}
-                                setFilterPlayerDate={setFilterPlayerDate}
-                                filterPlayerLocations={filterPlayerLocations}
-                                setFilterPlayerLocations={setFilterPlayerLocations}
-                                availableLocations={['Grass','Beach','Indoor Court']}
-                                resetFilters={resetPlayerFilters}
-                            />
-                        )}
+                    <FilterBar
+                        context="players"
+                        filterPlayerDate={filterPlayerDate}
+                        setFilterPlayerDate={setFilterPlayerDate}
+                        filterPlayerLocations={filterPlayerLocations}
+                        setFilterPlayerLocations={setFilterPlayerLocations}
+                        availableLocations={['Grass','Beach','Indoor Court']}
+                        resetFilters={resetPlayerFilters}
+                    />
                     {loading ? (
                         <SkeletonLeaderboard />
                     ) : (
