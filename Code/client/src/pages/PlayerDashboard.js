@@ -19,6 +19,8 @@ import LeastImpactfulTeammateCard from '../components/LeastImpactfulTeammateCard
 import DoughnutChartComponent from '../charts/DoughnutChartComponent';
 import ChartCard from '../components/ChartCard';
 import AnimatedChartWrapper from '../components/AnimatedChartWrapper';
+import SkeletonStatCard from '../components/SkeletonStatCard';
+import SkeletonPlayerDashboard from '../components/SkeletonPlayerDashboard';
 
 const PlayerDashboard = () => {
   const { playerId } = useParams();
@@ -34,7 +36,7 @@ const PlayerDashboard = () => {
   const { name: leastPlayedWithPlayer,gamesPlayed: leastPlayedGames } = getLeastPlayedWithPlayer(playerId,matches,players);
   const { highestWinningPercentageTeammate,lowestWinningPercentageTeammate,highestContributingTeammate,leastImpactfulTeammate } = getWinningPercentageTeammates(playerId,matches,players);
 
-  if(loading) return <div>Loading...</div>;
+  if(loading) return <SkeletonPlayerDashboard />;
   if(error) return <div>Error loading player data.</div>;
 
   const winData = [
