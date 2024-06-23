@@ -12,6 +12,7 @@ const MilestonesPage = () => {
     const { matches,players,loading,error } = useFetchData();
     const { didPlayerTeamWin,aggregatedPlayerStats } = useFilters(matches,players);
     const [milestones,setMilestones] = useState([]);
+    const [selectedPlayer,setSelectedPlayer] = useState('All');
     const addedMilestonesRef = useRef(new Set());
 
     const handleMilestone = (milestone) => {
@@ -21,6 +22,10 @@ const MilestonesPage = () => {
             addedMilestonesRef.current.add(milestone.player + milestone.title);
         }
     };
+
+    const filteredMilestones = selectedPlayer === 'All'
+        ? milestones
+        : milestones.filter(milestone => milestone.player === selectedPlayer);
 
     return (
         <div>
@@ -34,6 +39,13 @@ const MilestonesPage = () => {
                     </div>
                 ) : (
                         <div>
+                            <label htmlFor="player-select">Filter by Player: </label>
+                            <select id="player-select" value={selectedPlayer} onChange={(e) => setSelectedPlayer(e.target.value)}>
+                                <option value="All">All</option>
+                                {players.map((player) => (
+                                    <option key={player._id} value={player.name}>{player.name}</option>
+                                ))}
+                            </select>
                             <ul>
                                 {players.map((player) => (
                                     <PlayerStats
@@ -46,7 +58,11 @@ const MilestonesPage = () => {
                                     />
                                 ))}
                             </ul>
-                            <Timeline milestones={milestones} />
+                            {filteredMilestones.length > 0 ? (
+                                <Timeline milestones={filteredMilestones} />
+                            ) : (
+                                    <p>No milestones yet.</p>
+                                )}
                         </div>
                     )}
             </div>
