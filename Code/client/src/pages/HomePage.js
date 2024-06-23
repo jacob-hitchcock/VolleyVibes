@@ -8,8 +8,9 @@ import useFetchData from '../hooks/useFetchData';
 import useFilters from '../hooks/useFilters';
 import useSortedPlayers from '../hooks/useSortedPlayers';
 import FilterBar from '../components/FilterBar';
+import SkeletonLeaderboard from '../components/SkeletonLeaderboard';
+import SkeletonFilterBar from '../components/SkeletonFilterBar';
 import Snackbar from '@mui/material/Snackbar';
-import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 
 function HomePage() {
@@ -43,20 +44,21 @@ function HomePage() {
             <main>
                 <h2 className="leader-title">Leaderboard</h2>
                 <div className="home-content">
-                    <FilterBar
-                        context="players"
-                        filterPlayerDate={filterPlayerDate}
-                        setFilterPlayerDate={setFilterPlayerDate}
-                        filterPlayerLocations={filterPlayerLocations}
-                        setFilterPlayerLocations={setFilterPlayerLocations}
-                        availableLocations={['Grass','Beach','Indoor Court']}
-                        resetFilters={resetPlayerFilters}
-                    />
                     {loading ? (
-                        <div className="loading-indicator">
-                            <CircularProgress sx={{ color: '#E7552B' }} />
-                            <p>Loading players...</p>
-                        </div>
+                        <SkeletonFilterBar />
+                    ) : (
+                            <FilterBar
+                                context="players"
+                                filterPlayerDate={filterPlayerDate}
+                                setFilterPlayerDate={setFilterPlayerDate}
+                                filterPlayerLocations={filterPlayerLocations}
+                                setFilterPlayerLocations={setFilterPlayerLocations}
+                                availableLocations={['Grass','Beach','Indoor Court']}
+                                resetFilters={resetPlayerFilters}
+                            />
+                        )}
+                    {loading ? (
+                        <SkeletonLeaderboard />
                     ) : (
                             <div className="leaderboard-container">
                                 <Leaderboard
