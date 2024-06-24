@@ -7,7 +7,7 @@ import useFilters from '../hooks/useFilters';
 import PlayerStats from '../components/PlayerStats';
 import Timeline from '../components/Timeline';
 import CircularProgress from '@mui/material/CircularProgress';
-import Select from '@mui/material/Select';
+import NativeSelect from '@mui/material/NativeSelect';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -63,35 +63,34 @@ const MilestonesPage = () => {
                                     }}
                                 >
                                     Filter By Player
-              </InputLabel>
-                                <Select
+                                </InputLabel>
+                                <NativeSelect
                                     labelId="player-select-label"
                                     id="player-select"
                                     value={selectedPlayer}
                                     onChange={(e) => setSelectedPlayer(e.target.value)}
                                     label="Filter by Player"
-                                    MenuProps={{ PaperProps: { sx: { maxHeight: 400,minWidth: 200 } } }}
                                     sx={{
                                         width: '200px',
                                         fontFamily: 'coolvetica',
-                                        '& .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'gray',
+                                        '& .MuiNativeSelect-root': {
+                                            borderColor: 'gray', // Default border color
                                         },
-                                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'black',
+                                        '&:hover .MuiNativeSelect-root': {
+                                            borderColor: '#e7552b', // Border color on hover
                                         },
-                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        '&.Mui-focused .MuiNativeSelect-root': {
+                                            borderColor: '#e7552b', // Border color when focused
+                                        },
+                                        '& .MuiNativeSelect-select': {
                                             borderColor: '#e7552b',
                                         },
-                                        '&.Mui-selected': {
-                                            backgroundColor: '#ff7043', // Background colo
-                                            '&:hover': {
-                                                backgroundColor: '#ff7043', // Keep background color on hover when selected
-                                            },
+                                        '& .MuiNativeSelect-icon': {
+                                            color: '#e7552b', // Color of the dropdown arrow icon
                                         },
                                     }}
                                 >
-                                    <MenuItem value="All" sx={{
+                                    <option value="All" sx={{
                                         fontFamily: 'coolvetica',
                                         '&.Mui-focused': {
                                             backgroundColor: '#ff7043', // Background color when focused
@@ -99,9 +98,9 @@ const MilestonesPage = () => {
                                         '&.Mui-selected.Mui-focusVisible': {
                                             backgroundColor: '#ff7043' //Set the highlight color to white on the first menu item when the menu opens
                                         }
-                                    }}>All</MenuItem>
+                                    }}>All</option>
                                     {players.map((player) => (
-                                        <MenuItem key={player._id} value={player.name} sx={{
+                                        <option key={player._id} value={player.name} sx={{
                                             fontFamily: 'coolvetica',
                                             '&.Mui-focused': {
                                                 backgroundColor: '#ff7043', // Background color when focused
@@ -112,9 +111,9 @@ const MilestonesPage = () => {
                                                     backgroundColor: '#ff7043', // Keep background color on hover when selected
                                                 },
                                             },
-                                        }}>{player.name}</MenuItem>
+                                        }}>{player.name}</option>
                                     ))}
-                                </Select>
+                                </NativeSelect>
                             </FormControl>
                             <ul>
                                 {players.map((player) => (
