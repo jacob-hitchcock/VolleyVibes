@@ -14,27 +14,30 @@ const Timeline = ({ milestones }) => {
             return <FontAwesomeIcon icon={faChartLine} className="icon-color" style={{ color: '#fff5d6' }} />;
         } else if(milestone.title.includes('Streak')) {
             return <FontAwesomeIcon icon={faFire} className="icon-color" style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('Games Together.')) {
+        } else if(milestone.title.includes('Games Together')) {
             return <FontAwesomeIcon icon={faUsers} style={{ color: '#fff5d6' }} />;
         }
         // Add other icons for different milestones as needed
         return null;
     };
+
     return (
         <VerticalTimeline>
-            {milestones.map((milestone,index) => (
-                <VerticalTimelineElement
-                    key={index}
-                    date={milestone.date}
-                    iconStyle={{ background: '#e7552b',color: '#fff' }}
-                    icon={getIcon(milestone)}
-                    className="timeline-element"
-                >
-                    <div className="milestone-card">
-                        <h3 className="vertical-timeline-element-title" style={{ color: 'black' }}>{milestone.title}</h3>
-                    </div>
-                </VerticalTimelineElement>
-            ))}
+            {milestones.map((milestone,index) => {
+                return (
+                    <VerticalTimelineElement
+                        key={index}
+                        date={milestone.date}
+                        iconStyle={{ background: '#e7552b',color: '#fff' }}
+                        icon={getIcon(milestone)}
+                        className="timeline-element"
+                    >
+                        <div className="milestone-card">
+                            <h3 className="vertical-timeline-element-title" style={{ color: 'black' }}>{milestone.title}</h3>
+                        </div>
+                    </VerticalTimelineElement>
+                );
+            })}
         </VerticalTimeline>
     );
 };

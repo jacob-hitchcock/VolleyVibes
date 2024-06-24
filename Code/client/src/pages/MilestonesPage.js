@@ -18,17 +18,25 @@ const MilestonesPage = () => {
     const [selectedPlayer,setSelectedPlayer] = useState('All');
     const addedMilestonesRef = useRef(new Set());
 
+    const sortString = (str) => {
+        return str.replace(/\s/g,'').split('').sort((a,b) => a.localeCompare(b)).join('');
+    };
+
     const handleMilestone = (milestone) => {
-        if(!addedMilestonesRef.current.has(milestone.player + milestone.title)) {
-            console.log(`Adding milestone: ${milestone.title} for ${milestone.player}`);
+        const normalizedTitle = sortString(milestone.title);
+        const milestoneIdentifier = `${milestone.date}-${normalizedTitle}`;
+        if(!addedMilestonesRef.current.has(milestoneIdentifier)) {
             setMilestones((prevMilestones) => [...prevMilestones,milestone].sort((a,b) => new Date(b.date) - new Date(a.date)));
-            addedMilestonesRef.current.add(milestone.player + milestone.title);
+            addedMilestonesRef.current.add(milestoneIdentifier);
         }
     };
 
     const filteredMilestones = selectedPlayer === 'All'
         ? milestones
         : milestones.filter(milestone => milestone.player === selectedPlayer);
+
+    // Sort players alphabetically by name
+    const sortedPlayers = [...players].sort((a,b) => a.name.localeCompare(b.name));
 
     return (
         <div>
@@ -97,7 +105,7 @@ const MilestonesPage = () => {
                                             backgroundColor: '#ff7043' // Set the highlight color to white on the first menu item when the menu opens
                                         }
                                     }}>All</option>
-                                    {players.map((player) => (
+                                    {sortedPlayers.map((player) => (
                                         <option key={player._id} value={player.name} sx={{
                                             fontFamily: 'coolvetica',
                                             '&.Mui-focused': {
