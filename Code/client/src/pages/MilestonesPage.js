@@ -1,5 +1,4 @@
 import React,{ useState,useRef } from 'react';
-import { createTheme,ThemeProvider } from '@mui/material/styles';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import useFetchData from '../hooks/useFetchData';
@@ -8,7 +7,6 @@ import PlayerStats from '../components/PlayerStats';
 import Timeline from '../components/Timeline';
 import CircularProgress from '@mui/material/CircularProgress';
 import NativeSelect from '@mui/material/NativeSelect';
-import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import '../styles.css';
@@ -63,7 +61,7 @@ const MilestonesPage = () => {
                                     }}
                                 >
                                     Filter By Player
-                                </InputLabel>
+                            </InputLabel>
                                 <NativeSelect
                                     labelId="player-select-label"
                                     id="player-select"
@@ -96,7 +94,7 @@ const MilestonesPage = () => {
                                             backgroundColor: '#ff7043', // Background color when focused
                                         },
                                         '&.Mui-selected.Mui-focusVisible': {
-                                            backgroundColor: '#ff7043' //Set the highlight color to white on the first menu item when the menu opens
+                                            backgroundColor: '#ff7043' // Set the highlight color to white on the first menu item when the menu opens
                                         }
                                     }}>All</option>
                                     {players.map((player) => (
@@ -106,7 +104,7 @@ const MilestonesPage = () => {
                                                 backgroundColor: '#ff7043', // Background color when focused
                                             },
                                             '&.Mui-selected': {
-                                                backgroundColor: '#ff7043', // Background colo
+                                                backgroundColor: '#ff7043', // Background color
                                                 '&:hover': {
                                                     backgroundColor: '#ff7043', // Keep background color on hover when selected
                                                 },
@@ -124,6 +122,7 @@ const MilestonesPage = () => {
                                         didPlayerTeamWin={didPlayerTeamWin}
                                         aggregatedPlayerStats={aggregatedPlayerStats}
                                         onMilestone={handleMilestone}
+                                        players={players} // Pass the players array here
                                     />
                                 ))}
                             </ul>

@@ -11,9 +11,14 @@ const calculateMedian = (values) => {
     return (values[half - 1] + values[half]) / 2.0;
 };
 
-const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayerStats) => {
+const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayerStats,players) => {
     const playerStats = useMemo(() => {
-        if(!playerId || !matches.length) return null;
+        if(!playerId || !matches.length || !players.length) return null;
+
+        const playerNameMap = players.reduce((acc,player) => {
+            acc[player._id] = player.name;
+            return acc;
+        },{});
 
         const playerMatches = matches
             .filter(match => match.teams.some(team => team.includes(playerId)))
@@ -34,6 +39,9 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
         let currentStreak = 0;
         let currentStreakStartDate = null;
 
+        const gamesPlayedTogetherCount = {};
+        const nextGamesTogetherMilestone = {};
+
         const performanceOverTime = [];
         const statsByLocation = {
             grass: { wins: 0,losses: 0,pointDifferential: 0 },
@@ -51,6 +59,29 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
             dailyMatches.forEach(match => {
                 dailyGamesPlayed++;
                 const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
+                const team = match.teams[playerTeamIndex];
+
+                // Track games played together for each pair on the same team
+                team.forEach(player1 => {
+                    team.forEach(player2 => {
+                        if(player1 !== player2 && player1 === playerId) { // Ensure a player is not counted with themselves and avoid duplicate playerId checks
+                            const pairKey = [player1,player2].sort().join('-');
+                            gamesPlayedTogetherCount[pairKey] = (gamesPlayedTogetherCount[pairKey] || 0) + 1;
+                            if(!nextGamesTogetherMilestone[pairKey]) {
+                                nextGamesTogetherMilestone[pairKey] = 50;
+                            }
+
+                            if(gamesPlayedTogetherCount[pairKey] === nextGamesTogetherMilestone[pairKey]) {
+                                milestones.push({
+                                    milestone: `& ${playerNameMap[player2]} Have Played ${gamesPlayedTogetherCount[pairKey]} Games Together.`,
+                                    date: formatDate(match.date),
+                                });
+                                nextGamesTogetherMilestone[pairKey] += 50;
+                            }
+                        }
+                    });
+                });
+
                 if(didPlayerTeamWin(match,playerTeamIndex)) {
                     dailyWins++;
                     currentStreak++;
@@ -188,7 +219,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
             statsByLocation, // Include the location-based statistics
             milestones,
         };
-    },[playerId,matches,didPlayerTeamWin,aggregatedPlayerStats]);
+    },[playerId,matches,didPlayerTeamWin,aggregatedPlayerStats,players]);
 
     return playerStats;
 };

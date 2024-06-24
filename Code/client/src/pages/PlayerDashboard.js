@@ -29,7 +29,7 @@ const PlayerDashboard = () => {
   const { didPlayerTeamWin,aggregatedPlayerStats } = useFilters(matches,players);
 
   const playerData = players.find(player => player._id === playerId);
-  const playerStats = usePlayerPerformance(playerId,matches,didPlayerTeamWin,aggregatedPlayerStats);
+  const playerStats = usePlayerPerformance(playerId,matches,didPlayerTeamWin,aggregatedPlayerStats,players);
   const playerAggregatedStats = aggregatedPlayerStats.find(player => player._id === playerId);
 
   const { name: mostPlayedWithPlayer,gamesPlayed } = getMostPlayedWithPlayer(playerId,matches,players);

@@ -1,8 +1,8 @@
 import React,{ useEffect,useState } from 'react';
 import usePlayerPerformance from '../hooks/usePlayerPerformance';
 
-const PlayerStats = ({ player,matches,didPlayerTeamWin,aggregatedPlayerStats,onMilestone }) => {
-    const playerPerformance = usePlayerPerformance(player._id,matches,didPlayerTeamWin,aggregatedPlayerStats);
+const PlayerStats = ({ player,matches,didPlayerTeamWin,aggregatedPlayerStats,onMilestone,players }) => {
+    const playerPerformance = usePlayerPerformance(player._id,matches,didPlayerTeamWin,aggregatedPlayerStats,players);
     const [milestonesAdded,setMilestonesAdded] = useState({});
 
     useEffect(() => {
