@@ -100,7 +100,7 @@ function NavBar() {
                     edge="start"
                     aria-label="menu"
                     onClick={handleMenuOpen}
-                    sx={{ display: { xs: 'block',sm: 'none' },color: '#e7552b',ml: 'auto' }}
+                    sx={{ display: { xs: 'block',sm: 'none' },color: '#333',ml: 'auto' }}
                 >
                     <MenuIcon />
                 </IconButton>
