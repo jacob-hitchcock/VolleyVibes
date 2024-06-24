@@ -1,4 +1,4 @@
-import React,{ useState,useRef } from 'react';
+import React,{ useState,useRef,useMemo } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import useFetchData from '../hooks/useFetchData';
@@ -26,17 +26,25 @@ const MilestonesPage = () => {
         const normalizedTitle = sortString(milestone.title);
         const milestoneIdentifier = `${milestone.date}-${normalizedTitle}`;
         if(!addedMilestonesRef.current.has(milestoneIdentifier)) {
-            setMilestones((prevMilestones) => [...prevMilestones,milestone].sort((a,b) => new Date(b.date) - new Date(a.date)));
+            setMilestones(prevMilestones => {
+                const newMilestones = [...prevMilestones,milestone];
+                newMilestones.sort((a,b) => new Date(b.date) - new Date(a.date));
+                return newMilestones;
+            });
             addedMilestonesRef.current.add(milestoneIdentifier);
         }
     };
 
-    const filteredMilestones = selectedPlayer === 'All'
-        ? milestones
-        : milestones.filter(milestone => milestone.player === selectedPlayer);
+    const filteredMilestones = useMemo(() => {
+        if(selectedPlayer === 'All') {
+            return milestones;
+        }
+        return milestones.filter(milestone => milestone.title.includes(selectedPlayer));
+    },[milestones,selectedPlayer]);
 
-    // Sort players alphabetically by name
-    const sortedPlayers = [...players].sort((a,b) => a.name.localeCompare(b.name));
+    const sortedPlayers = useMemo(() => {
+        return [...players].sort((a,b) => a.name.localeCompare(b.name));
+    },[players]);
 
     return (
         <div>

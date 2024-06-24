@@ -73,7 +73,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
 
                             if(gamesPlayedTogetherCount[pairKey] === nextGamesTogetherMilestone[pairKey]) {
                                 milestones.push({
-                                    milestone: `& ${playerNameMap[player2]} Have Played ${gamesPlayedTogetherCount[pairKey]} Games Together`,
+                                    milestone: `& ${playerNameMap[player2]} Played Their ${gamesPlayedTogetherCount[pairKey]}th Game Together`,
                                     date: formatDate(match.date),
                                 });
                                 nextGamesTogetherMilestone[pairKey] += 50;

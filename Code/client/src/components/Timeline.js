@@ -14,7 +14,7 @@ const Timeline = ({ milestones }) => {
             return <FontAwesomeIcon icon={faChartLine} className="icon-color" style={{ color: '#fff5d6' }} />;
         } else if(milestone.title.includes('Streak')) {
             return <FontAwesomeIcon icon={faFire} className="icon-color" style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('Games Together')) {
+        } else if(milestone.title.includes('Game Together')) {
             return <FontAwesomeIcon icon={faUsers} style={{ color: '#fff5d6' }} />;
         }
         // Add other icons for different milestones as needed
