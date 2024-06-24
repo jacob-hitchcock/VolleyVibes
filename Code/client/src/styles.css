@@ -984,6 +984,16 @@ input[type="checkbox"]:disabled + label {
     background-color: #fff5d6; /* Ensure the background color matches other filters */
 }
 
+.date-input::-webkit-datetime-edit {
+    color: #E7552B; /* Ensure the text color is visible */
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+    background: transparent;
+    color: #E7552B; /* Ensure the calendar icon is visible */
+    opacity: 0.5;
+}
+
 .date-input:hover {
     background-color: #E7552B; /* Ensure the background color matches the hover state of other filters */
     color: #fff5d6; /* Ensure the text color matches the hover state of other filters */
