@@ -41,6 +41,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
 
         const gamesPlayedTogetherCount = {};
         const nextGamesTogetherMilestone = {};
+        const winStreaks = {};
 
         const performanceOverTime = [];
         const statsByLocation = {
@@ -60,15 +61,37 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                 dailyGamesPlayed++;
                 const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
                 const team = match.teams[playerTeamIndex];
+                const didWin = didPlayerTeamWin(match,playerTeamIndex);
 
                 // Track games played together for each pair on the same team
                 team.forEach(player1 => {
                     team.forEach(player2 => {
                         if(player1 !== player2 && player1 === playerId) { // Ensure a player is not counted with themselves and avoid duplicate playerId checks
                             const pairKey = [player1,player2].sort().join('-');
-                            gamesPlayedTogetherCount[pairKey] = (gamesPlayedTogetherCount[pairKey] || 0) + 1;
+
+                            // Initialize streaks and counters if not already set
+                            if(!winStreaks[pairKey]) {
+                                winStreaks[pairKey] = 0;
+                            }
+                            if(!gamesPlayedTogetherCount[pairKey]) {
+                                gamesPlayedTogetherCount[pairKey] = 0;
+                            }
                             if(!nextGamesTogetherMilestone[pairKey]) {
                                 nextGamesTogetherMilestone[pairKey] = 50;
+                            }
+
+                            gamesPlayedTogetherCount[pairKey]++;
+
+                            if(didWin) {
+                                winStreaks[pairKey]++;
+                            } else {
+                                if(winStreaks[pairKey] >= 10) {
+                                    milestones.push({
+                                        milestone: `& ${playerNameMap[player2]} Lost Together For The First Time In ${winStreaks[pairKey]} Games`,
+                                        date: formatDate(match.date),
+                                    });
+                                }
+                                winStreaks[pairKey] = 0;
                             }
 
                             if(gamesPlayedTogetherCount[pairKey] === nextGamesTogetherMilestone[pairKey]) {
@@ -82,7 +105,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                     });
                 });
 
-                if(didPlayerTeamWin(match,playerTeamIndex)) {
+                if(didWin) {
                     dailyWins++;
                     currentStreak++;
                     if(currentStreakStartDate === null) {
@@ -107,8 +130,8 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                 // Update location-based statistics
                 const location = normalizeLocation(match.location);
                 if(statsByLocation[location]) {
-                    statsByLocation[location].wins += didPlayerTeamWin(match,playerTeamIndex) ? 1 : 0;
-                    statsByLocation[location].losses += didPlayerTeamWin(match,playerTeamIndex) ? 0 : 1;
+                    statsByLocation[location].wins += didWin ? 1 : 0;
+                    statsByLocation[location].losses += didWin ? 0 : 1;
                     statsByLocation[location].pointDifferential += match.scores[playerTeamIndex] - match.scores[playerTeamIndex === 0 ? 1 : 0];
                 }
 
