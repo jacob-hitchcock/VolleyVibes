@@ -12,8 +12,8 @@ const PlayerStats = ({ player,matches,didPlayerTeamWin,aggregatedPlayerStats,onM
                     onMilestone({
                         player: player.name,
                         date: milestone.date,
-                        title: `${player.name} ${milestone.milestone}`,
-                        description: `${player.name} ${milestone.milestone.toLowerCase()}.`,
+                        title: getTitleForMilestone(milestone),
+                        description: `${player.name} ${milestone.milestone}`,
                     });
                     setMilestonesAdded((prev) => ({ ...prev,[milestone.milestone]: true }));
                 }
@@ -26,6 +26,18 @@ const PlayerStats = ({ player,matches,didPlayerTeamWin,aggregatedPlayerStats,onM
     return (
         <div></div>
     );
+};
+
+const getTitleForMilestone = (milestone) => {
+    if(milestone.milestone.includes('Win Streak')) return "On Fire";
+    if(milestone.milestone.includes('Games Played')) return "Seasoned Pro";
+    if(milestone.milestone.includes('Wins')) return "Victory Collector";
+    if(milestone.milestone.includes('VWAR')) return "Metrics Master";
+    if(milestone.milestone.includes('Game Together')) return "Constant Companions";
+    if(milestone.milestone.includes('Lost Together')) return "End Of An Era";
+    if(milestone.milestone.includes('Won Together')) return "Breaking The Curse";
+    if(milestone.milestone.includes('Defeated')) return "Rival Vanquished";
+    return "Milestone";
 };
 
 export default PlayerStats;

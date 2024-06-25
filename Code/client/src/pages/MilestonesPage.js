@@ -23,7 +23,7 @@ const MilestonesPage = () => {
     };
 
     const handleMilestone = (milestone) => {
-        const normalizedTitle = sortString(milestone.title);
+        const normalizedTitle = sortString(milestone.description);
         const milestoneIdentifier = `${milestone.date}-${normalizedTitle}`;
         if(!addedMilestonesRef.current.has(milestoneIdentifier)) {
             setMilestones(prevMilestones => {
@@ -39,7 +39,7 @@ const MilestonesPage = () => {
         if(selectedPlayer === 'All') {
             return milestones;
         }
-        return milestones.filter(milestone => milestone.title.includes(selectedPlayer));
+        return milestones.filter(milestone => milestone.description.includes(selectedPlayer));
     },[milestones,selectedPlayer]);
 
     const sortedPlayers = useMemo(() => {

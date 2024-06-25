@@ -6,21 +6,21 @@ import { faVolleyballBall,faTrophy,faChartLine,faFire,faUsers,faTimesCircle,faTh
 
 const Timeline = ({ milestones }) => {
     const getIcon = (milestone) => {
-        if(milestone.title.includes('Games Played')) {
+        if(milestone.description.includes('Games Played')) {
             return <FontAwesomeIcon icon={faVolleyballBall} style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('Wins')) {
+        } else if(milestone.description.includes('Wins')) {
             return <FontAwesomeIcon icon={faTrophy} className="icon-color" style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('VWAR')) {
+        } else if(milestone.description.includes('VWAR')) {
             return <FontAwesomeIcon icon={faChartLine} className="icon-color" style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('Streak')) {
+        } else if(milestone.description.includes('Streak')) {
             return <FontAwesomeIcon icon={faFire} className="icon-color" style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('Game Together')) {
+        } else if(milestone.description.includes('Game Together')) {
             return <FontAwesomeIcon icon={faUsers} style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('Lost Together')) {
+        } else if(milestone.description.includes('Lost Together')) {
             return <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('Won Together')) {
+        } else if(milestone.description.includes('Won Together')) {
             return <FontAwesomeIcon icon={faThumbsUp} style={{ color: '#fff5d6' }} />;
-        } else if(milestone.title.includes('Defeated')) {
+        } else if(milestone.description.includes('Defeated')) {
             return <FontAwesomeIcon icon={faFistRaised} style={{ color: '#fff5d6' }} />;
         }
         // Add other icons for different milestones as needed
@@ -39,7 +39,8 @@ const Timeline = ({ milestones }) => {
                         className="timeline-element"
                     >
                         <div className="milestone-card">
-                            <h3 className="vertical-timeline-element-title" style={{ color: 'black' }}>{milestone.title}</h3>
+                            <h3 className="vertical-timeline-element-title" style={{ color: '#e7552b',fontSize: '22px' }}>{milestone.title}</h3>
+                            <p style={{ fontSize: '16px' }}>{milestone.description}</p>
                         </div>
                     </VerticalTimelineElement>
                 );
