@@ -2,6 +2,7 @@ import React,{ useContext,useEffect,useState } from 'react';
 import { Navigate,Outlet } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import LoginPage from '../pages/LoginPage';
 
 const ProtectedRoute = () => {
     const { auth } = useContext(AuthContext);
@@ -14,7 +15,9 @@ const ProtectedRoute = () => {
     },[auth]);
 
     if(loading) {
-        return <div>Loading...try <Link to="/login" style={{ color: '#e7552b',textDecoration: 'underline' }}>logging back in</Link>.</div>;
+        return (
+            <LoginPage />
+        );
     }
 
     return auth.user ? <Outlet /> : <Navigate to="/login" />;
