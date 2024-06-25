@@ -2,7 +2,7 @@ import React from 'react';
 import { VerticalTimeline,VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faVolleyballBall,faTrophy,faChartLine,faFire,faUsers,faTimesCircle,faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faVolleyballBall,faTrophy,faChartLine,faFire,faUsers,faTimesCircle,faThumbsUp,faFistRaised } from '@fortawesome/free-solid-svg-icons';
 
 const Timeline = ({ milestones }) => {
     const getIcon = (milestone) => {
@@ -20,6 +20,8 @@ const Timeline = ({ milestones }) => {
             return <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#fff5d6' }} />;
         } else if(milestone.title.includes('Won Together')) {
             return <FontAwesomeIcon icon={faThumbsUp} style={{ color: '#fff5d6' }} />;
+        } else if(milestone.title.includes('Defeated')) {
+            return <FontAwesomeIcon icon={faFistRaised} style={{ color: '#fff5d6' }} />;
         }
         // Add other icons for different milestones as needed
         return null;

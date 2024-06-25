@@ -43,6 +43,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
         const nextGamesTogetherMilestone = {};
         const winStreaks = {};
         const loseStreaks = {};
+        const loseStreaksAgainst = {}; // Track losing streaks against opponents
 
         const performanceOverTime = [];
         const statsByLocation = {
@@ -63,6 +64,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                 const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
                 const team = match.teams[playerTeamIndex];
                 const didWin = didPlayerTeamWin(match,playerTeamIndex);
+                const opponentTeam = match.teams[1 - playerTeamIndex];
 
                 // Track games played together for each pair on the same team
                 team.forEach(player1 => {
@@ -115,6 +117,30 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                             }
                         }
                     });
+                });
+
+                // Track losing streaks against specific opponents
+                opponentTeam.forEach(opponent => {
+                    if(opponent !== playerId) {
+                        const opponentKey = [playerId,opponent].sort().join('-');
+
+                        // Initialize losing streaks against opponents if not already set
+                        if(!loseStreaksAgainst[opponentKey]) {
+                            loseStreaksAgainst[opponentKey] = 0;
+                        }
+
+                        if(didWin) {
+                            if(loseStreaksAgainst[opponentKey] >= 10) {
+                                milestones.push({
+                                    milestone: `Defeated ${playerNameMap[opponent]} For The First Time In ${loseStreaksAgainst[opponentKey]} Games`,
+                                    date: formatDate(match.date),
+                                });
+                            }
+                            loseStreaksAgainst[opponentKey] = 0;
+                        } else {
+                            loseStreaksAgainst[opponentKey]++;
+                        }
+                    }
                 });
 
                 if(didWin) {
