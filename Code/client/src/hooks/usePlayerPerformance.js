@@ -42,6 +42,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
         const gamesPlayedTogetherCount = {};
         const nextGamesTogetherMilestone = {};
         const winStreaks = {};
+        const loseStreaks = {};
 
         const performanceOverTime = [];
         const statsByLocation = {
@@ -73,6 +74,9 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                             if(!winStreaks[pairKey]) {
                                 winStreaks[pairKey] = 0;
                             }
+                            if(!loseStreaks[pairKey]) {
+                                loseStreaks[pairKey] = 0;
+                            }
                             if(!gamesPlayedTogetherCount[pairKey]) {
                                 gamesPlayedTogetherCount[pairKey] = 0;
                             }
@@ -83,7 +87,14 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                             gamesPlayedTogetherCount[pairKey]++;
 
                             if(didWin) {
+                                if(loseStreaks[pairKey] >= 10) {
+                                    milestones.push({
+                                        milestone: `& ${playerNameMap[player2]} Won Together For The First Time In ${loseStreaks[pairKey]} Games`,
+                                        date: formatDate(match.date),
+                                    });
+                                }
                                 winStreaks[pairKey]++;
+                                loseStreaks[pairKey] = 0;
                             } else {
                                 if(winStreaks[pairKey] >= 10) {
                                     milestones.push({
@@ -91,6 +102,7 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
                                         date: formatDate(match.date),
                                     });
                                 }
+                                loseStreaks[pairKey]++;
                                 winStreaks[pairKey] = 0;
                             }
 
