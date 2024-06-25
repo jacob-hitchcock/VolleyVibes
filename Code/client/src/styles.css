@@ -971,6 +971,23 @@ input[type="checkbox"]:disabled + label {
     margin-right: 20px;
 }
 
+.see-more {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.see-more-link {
+    color: #E7552B;
+    font-family: 'coolvetica';
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+.see-more-link:hover {
+    text-decoration: underline;
+}
+
+
 .date-input {
     height: 36px; /* Match the height of the dropdown buttons */
     width: 200px; /* Increase the width to prevent text cutoff */
