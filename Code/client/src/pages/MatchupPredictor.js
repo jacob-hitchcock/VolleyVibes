@@ -14,6 +14,7 @@ const MatchupPredictor = () => {
     const [teamB,setTeamB] = useState([]);
     const [prediction,setPrediction] = useState(null);
     const [accuracy,setAccuracy] = useState(null);
+const [predictedScores, setPredictedScores] = useState({ teamAScore: 0, teamBScore: 0 });
 
     useEffect(() => {
         console.log('matches:',matches);
@@ -48,31 +49,37 @@ const MatchupPredictor = () => {
 
     const logisticFunction = (z) => 1 / (1 + Math.exp(-z));
 
-    const predictOutcome = (teamAStats,teamBStats) => {
-        // Use coefficients from your logistic regression model
-        const coefficients = {
-            intercept: -1.5, // Example value
-            winPercentage: 2.5, // Example value
-            pointDifferential: 0.8, // Example value
-        };
+    const predictOutcome = (teamAStats, teamBStats) => {
+    const coefficients = {
+        intercept: -1.5, // Example value
+        winPercentage: 2.5, // Example value
+        pointDifferential: 0.8, // Example value
+    };
 
-        const zA = coefficients.intercept
-            + coefficients.winPercentage * teamAStats.avgWinningPercentage
-            + coefficients.pointDifferential * teamAStats.avgPointDifferential;
+    const zA = coefficients.intercept
+        + coefficients.winPercentage * teamAStats.avgWinningPercentage
+        + coefficients.pointDifferential * teamAStats.avgPointDifferential;
 
-        const zB = coefficients.intercept
-            + coefficients.winPercentage * teamBStats.avgWinningPercentage
-            + coefficients.pointDifferential * teamBStats.avgPointDifferential;
+    const zB = coefficients.intercept
+        + coefficients.winPercentage * teamBStats.avgWinningPercentage
+        + coefficients.pointDifferential * teamBStats.avgPointDifferential;
 
-        const probA = logisticFunction(zA);
-        const probB = logisticFunction(zB);
+    const probA = logisticFunction(zA);
+    const probB = logisticFunction(zB);
 
-        const totalProb = probA + probB;
+    const totalProb = probA + probB;
 
-        return {
-            teamAProbability: probA / totalProb,
-            teamBProbability: probB / totalProb,
-        };
+    const teamAProbability = probA / totalProb;
+    const teamBProbability = probB / totalProb;
+
+    const { teamAScore, teamBScore } = predictScore(teamAProbability, teamBProbability);
+
+    return {
+        teamAProbability,
+        teamBProbability,
+        teamAScore,
+        teamBScore,
+    }; 
     };
 
     const handlePredictOutcome = () => {
@@ -81,6 +88,7 @@ const MatchupPredictor = () => {
             const teamBStats = calculateTeamStats(teamB);
             const result = predictOutcome(teamAStats,teamBStats);
             setPrediction(result);
+        setPredictedScores({ teamAScore: result.teamAScore, teamBScore: result.teamBScore });
         }
     };
 
@@ -162,6 +170,36 @@ const MatchupPredictor = () => {
         setAccuracy(accuracy);
     };
 
+    const predictScore = (teamAProbability, teamBProbability) => {
+    const scoreDifference = Math.abs(teamAProbability - teamBProbability)*25; // Arbitrary scaling factor for difference
+    const baseScore = 21;
+    let teamAScore = baseScore;
+    let teamBScore = baseScore;
+
+    if (teamAProbability > teamBProbability) {
+        teamAScore += Math.ceil(scoreDifference / 2);
+        teamBScore -= Math.floor(scoreDifference / 2);
+        if (teamAScore > 21) {
+            teamAScore = 21;
+        }
+        if (teamAScore - teamBScore < 2) {
+            teamAScore += 1;
+        }
+    } else {
+        teamBScore += Math.ceil(scoreDifference / 2);
+        teamAScore -= Math.floor(scoreDifference / 2);
+        if (teamBScore > 21) {
+            teamBScore = 21;
+        }
+        if (teamBScore - teamAScore < 2) {
+            teamBScore += 1;
+        }
+    }
+
+    return { teamAScore, teamBScore };
+};
+
+
     if(loading) return <div>Loading...</div>;
     if(error) return <div>Error loading data.</div>;
 
@@ -234,28 +272,32 @@ const MatchupPredictor = () => {
                 </Grid>
                 <Grid item xs={12} md={4}>
                     {prediction && (
-                        <div>
-                            <h2>Prediction</h2>
-                            <PieChart width={400} height={400}>
-                                <Pie
-                                    data={data}
-                                    cx={200}
-                                    cy={200}
-                                    innerRadius={60}
-                                    outerRadius={80}
-                                    fill="#8884d8"
-                                    paddingAngle={5}
-                                    dataKey="value"
-                                >
-                                    {data.map((entry,index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Pie>
-                                <Tooltip formatter={(value) => `${value.toFixed(2)}%`} />
-                                <Legend />
-                            </PieChart>
-                        </div>
-                    )}
+    <div>
+        <h2>Prediction</h2>
+        <PieChart width={400} height={400}>
+            <Pie
+                data={data}
+                cx={200}
+                cy={200}
+                innerRadius={60}
+                outerRadius={80}
+                fill="#8884d8"
+                paddingAngle={5}
+                dataKey="value"
+            >
+                {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+            </Pie>
+            <Tooltip formatter={(value) => `${value.toFixed(2)}%`} />
+            <Legend />
+        </PieChart>
+        <h3>Predicted Scores</h3>
+        <p><strong>Team A:</strong> {predictedScores.teamAScore}</p>
+        <p><strong>Team B:</strong> {predictedScores.teamBScore}</p>
+    </div>
+)}
+
                 </Grid>
             </Grid>
         </div>
