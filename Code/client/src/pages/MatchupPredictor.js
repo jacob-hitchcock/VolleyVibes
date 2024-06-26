@@ -16,7 +16,7 @@ const MatchupPredictor = () => {
     const [accuracy,setAccuracy] = useState(null);
 
     useEffect(() => {
-        console.log('Aggregated Player Stats:',aggregatedPlayerStats);
+        console.log('matches:',matches);
         if(matches.length > 0 && aggregatedPlayerStats.length > 0) {
             trainAndEvaluateModel();
         }
