@@ -91,7 +91,7 @@ export const calculateMatchups = (selectedPlayerIds,players) => {
             return null;
         }
         return {
-            id: playerId,
+            _id: player._id,
             number: numbers[index],
             name: player.name
         };
@@ -130,8 +130,8 @@ export const calculateMatchups = (selectedPlayerIds,players) => {
 
         if(!seen.has(matchupString)) {
             uniqueMatchups.push({
-                teamA: combo.teamA.map(player => ({ number: player.number,name: player.name })),
-                teamB: combo.teamB.map(player => ({ number: player.number,name: player.name })),
+                teamA: combo.teamA.map(player => ({ _id: player._id,number: player.number,name: player.name })),
+                teamB: combo.teamB.map(player => ({ _id: player._id,number: player.number,name: player.name })),
                 completed: false
             });
             seen.add(matchupString);
@@ -140,6 +140,7 @@ export const calculateMatchups = (selectedPlayerIds,players) => {
 
     return { matchups: uniqueMatchups,numberedPlayers };
 };
+
 
 // Function to get saved combos from local storage
 // Function to get saved combos from local storage

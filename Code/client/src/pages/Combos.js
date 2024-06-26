@@ -1,6 +1,7 @@
-import React,{ useState } from 'react';
+import React,{ useState,useEffect } from 'react';
 import useFetchData from '../hooks/useFetchData';
 import useComboData from '../hooks/useComboData';
+import useFilters from '../hooks/useFilters';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import PlayerCheckboxList from '../components/PlayerCheckboxList';
@@ -11,9 +12,10 @@ import CrossReferenceGrid from '../components/CrossReferenceGrid';
 import PlayerNumberList from '../components/PlayerNumberList';
 import Button from '@mui/material/Button';
 import '../styles.css';
+import { calculateTeamStats,predictOutcome } from '../utils/predictionUtils'; // Ensure the correct path
 
 const Combos = () => {
-    const { players,loading,error } = useFetchData();
+    const { players,matches,loading,error } = useFetchData();
     const {
         selectedPlayers,
         matchups,
@@ -32,7 +34,9 @@ const Combos = () => {
         handleClearCombos,
         toggleCompleted,
     } = useComboData(players);
+    const { aggregatedPlayerStats } = useFilters(matches,players);
     const [generatingCombos,setGeneratingCombos] = useState(false);
+    const [predictions,setPredictions] = useState([]);
 
     const noop = () => { }; // No operation function for possible matchups
 
@@ -43,6 +47,24 @@ const Combos = () => {
         await handleGenerateCombos();
         setGeneratingCombos(false);
     };
+
+    const getMatchupPredictions = () => {
+        return generatedCombos.map((matchup,index) => {
+
+            const teamAStats = calculateTeamStats(matchup.teamA,aggregatedPlayerStats);
+            const teamBStats = calculateTeamStats(matchup.teamB,aggregatedPlayerStats);
+
+            return predictOutcome(teamAStats,teamBStats);
+        });
+    };
+
+
+    useEffect(() => {
+        if(generatedCombos.length > 0 && aggregatedPlayerStats.length > 0) {
+            const newPredictions = getMatchupPredictions();
+            setPredictions(newPredictions);
+        }
+    },[generatedCombos,aggregatedPlayerStats]);
 
     if(error) {
         return <div className="error-message">Error loading players. Please try again later.</div>;
@@ -80,7 +102,7 @@ const Combos = () => {
                         },
                     }}
                     onClick={handleGenerateCombosWithLoading}
-                    disabled={loading || generatingCombos || selectedPlayers.length < 2} // Add a state to handle generating combos
+                    disabled={loading || generatingCombos || selectedPlayers.length < 2}
                 >
                     {generatingCombos ? 'Generating...' : 'Generate Combos'}
                 </Button>
@@ -105,11 +127,7 @@ const Combos = () => {
                 {generatedCombos.length === 0 && matchups.length > 0 && (
                     <div>
                         <h3 className="num-matchups">Total Possible Matchups: {matchups.length}</h3>
-                        <MatchupList
-                            matchups={matchups}
-                            toggleCompleted={noop}
-                            isGenerated={false}
-                        />
+                        <MatchupList matchups={matchups} toggleCompleted={noop} isGenerated={false} />
                     </div>
                 )}
                 {generatedCombos.length > 0 && (
@@ -119,6 +137,7 @@ const Combos = () => {
                             matchups={generatedCombos}
                             toggleCompleted={toggleCompleted}
                             isGenerated={true}
+                            predictions={predictions} // Pass predictions to MatchupList
                         />
                     </div>
                 )}
