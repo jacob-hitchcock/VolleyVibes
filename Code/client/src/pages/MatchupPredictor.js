@@ -160,7 +160,6 @@ const MatchupPredictor = () => {
 
         const accuracy = ss.mean(predictions.map((p,i) => (p === testLabels[i] ? 1 : 0)));
         setAccuracy(accuracy);
-        console.log('Model accuracy:',accuracy);
     };
 
     if(loading) return <div>Loading...</div>;
@@ -255,12 +254,6 @@ const MatchupPredictor = () => {
                                 <Tooltip formatter={(value) => `${value.toFixed(2)}%`} />
                                 <Legend />
                             </PieChart>
-                        </div>
-                    )}
-                    {accuracy !== null && (
-                        <div>
-                            <h2>Current Model Accuracy</h2>
-                            <p>{(accuracy * 100).toFixed(2)}%</p>
                         </div>
                     )}
                 </Grid>
