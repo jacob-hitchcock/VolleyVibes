@@ -1,4 +1,4 @@
-import React,{ useContext } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Grid,Typography,Box } from '@mui/material';
 import NavBar from '../components/NavBar';
@@ -19,7 +19,6 @@ import LeastImpactfulTeammateCard from '../components/LeastImpactfulTeammateCard
 import DoughnutChartComponent from '../charts/DoughnutChartComponent';
 import ChartCard from '../components/ChartCard';
 import AnimatedChartWrapper from '../components/AnimatedChartWrapper';
-import SkeletonStatCard from '../components/SkeletonStatCard';
 import SkeletonPlayerDashboard from '../components/SkeletonPlayerDashboard';
 
 const PlayerDashboard = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card,CardContent,Typography } from '@mui/material';
+import { Card,CardContent } from '@mui/material';
 import { styled } from '@mui/system';
 import Skeleton from '@mui/material/Skeleton';
 

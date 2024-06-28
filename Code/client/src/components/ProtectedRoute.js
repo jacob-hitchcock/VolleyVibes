@@ -1,7 +1,6 @@
 import React,{ useContext,useEffect,useState } from 'react';
 import { Navigate,Outlet } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import { Link } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
 
 const ProtectedRoute = () => {

@@ -55,12 +55,10 @@ const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayer
         Object.keys(matchesByDate).forEach(date => {
             const dailyMatches = matchesByDate[date];
             let dailyWins = 0;
-            let dailyGamesPlayed = 0;
             let dailyPointsFor = 0;
             let dailyPointsAgainst = 0;
 
             dailyMatches.forEach(match => {
-                dailyGamesPlayed++;
                 const playerTeamIndex = match.teams.findIndex(team => team.includes(playerId));
                 const team = match.teams[playerTeamIndex];
                 const didWin = didPlayerTeamWin(match,playerTeamIndex);

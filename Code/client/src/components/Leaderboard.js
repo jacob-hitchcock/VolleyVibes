@@ -9,7 +9,6 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import CircularProgress from '@mui/material/CircularProgress';
 import '../styles.css';
 
 const capitalizeWords = (str) => {

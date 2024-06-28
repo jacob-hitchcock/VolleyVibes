@@ -3,10 +3,8 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import FilterBar from '../components/FilterBar';
 import MatchGrid from '../components/MatchGrid';
-import SkeletonFilterBar from '../components/SkeletonFilterBar';
 import SkeletonMatchGrid from '../components/SkeletonMatchGrid';
 import MatchDetailsModal from '../components/MatchDetailsModal';
-import CircularProgress from '@mui/material/CircularProgress';
 import useFetchData from '../hooks/useFetchData';
 import useFilters from '../hooks/useFilters';
 import {

@@ -12,7 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import '../styles.css';
 
 const MilestonesPage = () => {
-    const { matches,players,loading,error } = useFetchData();
+    const { matches,players,loading,error } = useFetchData(); // Include `error`
     const { didPlayerTeamWin,aggregatedPlayerStats } = useFilters(matches,players);
     const [milestones,setMilestones] = useState([]);
     const [selectedPlayer,setSelectedPlayer] = useState('All');
@@ -56,99 +56,114 @@ const MilestonesPage = () => {
                         <CircularProgress sx={{ color: '#E7552B' }} />
                         <p>Loading milestones...</p>
                     </div>
+                ) : error ? (
+                    <div className="error-message">
+                        <p>Error loading data: {error.message}</p>
+                    </div>
                 ) : (
-                        <div>
-                            <FormControl
-                                sx={{
-                                    display: 'block',
-                                    height: '56px', // Adjust height as needed
-                                    mb: 2, // Margin bottom to space it out from the header
-                                }}
-                                variant="outlined"
-                                margin="normal"
-                            >
-                                <InputLabel
-                                    id="player-select-label"
+                            <div>
+                                <FormControl
                                     sx={{
-                                        fontFamily: 'coolvetica',
-                                        '&.Mui-focused': {
-                                            color: '#e7552b', // Label color when focused/active
-                                        },
+                                        display: 'block',
+                                        height: '56px', // Adjust height as needed
+                                        mb: 2, // Margin bottom to space it out from the header
                                     }}
+                                    variant="outlined"
+                                    margin="normal"
                                 >
-                                    Filter By Player
-                            </InputLabel>
-                                <NativeSelect
-                                    labelId="player-select-label"
-                                    id="player-select"
-                                    value={selectedPlayer}
-                                    onChange={(e) => setSelectedPlayer(e.target.value)}
-                                    label="Filter by Player"
-                                    sx={{
-                                        width: '200px',
-                                        fontFamily: 'coolvetica',
-                                        '& .MuiNativeSelect-root': {
-                                            borderColor: 'gray', // Default border color
-                                        },
-                                        '&:hover .MuiNativeSelect-root': {
-                                            borderColor: '#e7552b', // Border color on hover
-                                        },
-                                        '&.Mui-focused .MuiNativeSelect-root': {
-                                            borderColor: '#e7552b', // Border color when focused
-                                        },
-                                        '& .MuiNativeSelect-select': {
-                                            borderColor: '#e7552b',
-                                        },
-                                        '& .MuiNativeSelect-icon': {
-                                            color: '#e7552b', // Color of the dropdown arrow icon
-                                        },
-                                    }}
-                                >
-                                    <option value="All" sx={{
-                                        fontFamily: 'coolvetica',
-                                        '&.Mui-focused': {
-                                            backgroundColor: '#ff7043', // Background color when focused
-                                        },
-                                        '&.Mui-selected.Mui-focusVisible': {
-                                            backgroundColor: '#ff7043' // Set the highlight color to white on the first menu item when the menu opens
-                                        }
-                                    }}>All</option>
-                                    {sortedPlayers.map((player) => (
-                                        <option key={player._id} value={player.name} sx={{
+                                    <InputLabel
+                                        id="player-select-label"
+                                        sx={{
                                             fontFamily: 'coolvetica',
                                             '&.Mui-focused': {
-                                                backgroundColor: '#ff7043', // Background color when focused
+                                                color: '#e7552b', // Label color when focused/active
                                             },
-                                            '&.Mui-selected': {
-                                                backgroundColor: '#ff7043', // Background color
-                                                '&:hover': {
-                                                    backgroundColor: '#ff7043', // Keep background color on hover when selected
+                                        }}
+                                    >
+                                        Filter By Player
+                            </InputLabel>
+                                    <NativeSelect
+                                        labelId="player-select-label"
+                                        id="player-select"
+                                        value={selectedPlayer}
+                                        onChange={(e) => setSelectedPlayer(e.target.value)}
+                                        label="Filter by Player"
+                                        sx={{
+                                            width: '200px',
+                                            fontFamily: 'coolvetica',
+                                            '& .MuiNativeSelect-root': {
+                                                borderColor: 'gray', // Default border color
+                                            },
+                                            '&:hover .MuiNativeSelect-root': {
+                                                borderColor: '#e7552b', // Border color on hover
+                                            },
+                                            '&.Mui-focused .MuiNativeSelect-root': {
+                                                borderColor: '#e7552b', // Border color when focused
+                                            },
+                                            '& .MuiNativeSelect-select': {
+                                                borderColor: '#e7552b',
+                                            },
+                                            '& .MuiNativeSelect-icon': {
+                                                color: '#e7552b', // Color of the dropdown arrow icon
+                                            },
+                                        }}
+                                    >
+                                        <option
+                                            value="All"
+                                            sx={{
+                                                fontFamily: 'coolvetica',
+                                                '&.Mui-focused': {
+                                                    backgroundColor: '#ff7043', // Background color when focused
                                                 },
-                                            },
-                                        }}>{player.name}</option>
+                                                '&.Mui-selected.Mui-focusVisible': {
+                                                    backgroundColor: '#ff7043' // Set the highlight color to white on the first menu item when the menu opens
+                                                },
+                                            }}
+                                        >
+                                            All
+                                </option>
+                                        {sortedPlayers.map((player) => (
+                                            <option
+                                                key={player._id}
+                                                value={player.name}
+                                                sx={{
+                                                    fontFamily: 'coolvetica',
+                                                    '&.Mui-focused': {
+                                                        backgroundColor: '#ff7043', // Background color when focused
+                                                    },
+                                                    '&.Mui-selected': {
+                                                        backgroundColor: '#ff7043', // Background color
+                                                        '&:hover': {
+                                                            backgroundColor: '#ff7043', // Keep background color on hover when selected
+                                                        },
+                                                    },
+                                                }}
+                                            >
+                                                {player.name}
+                                            </option>
+                                        ))}
+                                    </NativeSelect>
+                                </FormControl>
+                                <ul>
+                                    {players.map((player) => (
+                                        <PlayerStats
+                                            key={player._id}
+                                            player={player}
+                                            matches={matches}
+                                            didPlayerTeamWin={didPlayerTeamWin}
+                                            aggregatedPlayerStats={aggregatedPlayerStats}
+                                            onMilestone={handleMilestone}
+                                            players={players} // Pass the players array here
+                                        />
                                     ))}
-                                </NativeSelect>
-                            </FormControl>
-                            <ul>
-                                {players.map((player) => (
-                                    <PlayerStats
-                                        key={player._id}
-                                        player={player}
-                                        matches={matches}
-                                        didPlayerTeamWin={didPlayerTeamWin}
-                                        aggregatedPlayerStats={aggregatedPlayerStats}
-                                        onMilestone={handleMilestone}
-                                        players={players} // Pass the players array here
-                                    />
-                                ))}
-                            </ul>
-                            {filteredMilestones.length > 0 ? (
-                                <Timeline milestones={filteredMilestones} />
-                            ) : (
-                                    <p>No milestones yet.</p>
-                                )}
-                        </div>
-                    )}
+                                </ul>
+                                {filteredMilestones.length > 0 ? (
+                                    <Timeline milestones={filteredMilestones} />
+                                ) : (
+                                        <p>No milestones yet.</p>
+                                    )}
+                            </div>
+                        )}
             </div>
             <Footer />
         </div>
