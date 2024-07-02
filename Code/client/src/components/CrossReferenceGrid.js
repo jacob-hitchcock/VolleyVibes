@@ -40,8 +40,8 @@ const CrossReferenceGrid = ({
                         </tbody>
                     </table>
                     <div className="overall-cv">
-                        <h4>Overall Balance: {overallCV.toFixed(2)}</h4>
-                        {isOddPlayers && <h4>Team A Balance: {teamAStdDev.toFixed(2)}</h4>}
+                        <h4>Overall Balance (Lower is Better): {overallCV.toFixed(2)}</h4>
+                        {isOddPlayers && <h4>Team A Balance (Lower is Better): {teamAStdDev.toFixed(2)}</h4>}
                     </div>
                 </div>
             )}
