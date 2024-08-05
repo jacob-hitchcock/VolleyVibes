@@ -116,7 +116,7 @@ function HomePage() {
             <Footer />
             <Snackbar open={openSnackbar} autoHideDuration={10000} onClose={() => setOpenSnackbar(false)}>
                 <Alert onClose={() => setOpenSnackbar(false)} sx={{ width: '100%',backgroundColor: '#E7552B',color: '#fff5d6' }}>
-                    Track new achievements on the <Link to="/milestones" style={{ color: '#fff5d6',textDecoration: 'underline' }}>milestones page</Link>!
+                    See how you rank by tapping the column headers to sort the leaderboard.
                 </Alert>
             </Snackbar>
             {isModalOpen && selectedMatch && (
