@@ -38,7 +38,7 @@ const RankTypography = styled(StatTypography)({
     textAlign: 'center', // Center text within the container
 });
 
-const StatCard = ({ title,value,rank }) => {
+const StatCard = ({ title,value,rank,totalPlayers }) => {
     return (
         <StyledCard>
             <CardContent>
@@ -49,7 +49,7 @@ const StatCard = ({ title,value,rank }) => {
                     {value}
                 </ValueTypography>
                 <RankTypography>
-                    Rank: {rank}
+                    Rank: {rank} out of {totalPlayers}
                 </RankTypography>
             </CardContent>
         </StyledCard>

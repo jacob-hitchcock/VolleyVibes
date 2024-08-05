@@ -35,6 +35,8 @@ const PlayerDashboard = () => {
   const { name: leastPlayedWithPlayer,gamesPlayed: leastPlayedGames } = getLeastPlayedWithPlayer(playerId,matches,players);
   const { highestWinningPercentageTeammate,lowestWinningPercentageTeammate,highestContributingTeammate,leastImpactfulTeammate } = getWinningPercentageTeammates(playerId,matches,players);
 
+  const totalPlayers = players.length;
+
   if(loading) return <SkeletonPlayerDashboard />;
   if(error) return <div>Error loading player data.</div>;
 
@@ -63,19 +65,19 @@ const PlayerDashboard = () => {
               {playerAggregatedStats && (
                 <>
                   <Grid item xs={6} md={2.4}>
-                    <StatCard title="Total Games Played" value={playerAggregatedStats.gamesPlayed} rank={playerAggregatedStats.gamesPlayedRank} />
+                    <StatCard title="Total Games Played" value={playerAggregatedStats.gamesPlayed} rank={playerAggregatedStats.gamesPlayedRank} totalPlayers={totalPlayers} />
                   </Grid>
                   <Grid item xs={6} md={2.4}>
-                    <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} rank={playerAggregatedStats.winningPercentageRank} />
+                    <StatCard title="Winning Percentage" value={`${playerAggregatedStats.winningPercentage}%`} rank={playerAggregatedStats.winningPercentageRank} totalPlayers={totalPlayers} />
                   </Grid>
                   <Grid item xs={6} md={2.4}>
-                    <StatCard title="Avg Points Scored" value={playerAggregatedStats.avgPointsPerGame} rank={playerAggregatedStats.avgPointsPerGameRank} />
+                    <StatCard title="Avg Points Scored" value={playerAggregatedStats.avgPointsPerGame} rank={playerAggregatedStats.avgPointsPerGameRank} totalPlayers={totalPlayers} />
                   </Grid>
                   <Grid item xs={6} md={2.4}>
-                    <StatCard title="Avg Points Against" value={playerAggregatedStats.avgPointsAgainstPerGame} rank={playerAggregatedStats.avgPointsAgainstPerGameRank} />
+                    <StatCard title="Avg Points Against" value={playerAggregatedStats.avgPointsAgainstPerGame} rank={playerAggregatedStats.avgPointsAgainstPerGameRank} totalPlayers={totalPlayers} />
                   </Grid>
                   <Grid item xs={12} md={2.4}>
-                    <StatCard title="Avg Point Differential" value={playerAggregatedStats.avgPointDifferential} rank={playerAggregatedStats.avgPointDifferentialRank} />
+                    <StatCard title="Avg Point Differential" value={playerAggregatedStats.avgPointDifferential} rank={playerAggregatedStats.avgPointDifferentialRank} totalPlayers={totalPlayers} />
                   </Grid>
                 </>
               )}
