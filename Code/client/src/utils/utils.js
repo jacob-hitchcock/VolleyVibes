@@ -260,6 +260,7 @@ export const getLeastPlayedWithPlayer = (playerId,matches,players) => {
 };
 
 export const getWinningPercentageTeammates = (playerId,matches,players) => {
+    const MIN_GAMES_THRESHOLD = 10;
     const teammateStats = {};
     let totalWins = 0;
     let totalLosses = 0;
@@ -302,12 +303,19 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
             leastImpactfulTeammate: { name: null,lossPercentage: 0,gamesPlayed: 0 }
         };
     }
+    const totalGamesPlayed = matches.length;
 
     const highestWinningPercentageTeammateId = Object.keys(teammateStats).reduce((a,b) => {
         const aStats = teammateStats[a];
         const bStats = teammateStats[b];
         const aPercentage = aStats.wins / aStats.games;
         const bPercentage = bStats.wins / bStats.games;
+
+        if(totalGamesPlayed > MIN_GAMES_THRESHOLD) {
+            // Apply threshold check for players with more than 10 games
+            if(aStats.games < MIN_GAMES_THRESHOLD) return b;
+            if(bStats.games < MIN_GAMES_THRESHOLD) return a;
+        }
 
         if(aPercentage === bPercentage) {
             return aStats.games > bStats.games ? a : b;
@@ -320,6 +328,12 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
         const bStats = teammateStats[b];
         const aPercentage = aStats.wins / aStats.games;
         const bPercentage = bStats.wins / bStats.games;
+
+        if(totalGamesPlayed > MIN_GAMES_THRESHOLD) {
+            // Apply threshold check for players with more than 10 games
+            if(aStats.games < MIN_GAMES_THRESHOLD) return b;
+            if(bStats.games < MIN_GAMES_THRESHOLD) return a;
+        }
 
         if(aPercentage === bPercentage) {
             return aStats.games > bStats.games ? a : b;
