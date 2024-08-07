@@ -260,7 +260,7 @@ export const getLeastPlayedWithPlayer = (playerId,matches,players) => {
 };
 
 export const getWinningPercentageTeammates = (playerId,matches,players) => {
-    const MIN_GAMES_THRESHOLD = 10;
+    const MIN_GAMES_THRESHOLD = 7;
     const teammateStats = {};
     let totalWins = 0;
     let totalLosses = 0;
@@ -304,22 +304,31 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
         };
     }
     const totalGamesPlayed = matches.length;
+    const playerWins = totalWins
 
     const highestWinningPercentageTeammateId = Object.keys(teammateStats).reduce((a,b) => {
+
         const aStats = teammateStats[a];
         const bStats = teammateStats[b];
         const aPercentage = aStats.wins / aStats.games;
         const bPercentage = bStats.wins / bStats.games;
 
-        if(totalGamesPlayed > MIN_GAMES_THRESHOLD) {
-            // Apply threshold check for players with more than 10 games
-            if(aStats.games < MIN_GAMES_THRESHOLD) return b;
-            if(bStats.games < MIN_GAMES_THRESHOLD) return a;
+        // For players with 20 or more games, filter out teammates with fewer than 20 games
+        if(totalGamesPlayed >= MIN_GAMES_THRESHOLD) {
+            if(aStats.games < MIN_GAMES_THRESHOLD && bStats.games >= MIN_GAMES_THRESHOLD) {
+                return b;
+            }
+            if(bStats.games < MIN_GAMES_THRESHOLD && aStats.games >= MIN_GAMES_THRESHOLD) {
+                return a;
+            }
         }
 
+        // If the winning percentages are equal, return the one with more games
         if(aPercentage === bPercentage) {
             return aStats.games > bStats.games ? a : b;
         }
+
+        // Return the one with the higher winning percentage
         return aPercentage > bPercentage ? a : b;
     });
 
@@ -329,15 +338,22 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
         const aPercentage = aStats.wins / aStats.games;
         const bPercentage = bStats.wins / bStats.games;
 
-        if(totalGamesPlayed > MIN_GAMES_THRESHOLD) {
-            // Apply threshold check for players with more than 10 games
-            if(aStats.games < MIN_GAMES_THRESHOLD) return b;
-            if(bStats.games < MIN_GAMES_THRESHOLD) return a;
+        // For players with 20 or more games, filter out teammates with fewer than 20 games
+        if(totalGamesPlayed >= MIN_GAMES_THRESHOLD) {
+            if(aStats.games < MIN_GAMES_THRESHOLD && bStats.games >= MIN_GAMES_THRESHOLD) {
+                return b;
+            }
+            if(bStats.games < MIN_GAMES_THRESHOLD && aStats.games >= MIN_GAMES_THRESHOLD) {
+                return a;
+            }
         }
 
+        // If the winning percentages are equal, return the one with more games
         if(aPercentage === bPercentage) {
             return aStats.games > bStats.games ? a : b;
         }
+
+        // Return the one with the lower winning percentage
         return aPercentage < bPercentage ? a : b;
     });
 
