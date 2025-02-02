@@ -1,6 +1,10 @@
 # VolleyVibe
 
+VolleyVibe can now be accessed at [jacobhitchcock.com](https://jacobhitchcock.com). The website is in a more cost effective, spun-down state most of the time so backend data may take 50 seconds or more to populate. Please be patient or feel free to contact me to request an more streamlined instance, see [Contact](#contact).
+
+
 VolleyVibe is a comprehensive volleyball match management application designed to streamline the process of organizing matches, tracking player statistics, and generating player combinations for future matches. The application features a user-friendly interface with robust functionalities for administrators to manage matches and players efficiently.
+
 
 ## Table of Contents
 
@@ -11,7 +15,7 @@ VolleyVibe is a comprehensive volleyball match management application designed t
 - [Running the Application](#running-the-application)
 - [Components Overview](#components-overview)
 - [Routes](#routes)
-- [Contributing](#contributing)
+- [Contact](#contact)
 - [License](#license)
 
 ## Features
@@ -29,6 +33,7 @@ VolleyVibe is a comprehensive volleyball match management application designed t
 - **Generate Player Combinations**: Users can select players and generate random match combinations.
 - **Display Matchups**: The generated combinations are displayed, and users can mark matchups as completed.
 - **Save and Load Combinations**: Generated combinations are saved to local storage, allowing persistence across sessions.
+- **NEW: Predict Winning Team**: Uses existing match history to predict which team is most likely to win a matchup, including predicted score.
 
 ## Tech Stack
 
@@ -137,16 +142,9 @@ REACT_APP_API_BASE_URL=your_backend_api_base_url
 - `PUT /api/matches/:id`: Update match information.
 - `DELETE /api/matches/:id`: Delete a match.
 
-## Contributing
+## Contact
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature-name`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature/your-feature-name`).
-6. Create a new Pull Request.
+Email: jacob.hitchcock1@gmail.com
 
 ## License
 
