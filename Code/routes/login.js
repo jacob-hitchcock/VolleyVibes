@@ -5,11 +5,23 @@ const { body,validationResult } = require('express-validator');
 const User = require('../models/User');
 const config = require('../config');
 const authMiddleware = require('../middlewares/authMiddleware'); // Import the auth middleware
-
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
+
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: {
+        message: "Too many login attempts. Please try again after 15 minutes.",
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+    skipSuccessfulRequests: true,
+})
 
 router.post(
     '/login',
+    loginLimiter,
     [
         body('email').isEmail().withMessage('Please enter a valid email'),
         body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
