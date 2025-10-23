@@ -33,15 +33,20 @@ export const AuthProvider = ({ children }) => {
     };
 
     const checkAuth = async () => {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token='));
-        if(token) {
+        const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('token='));
+        const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+
+        if(!token) {
+            console.log('No auth token found - skipping auth check')
+            return;
+        }
+
             try {
                 const response = await axiosInstance.get('/users/me',{ withCredentials: true });
                 setAuth({ user: response.data.user });
             } catch(error) {
                 console.error('Auth check failed:',error.response ? error.response.data : error.message);
-            }
-        }
+            } 
     };
 
     useEffect(() => {
