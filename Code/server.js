@@ -118,7 +118,8 @@ app.put('/api/matches/:id',authMiddleware,async (req,res) => {
         }
         res.send(match);
     } catch(error) {
-        res.status(400).send(error);
+        console.error(error)
+        res.status(400).json({ message: error.message || 'An error occurred' });
     }
 });
 
@@ -131,7 +132,8 @@ app.delete('/api/matches/:id',authMiddleware,async (req,res) => {
         }
         res.send({ message: 'Match deleted' });
     } catch(error) {
-        res.status(500).send(error);
+        console.error(error)
+        res.status(500).json({ message: error.message || 'An error occurred' });
     }
 });
 
@@ -154,7 +156,8 @@ app.get('/api/matches/:id',async (req,res) => {
         }
         res.send(match);
     } catch(error) {
-        res.status(500).send(error);
+        console.error(error)
+        res.status(500).json({ message: error.message || 'An error occurred' });
     }
 });
 
@@ -177,7 +180,8 @@ app.get('/api/players/:id',async (req,res) => {
         }
         res.send(player);
     } catch(error) {
-        res.status(500).send(error);
+        console.error(error)
+        res.status(500).json({ message: error.message || 'An error occurred' });
     }
 });
 
