@@ -62,9 +62,10 @@ app.post('/api/players',authMiddleware,async (req,res) => {
     const player = new Player(req.body);
     try {
         await player.save();
-        res.status(201).send(player);
+        res.status(201).json(player);
     } catch(error) {
-        res.status(400).send(error);
+        console.error(error);
+        res.status(400).json({ message: error.message || 'Failed to create player.' });
     }
 });
 
@@ -91,7 +92,7 @@ app.delete('/api/players/:id',authMiddleware,async (req,res) => {
         }
         res.send({ message: 'Player deleted' });
     } catch(error) {
-        console.error(error)
+        console.error(error);
         res.status(500).json({ message: error.message || 'An error occurred' });
     }
 });
@@ -141,9 +142,10 @@ app.delete('/api/matches/:id',authMiddleware,async (req,res) => {
 app.get('/api/matches',async (req,res) => {
     try {
         const matches = await Match.find();
-        res.send(matches);
+        res.json(matches);
     } catch(error) {
-        res.status(500).send(error);
+        console.error(error);
+        res.status(500).json({ message: error.message || 'An error occurred' });
     }
 });
 
@@ -165,9 +167,10 @@ app.get('/api/matches/:id',async (req,res) => {
 app.get('/api/players',async (req,res) => {
     try {
         const players = await Player.find();
-        res.send(players);
+        res.json(players);
     } catch(error) {
-        res.status(500).send(error);
+        console.error(error);
+        res.status(500).json({ message: error.message || 'An error occurred' });
     }
 });
 
