@@ -23,7 +23,6 @@ const capitalizeWords = (str) => {
 
 const Leaderboard = React.memo(
   ({ players, last10, sortConfig, requestSort, getSortIndicator, initialLoad, loading }) => {
-    // ✅ Map last10 data by player ID
     const last10Map = useMemo(() => {
       const map = {};
       if (Array.isArray(last10)) {
@@ -44,7 +43,6 @@ const Leaderboard = React.memo(
       border: '2px solid #E7552B'
     };
 
-    // ✅ Local sort handler that also supports "last10Record"
     const handleSort = (key) => {
       if (key === 'last10Record') {
         // Custom sort by last10 winning %
@@ -54,7 +52,6 @@ const Leaderboard = React.memo(
       }
     };
 
-    // ✅ Sort players locally if sorting by last10Record
     const sortedPlayers = useMemo(() => {
       if (sortConfig.key !== 'last10Record') return players;
 

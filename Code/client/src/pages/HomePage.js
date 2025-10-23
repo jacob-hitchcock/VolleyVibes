@@ -19,13 +19,22 @@ import { getPlayerName,formatDate,getWinners,getLosers,groupMatchesByDate,isTeam
 
 function HomePage() {
     const { matches,players,loading, playerStats } = useFetchData();
-    const initialLoad = useInitialLoad(2000); // About 1.555 second duration for initial load animation
+     const [initalLoadDuration, setInitialLoadDuration] = useState(2000);
+
+     useEffect(() => {
+        if (players.length > 0) {
+            setInitialLoadDuration(players.length * 215);
+        }
+     }, [players.length])
+
+     const initialLoad = useInitialLoad(initalLoadDuration);
+
 
     const mergedPlayers = players.map(player => {
         const last10 = playerStats.find(l => l._id === player._id)?.last10 || null;
         return {...player, last10};
     });
-    console.log("merged", mergedPlayers)
+    
     const {
         filterPlayerDate,
         setFilterPlayerDate,
