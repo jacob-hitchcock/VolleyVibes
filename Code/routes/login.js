@@ -69,8 +69,12 @@ router.post(
 );
 
 router.post('/logout',(req,res) => {
-    res.clearCookie('token');
-    res.json({ message: 'Logout successful' });
+    res.clearCookie('token', {
+    path: '/',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict',
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
 });
 
 // Add the /me route here

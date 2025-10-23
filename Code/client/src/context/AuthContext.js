@@ -26,9 +26,11 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             await axiosInstance.post('/users/logout',{},{ withCredentials: true });
-            setAuth({ user: null });
         } catch(error) {
             console.error('Logout failed:',error.response ? error.response.data : error.message);
+        } finally {
+            document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; SameSite=Strict';
+            setAuth({ user: null });
         }
     };
 
