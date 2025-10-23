@@ -11,6 +11,8 @@ const useFetchData = () => {
             try {
                 const matchesResponse = await axiosInstance.get('/matches');
                 const playersResponse = await axiosInstance.get('/players');
+                const last10Response = await axiosInstance.get('/players/666673ac6bb8ee4ede1edbfb/last10');
+                console.log(last10Response.data);
                 setMatches(matchesResponse.data);
                 setPlayers(playersResponse.data);
                 setLoading(false);

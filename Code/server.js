@@ -188,6 +188,60 @@ app.get('/api/players/:id',async (req,res) => {
     }
 });
 
+app.get('/api/players/:id/last10', async (req, res) => {
+  const playerId = req.params.id;
+
+  try {
+
+    const matches = await Match.find({
+      "teams": { $elemMatch: { $elemMatch: { $eq: playerId } } }
+    })
+      .sort({ date: -1, _id: -1 })
+      .limit(10);
+
+    if (matches.length === 0) {
+      return res.json({
+        wins: 0,
+        losses: 0,
+        record: '0-0',
+        totalMatchesFound: 0
+      });
+    }
+
+    let wins = 0;
+    let losses = 0;
+    for (const [index, match] of matches.entries()) {
+      const [teamA, teamB] = match.teams;
+      const [scoreA, scoreB] = match.scores.map(Number);
+
+      const onTeamA = teamA.includes(playerId);
+      const onTeamB = teamB.includes(playerId);
+
+      const playerTeam = onTeamA ? 'Team A' : onTeamB ? 'Team B' : 'None';
+      const playerWon =
+        (onTeamA && scoreA > scoreB) ||
+        (onTeamB && scoreB > scoreA);
+
+      if (playerWon) wins++;
+      else losses++;
+    }
+
+    res.json({
+      wins,
+      losses,
+      record: `${wins}-${losses}`,
+      totalMatchesFound: matches.length
+    });
+  } catch (error) {
+    console.error('❌ Error fetching last 10 record:', error);
+    res.status(500).json({ message: error.message || 'An error occurred' });
+  }
+});
+
+
+
+
+
 // Function to update player stats
 const updatePlayerStats = async (match) => {
     const teamA = match.teams[0];
@@ -230,6 +284,44 @@ const updatePlayerStats = async (match) => {
         await updatePlayer(playerId,scoreB,scoreA);
     }
 };
+
+// Helper to calculate a player's last 10 record
+const getLastTenRecord = async (playerId) => {
+    // Find all matches involving the player
+    const matches = await Match.find({
+        $or: [
+            { 'teams.0': playerId },
+            { 'teams.1': playerId },
+            { teams: playerId } // fallback if structure varies
+        ]
+    }).sort({ date: -1 }).limit(10);
+
+    let wins = 0;
+    let losses = 0;
+
+    matches.forEach(match => {
+        const teamA = match.teams[0];
+        const teamB = match.teams[1];
+        const scoreA = parseInt(match.scores[0]);
+        const scoreB = parseInt(match.scores[1]);
+
+        let playerOnA = Array.isArray(teamA) && teamA.includes(playerId);
+        let playerOnB = Array.isArray(teamB) && teamB.includes(playerId);
+
+        const teamAWon = scoreA > scoreB;
+        const teamBWon = scoreB > scoreA;
+
+        if (playerOnA && teamAWon) wins++;
+        else if (playerOnB && teamBWon) wins++;
+        else losses++;
+    })
+
+    return {
+        wins,
+        losses,
+        record: `${wins}-${losses}`
+    };
+}
 
 // Basic route for testing
 app.get('/',(req,res) => {
