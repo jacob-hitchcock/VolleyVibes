@@ -18,9 +18,14 @@ import MatchDetailsModal from '../components/MatchDetailsModal';
 import { getPlayerName,formatDate,getWinners,getLosers,groupMatchesByDate,isTeamAWinner } from '../utils/utils';
 
 function HomePage() {
-    const { matches,players,loading } = useFetchData();
+    const { matches,players,loading, playerStats } = useFetchData();
     const initialLoad = useInitialLoad(2000); // About 1.555 second duration for initial load animation
 
+    const mergedPlayers = players.map(player => {
+        const last10 = playerStats.find(l => l._id === player._id)?.last10 || null;
+        return {...player, last10};
+    });
+    console.log("merged", mergedPlayers)
     const {
         filterPlayerDate,
         setFilterPlayerDate,
@@ -86,6 +91,7 @@ function HomePage() {
                             <div className="leaderboard-container">
                                 <Leaderboard
                                     players={sortedPlayers}
+                                    last10={mergedPlayers}
                                     sortConfig={sortConfig}
                                     requestSort={requestSort}
                                     getSortIndicator={getSortIndicator}
