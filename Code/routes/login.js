@@ -55,6 +55,7 @@ router.post(
                         secure: process.env.NODE_ENV === 'production',
                         sameSite: 'strict',
                         maxAge: 3600000,
+                        path: '/'
                     });
 
                     res.json({ message: 'Login successful',user: { id: user.id,email: user.email,role: user.role },token });
