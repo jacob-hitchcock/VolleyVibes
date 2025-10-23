@@ -77,7 +77,8 @@ app.put('/api/players/:id',authMiddleware,async (req,res) => {
         }
         res.send(player);
     } catch(error) {
-        res.status(400).send(error);
+        console.error(error);
+        res.status(400).json({ message: error.message || 'An error occurred' });
     }
 });
 
