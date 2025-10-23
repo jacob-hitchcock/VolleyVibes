@@ -91,7 +91,8 @@ app.delete('/api/players/:id',authMiddleware,async (req,res) => {
         }
         res.send({ message: 'Player deleted' });
     } catch(error) {
-        res.status(500).send(error);
+        console.error(error)
+        res.status(500).json({ message: error.message || 'An error occurred' });
     }
 });
 
@@ -103,7 +104,8 @@ app.post('/api/matches',authMiddleware,async (req,res) => {
         await updatePlayerStats(req.body);
         res.status(201).send(match);
     } catch(error) {
-        res.status(400).send(error);
+        console.error(error)
+        res.status(400).json({ message: error.message || 'An error occurred' });
     }
 });
 
