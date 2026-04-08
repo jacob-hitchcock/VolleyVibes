@@ -304,7 +304,6 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
         };
     }
     const totalGamesPlayed = matches.length;
-    const playerWins = totalWins
 
     const highestWinningPercentageTeammateId = Object.keys(teammateStats).reduce((a,b) => {
 
