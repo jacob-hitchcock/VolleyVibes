@@ -130,9 +130,9 @@ const MatchupPredictor = () => {
 
         const splitIndex = Math.floor(normalizedData.length * 0.8);
         const trainingData = normalizedData.slice(0,splitIndex);
-        const testData = normalizedData.slice(splitIndex);
 
         const features = trainingData.map(d => d.features);
+        const labels = trainingData.map(d => d.label);
 
         // Train the logistic regression model
         const learningRate = 0.01;
