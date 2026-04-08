@@ -20,6 +20,7 @@ const MatchupPredictor = () => {
         if(matches.length > 0 && aggregatedPlayerStats.length > 0) {
             trainAndEvaluateModel();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[matches,aggregatedPlayerStats]);
 
     const handleAddPlayerToTeam = (player,teamSetter,otherTeamSetter,team,otherTeam) => {
