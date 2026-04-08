@@ -3,13 +3,29 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { body, validationResult } = require('express-validator');
 const Player = require('./models/Player');
 const Match = require('./models/Match');
 const loginRoute = require('./routes/login');
 const authMiddleware = require('./middlewares/authMiddleware');
 const adminMiddleware = require('./middlewares/adminMiddleware');
 
-console.log('JWT_SECRET:',process.env.JWT_SECRET ? 'Loaded' : 'Missing');
+/**
+ * Checks the request for express-validator errors and responds with 400 if any exist.
+ * Returns true if errors were found (caller should return early), false otherwise.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {boolean}
+ */
+const handleValidationErrors = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({ message: errors.array()[0].msg, errors: errors.array() });
+        return true;
+    }
+    return false;
+};
+
 
 const app = express();
 const port = process.env.PORT || 3000; // Use the environment variable PORT or default to 3000
@@ -20,8 +36,11 @@ app.use(express.json());
 // Use cookie-parser middleware
 app.use(cookieParser());
 
-// CORS configuration
-const allowedOrigins = ['https://volleyvibes.vercel.app','https://jacobhitchcock.com','https://www.jacobhitchcock.com','http://localhost:3001']; // Add your Vercel domain here
+// CORS configuration — allowed origins are set via the ALLOWED_ORIGINS env var (comma-separated).
+// Falls back to localhost only if the env var is not set.
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : ['http://localhost:3001'];
 
 app.use(cors({
     origin: (origin,callback) => {
@@ -35,8 +54,6 @@ app.use(cors({
     credentials: true, // Allow credentials (cookies) to be sent and received
 }));
 
-console.log('Starting server...');
-
 // Connect to MongoDB Atlas using environment variables
 const dbURI = process.env.MONGODB_URI;
 mongoose.connect(dbURI,{
@@ -46,10 +63,10 @@ mongoose.connect(dbURI,{
         j: true
     }
 })
-    .then(() => console.log('MongoDB connected'))
+    .then(() => console.log('MongoDB connected — server ready'))
     .catch(err => {
         console.error('Failed to connect to MongoDB:',err);
-        process.exit(1); // Exit the process with failure
+        process.exit(1);
     });
 
 // Use the login route
@@ -58,25 +75,34 @@ app.use('/api/users',loginRoute);
 // Protect the routes using the auth middleware
 
 // Protected routes for Players
-app.post('/api/players',authMiddleware,async (req,res) => {
-    const player = new Player(req.body);
-    try {
-        await player.save();
-        res.status(201).json(player);
-    } catch(error) {
-        console.error(error);
-        res.status(400).json({ message: error.message || 'Failed to create player.' });
+app.post('/api/players',
+    authMiddleware,
+    [
+        body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }).withMessage('Name must be 100 characters or fewer'),
+        body('age').optional({ nullable: true }).isInt({ min: 0, max: 120 }).withMessage('Age must be a whole number between 0 and 120'),
+        body('gender').notEmpty().withMessage('Gender is required').isIn(['Male', 'Female', 'Other', 'Prefer not to say']).withMessage('Gender must be one of: Male, Female, Other, Prefer not to say'),
+    ],
+    async (req,res) => {
+        if (handleValidationErrors(req, res)) return;
+        const player = new Player(req.body);
+        try {
+            await player.save();
+            res.status(201).json(player);
+        } catch(error) {
+            console.error(error);
+            res.status(400).json({ message: error.message || 'Failed to create player.' });
+        }
     }
-});
+);
 
 app.put('/api/players/:id',authMiddleware,async (req,res) => {
     const { id } = req.params;
     try {
         const player = await Player.findByIdAndUpdate(id,req.body,{ new: true,runValidators: true });
         if(!player) {
-            return res.status(404).send({ message: 'Player not found' });
+            return res.status(404).json({ message: 'Player not found' });
         }
-        res.send(player);
+        res.json(player);
     } catch(error) {
         console.error(error);
         res.status(400).json({ message: error.message || 'An error occurred' });
@@ -88,9 +114,9 @@ app.delete('/api/players/:id',authMiddleware,async (req,res) => {
     try {
         const player = await Player.findByIdAndDelete(id);
         if(!player) {
-            return res.status(404).send({ message: 'Player not found' });
+            return res.status(404).json({ message: 'Player not found' });
         }
-        res.send({ message: 'Player deleted' });
+        res.json({ message: 'Player deleted' });
     } catch(error) {
         console.error(error);
         res.status(500).json({ message: error.message || 'An error occurred' });
@@ -98,26 +124,38 @@ app.delete('/api/players/:id',authMiddleware,async (req,res) => {
 });
 
 // Protected routes for Matches
-app.post('/api/matches',authMiddleware,async (req,res) => {
-    const match = new Match(req.body);
-    try {
-        await match.save();
-        await updatePlayerStats(req.body);
-        res.status(201).send(match);
-    } catch(error) {
-        console.error(error)
-        res.status(400).json({ message: error.message || 'An error occurred' });
+app.post('/api/matches',
+    authMiddleware,
+    [
+        body('teams').isArray({ min: 2, max: 2 }).withMessage('teams must be an array of exactly 2 teams'),
+        body('teams.*').isArray({ min: 1 }).withMessage('Each team must be a non-empty array of player IDs'),
+        body('scores').isArray({ min: 2, max: 2 }).withMessage('scores must be an array of exactly 2 numbers'),
+        body('scores.*').isInt({ min: 0 }).withMessage('Each score must be a non-negative integer'),
+        body('date').notEmpty().withMessage('date is required').isISO8601().withMessage('date must be a valid ISO 8601 date string'),
+        body('location').optional().isString().withMessage('location must be a string'),
+    ],
+    async (req,res) => {
+        if (handleValidationErrors(req, res)) return;
+        const match = new Match(req.body);
+        try {
+            await match.save();
+            await updatePlayerStats(req.body);
+            res.status(201).json(match);
+        } catch(error) {
+            console.error(error)
+            res.status(400).json({ message: error.message || 'An error occurred' });
+        }
     }
-});
+);
 
 app.put('/api/matches/:id',authMiddleware,async (req,res) => {
     const { id } = req.params;
     try {
         const match = await Match.findByIdAndUpdate(id,req.body,{ new: true,runValidators: true });
         if(!match) {
-            return res.status(404).send({ message: 'Match not found' });
+            return res.status(404).json({ message: 'Match not found' });
         }
-        res.send(match);
+        res.json(match);
     } catch(error) {
         console.error(error)
         res.status(400).json({ message: error.message || 'An error occurred' });
@@ -129,9 +167,9 @@ app.delete('/api/matches/:id',authMiddleware,async (req,res) => {
     try {
         const match = await Match.findByIdAndDelete(id);
         if(!match) {
-            return res.status(404).send({ message: 'Match not found' });
+            return res.status(404).json({ message: 'Match not found' });
         }
-        res.send({ message: 'Match deleted' });
+        res.json({ message: 'Match deleted' });
     } catch(error) {
         console.error(error)
         res.status(500).json({ message: error.message || 'An error occurred' });
@@ -154,9 +192,9 @@ app.get('/api/matches/:id',async (req,res) => {
     try {
         const match = await Match.findById(id);
         if(!match) {
-            return res.status(404).send({ message: 'Match not found' });
+            return res.status(404).json({ message: 'Match not found' });
         }
-        res.send(match);
+        res.json(match);
     } catch(error) {
         console.error(error)
         res.status(500).json({ message: error.message || 'An error occurred' });
@@ -179,15 +217,17 @@ app.get('/api/players/:id',async (req,res) => {
     try {
         const player = await Player.findById(id);
         if(!player) {
-            return res.status(404).send({ message: 'Player not found' });
+            return res.status(404).json({ message: 'Player not found' });
         }
-        res.send(player);
+        res.json(player);
     } catch(error) {
         console.error(error)
         res.status(500).json({ message: error.message || 'An error occurred' });
     }
 });
 
+// Returns a player's win/loss record for their most recent 10 matches.
+// Uses $elemMatch on the nested teams array (teams is an array of arrays of player IDs).
 app.get('/api/players/:id/last10', async (req, res) => {
   const playerId = req.params.id;
 
@@ -284,44 +324,6 @@ const updatePlayerStats = async (match) => {
         await updatePlayer(playerId,scoreB,scoreA);
     }
 };
-
-// Helper to calculate a player's last 10 record
-const getLastTenRecord = async (playerId) => {
-    // Find all matches involving the player
-    const matches = await Match.find({
-        $or: [
-            { 'teams.0': playerId },
-            { 'teams.1': playerId },
-            { teams: playerId } // fallback if structure varies
-        ]
-    }).sort({ date: -1 }).limit(10);
-
-    let wins = 0;
-    let losses = 0;
-
-    matches.forEach(match => {
-        const teamA = match.teams[0];
-        const teamB = match.teams[1];
-        const scoreA = parseInt(match.scores[0]);
-        const scoreB = parseInt(match.scores[1]);
-
-        let playerOnA = Array.isArray(teamA) && teamA.includes(playerId);
-        let playerOnB = Array.isArray(teamB) && teamB.includes(playerId);
-
-        const teamAWon = scoreA > scoreB;
-        const teamBWon = scoreB > scoreA;
-
-        if (playerOnA && teamAWon) wins++;
-        else if (playerOnB && teamBWon) wins++;
-        else losses++;
-    })
-
-    return {
-        wins,
-        losses,
-        record: `${wins}-${losses}`
-    };
-}
 
 // Basic route for testing
 app.get('/',(req,res) => {

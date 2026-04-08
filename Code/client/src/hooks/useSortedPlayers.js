@@ -1,5 +1,24 @@
 import { useState } from 'react';
 
+/**
+ * Provides sortable player data for the leaderboard table.
+ * Supports sorting by wins, losses, win percentage, points for/against,
+ * and point differential. Clicking the same column header toggles direction.
+ *
+ * Special cases:
+ * - `losses` is computed from gamesPlayed - wins (not stored directly).
+ * - `winningPercentage` defaults to descending on first click.
+ * - `name`, `pointsAgainst`, `losses` default to ascending on first click.
+ * - Tie-breaking on `wins` falls back to `pointDifferential`.
+ *
+ * @param {Array<Object>} players - Array of player stat objects.
+ * @returns {{
+ *   sortedPlayers: Array<Object>,
+ *   requestSort: Function,
+ *   getSortIndicator: Function,
+ *   sortConfig: { key: string, direction: 'ascending'|'descending' }
+ * }}
+ */
 const useSortedPlayers = (players) => {
     const [sortConfig,setSortConfig] = useState({ key: 'wins',direction: 'descending' });
 

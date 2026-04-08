@@ -3,6 +3,7 @@ import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { AuthProvider } from './context/AuthContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import HomePage from './pages/HomePage';
 import PlayerManagement from './pages/PlayerManagement';
 import MatchManagement from './pages/MatchManagement';
@@ -19,6 +20,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <ErrorBoundary>
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route path="/players" element={<PlayerManagement />} />
@@ -33,6 +35,7 @@ function App() {
             <Route path="/protected" element={<AdminDashboard />} />
           </Route>
         </Routes>
+        </ErrorBoundary>
       </Router>
       <Analytics />
       <SpeedInsights />

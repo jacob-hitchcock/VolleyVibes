@@ -1,39 +1,80 @@
 // Utility Functions
 
+/**
+ * Looks up a player's display name by their MongoDB ID.
+ * @param {string} id - The player's _id string.
+ * @param {Array<{_id: string, name: string}>} players - Full player list.
+ * @returns {string} The player's name, or an empty string if not found.
+ */
 export const getPlayerName = (id,players) => {
     if(!players || players.length === 0) return '';
     const player = players.find(p => p._id === id);
     return player ? player.name : '';
 };
 
+/**
+ * Returns the possessive form of a name (e.g. "James" → "James'", "Jacob" → "Jacob's").
+ * @param {string} name
+ * @returns {string}
+ */
 export const getPossessiveForm = (name) => {
     return name.endsWith('s') ? `${name}'` : `${name}'s`;
 };
 
+/**
+ * Formats an ISO date string into a human-readable local date string (e.g. "April 7, 2026").
+ * Adjusts for the local timezone offset so the displayed date matches the recorded date.
+ * @param {string} dateString - ISO 8601 date string.
+ * @returns {string}
+ */
 export const formatDate = (dateString) => {
     const date = new Date(dateString);
-    // Adjust for local timezone offset
+    // Shift by the timezone offset so the date displays as entered, not as UTC midnight.
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     const options = { year: 'numeric',month: 'long',day: 'numeric' };
     return date.toLocaleDateString(undefined,options);
 };
 
+/**
+ * Returns a comma-separated string of the winning team's player names for a given match.
+ * @param {Object} match - Match document with `scores` and `teams` arrays.
+ * @param {Function} getPlayerName - Function to resolve player IDs to names.
+ * @returns {string}
+ */
 export const getWinners = (match,getPlayerName) => {
     return parseInt(match.scores[0]) > parseInt(match.scores[1])
         ? match.teams[0].map(id => getPlayerName(id)).join(', ')
         : match.teams[1].map(id => getPlayerName(id)).join(', ');
 };
 
+/**
+ * Returns a comma-separated string of the losing team's player names for a given match.
+ * @param {Object} match - Match document with `scores` and `teams` arrays.
+ * @param {Function} getPlayerName - Function to resolve player IDs to names.
+ * @returns {string}
+ */
 export const getLosers = (match,getPlayerName) => {
     return parseInt(match.scores[0]) > parseInt(match.scores[1])
         ? match.teams[1].map(id => getPlayerName(id)).join(', ')
         : match.teams[0].map(id => getPlayerName(id)).join(', ');
 };
 
+/**
+ * Returns true if Team A (index 0) won the match.
+ * @param {Object} match - Match document with a `scores` array.
+ * @returns {boolean}
+ */
 export const isTeamAWinner = (match) => parseInt(match.scores[0]) > parseInt(match.scores[1]);
 
+/**
+ * Returns true if a match date falls on the same calendar day as the given filter date.
+ * Both dates are compared in UTC to avoid timezone-related off-by-one errors.
+ * @param {Date} matchDate - The match's date as a Date object.
+ * @param {string} filterDate - A date string to compare against (e.g. "2026-04-07").
+ * @returns {boolean}
+ */
 export const doesDateMatchFilter = (matchDate,filterDate) => {
-    const matchDateUTC = new Date(matchDate.toISOString().split('T')[0]); // Convert to UTC and strip time
+    const matchDateUTC = new Date(matchDate.toISOString().split('T')[0]);
     const filterDateUTC = new Date(filterDate);
 
     return (
@@ -43,9 +84,15 @@ export const doesDateMatchFilter = (matchDate,filterDate) => {
     );
 };
 
+/**
+ * Groups an array of matches into an object keyed by their date string (YYYY-MM-DD).
+ * Useful for iterating over a player's match history day by day.
+ * @param {Array<Object>} matches - Array of match documents.
+ * @returns {Object.<string, Array<Object>>} Map of date strings to arrays of matches.
+ */
 export const groupMatchesByDate = (matches) => {
     return matches.reduce((groups,match) => {
-        const date = match.date.split('T')[0]; // Extract date part
+        const date = match.date.split('T')[0];
         if(!groups[date]) {
             groups[date] = [];
         }
@@ -55,6 +102,13 @@ export const groupMatchesByDate = (matches) => {
 };
 
 // Validation Function
+
+/**
+ * Validates a player creation/edit form object.
+ * Returns an errors object — if empty, the form is valid.
+ * @param {{ name: string, age: number|string, gender: string }} form
+ * @returns {Object.<string, string>} Map of field names to error messages.
+ */
 export const validatePlayerForm = (form) => {
     const errors = {};
     if(!form.name) {
@@ -69,9 +123,13 @@ export const validatePlayerForm = (form) => {
     return errors;
 };
 
-// New Utility Functions
-
-// Function to generate random numbers for players
+/**
+ * Generates a randomly shuffled array of integers from 1 to players.length (inclusive).
+ * Used to assign random jersey numbers to players before generating team combos.
+ * Implements the Fisher-Yates shuffle algorithm.
+ * @param {Array} players - Array of player objects (only the length is used).
+ * @returns {number[]} Shuffled array of integers.
+ */
 export const generateRandomNumbers = (players) => {
     const numbers = [...Array(players.length).keys()].map((i) => i + 1);
     for(let i = numbers.length - 1;i > 0;i--) {
@@ -81,7 +139,18 @@ export const generateRandomNumbers = (players) => {
     return numbers;
 };
 
-// Function to calculate all possible matchups
+/**
+ * Generates all unique team matchup combinations for the selected players.
+ *
+ * Steps:
+ * 1. Assigns each selected player a random jersey number.
+ * 2. Generates all combinations of players for Team A (size = floor(total / 2)).
+ * 3. Deduplicates mirror matchups (A vs B == B vs A).
+ *
+ * @param {string[]} selectedPlayerIds - Array of player _id strings to include.
+ * @param {Array<{_id: string, name: string}>} players - Full player list to look up names.
+ * @returns {{ matchups: Array<Object>, numberedPlayers: Array<Object> }}
+ */
 export const calculateMatchups = (selectedPlayerIds,players) => {
     const numbers = generateRandomNumbers(selectedPlayerIds);
     const numberedPlayers = selectedPlayerIds.map((playerId,index) => {
@@ -141,9 +210,20 @@ export const calculateMatchups = (selectedPlayerIds,players) => {
     return { matchups: uniqueMatchups,numberedPlayers };
 };
 
-
-// Function to get saved combos from local storage
-// Function to get saved combos from local storage
+/**
+ * Reads all combo-related state from localStorage and returns it.
+ * Used to restore the Combos page state between sessions.
+ * Falls back to empty defaults if localStorage is unavailable or data is malformed.
+ * @returns {{
+ *   savedSelectedPlayers: string[],
+ *   savedMatchups: Array,
+ *   savedGeneratedCombos: Array,
+ *   savedNumberedPlayers: Array,
+ *   savedReferenceGrid: Array,
+ *   savedTeamACounts: number[],
+ *   savedTeamAStdDev: number
+ * }}
+ */
 export const getSavedCombos = () => {
     try {
         const savedSelectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers')) || [];
@@ -176,7 +256,17 @@ export const getSavedCombos = () => {
     }
 };
 
-// Function to save combos to local storage
+/**
+ * Persists all combo-related state to localStorage so it survives page refreshes.
+ * Called automatically whenever combo state changes in useComboData.
+ * @param {string[]} selectedPlayers
+ * @param {Array} matchups
+ * @param {Array} generatedCombos
+ * @param {Array} numberedPlayers
+ * @param {Array} referenceGrid
+ * @param {number[]} teamACounts
+ * @param {number} teamAStdDev
+ */
 export const saveCombos = (selectedPlayers,matchups,generatedCombos,numberedPlayers,referenceGrid,teamACounts,teamAStdDev) => {
     localStorage.setItem('selectedPlayers',JSON.stringify(selectedPlayers));
     localStorage.setItem('matchups',JSON.stringify(matchups));
@@ -187,8 +277,13 @@ export const saveCombos = (selectedPlayers,matchups,generatedCombos,numberedPlay
     localStorage.setItem('teamAStdDev',teamAStdDev.toString());
 };
 
-
-
+/**
+ * Finds the teammate a given player has shared the most matches with.
+ * @param {string} playerId - The focal player's _id.
+ * @param {Array<Object>} matches - All match documents.
+ * @param {Array<{_id: string, name: string}>} players - Full player list.
+ * @returns {{ name: string|null, gamesPlayed: number }}
+ */
 export const getMostPlayedWithPlayer = (playerId,matches,players) => {
     const teammateCount = {};
 
@@ -224,6 +319,13 @@ export const getMostPlayedWithPlayer = (playerId,matches,players) => {
     return { name: null,gamesPlayed: 0 };
 };
 
+/**
+ * Finds the teammate a given player has shared the fewest matches with.
+ * @param {string} playerId - The focal player's _id.
+ * @param {Array<Object>} matches - All match documents.
+ * @param {Array<{_id: string, name: string}>} players - Full player list.
+ * @returns {{ name: string|null, gamesPlayed: number }}
+ */
 export const getLeastPlayedWithPlayer = (playerId,matches,players) => {
     const teammateCount = {};
 
@@ -259,6 +361,27 @@ export const getLeastPlayedWithPlayer = (playerId,matches,players) => {
     return { name: null,gamesPlayed: 0 };
 };
 
+/**
+ * Computes four teammate-impact statistics for a given player across all their matches:
+ *
+ * - **highestWinningPercentageTeammate**: The teammate they win with most often.
+ * - **lowestWinningPercentageTeammate**: The teammate they win with least often.
+ * - **highestContributingTeammate**: The teammate who appears in the most of their wins.
+ * - **leastImpactfulTeammate**: The teammate who appears in the most of their losses.
+ *
+ * Teammates with fewer than MIN_GAMES_THRESHOLD shared games are excluded from
+ * percentage-based rankings when the player has enough games (avoids small-sample noise).
+ *
+ * @param {string} playerId
+ * @param {Array<Object>} matches
+ * @param {Array<{_id: string, name: string}>} players
+ * @returns {{
+ *   highestWinningPercentageTeammate: Object,
+ *   lowestWinningPercentageTeammate: Object,
+ *   highestContributingTeammate: Object,
+ *   leastImpactfulTeammate: Object
+ * }}
+ */
 export const getWinningPercentageTeammates = (playerId,matches,players) => {
     const MIN_GAMES_THRESHOLD = 7;
     const teammateStats = {};
@@ -312,7 +435,6 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
         const aPercentage = aStats.wins / aStats.games;
         const bPercentage = bStats.wins / bStats.games;
 
-        // For players with 20 or more games, filter out teammates with fewer than 20 games
         if(totalGamesPlayed >= MIN_GAMES_THRESHOLD) {
             if(aStats.games < MIN_GAMES_THRESHOLD && bStats.games >= MIN_GAMES_THRESHOLD) {
                 return b;
@@ -322,12 +444,10 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
             }
         }
 
-        // If the winning percentages are equal, return the one with more games
         if(aPercentage === bPercentage) {
             return aStats.games > bStats.games ? a : b;
         }
 
-        // Return the one with the higher winning percentage
         return aPercentage > bPercentage ? a : b;
     });
 
@@ -337,7 +457,6 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
         const aPercentage = aStats.wins / aStats.games;
         const bPercentage = bStats.wins / bStats.games;
 
-        // For players with 20 or more games, filter out teammates with fewer than 20 games
         if(totalGamesPlayed >= MIN_GAMES_THRESHOLD) {
             if(aStats.games < MIN_GAMES_THRESHOLD && bStats.games >= MIN_GAMES_THRESHOLD) {
                 return b;
@@ -347,12 +466,10 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
             }
         }
 
-        // If the winning percentages are equal, return the one with more games
         if(aPercentage === bPercentage) {
             return aStats.games > bStats.games ? a : b;
         }
 
-        // Return the one with the lower winning percentage
         return aPercentage < bPercentage ? a : b;
     });
 
@@ -406,7 +523,12 @@ export const getWinningPercentageTeammates = (playerId,matches,players) => {
     return { highestWinningPercentageTeammate,lowestWinningPercentageTeammate,highestContributingTeammate,leastImpactfulTeammate };
 };
 
-// Define didPlayerTeamWin function based on your provided logic
+/**
+ * Returns true if the player's team won the given match.
+ * @param {Object} match - Match document with `scores` array.
+ * @param {number} playerTeamIndex - Index (0 or 1) of the team the player is on.
+ * @returns {boolean}
+ */
 const didPlayerTeamWin = (match,playerTeamIndex) => {
     const teamScore = Number(match.scores[playerTeamIndex]);
     const opponentScore = Number(match.scores[playerTeamIndex === 0 ? 1 : 0]);

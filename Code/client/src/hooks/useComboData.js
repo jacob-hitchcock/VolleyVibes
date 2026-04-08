@@ -1,6 +1,37 @@
 import { useState,useEffect } from 'react';
 import { calculateMatchups,getSavedCombos,saveCombos } from '../utils/utils';
 
+/**
+ * Manages all state and logic for the Combos page — player selection, matchup generation,
+ * combo scheduling, and the cross-reference balance grid.
+ *
+ * State is automatically persisted to and restored from localStorage so sessions
+ * survive page refreshes.
+ *
+ * The cross-reference grid tracks how often each pair of players are on the same team
+ * across all generated combos. The coefficient of variation (CV) scores measure
+ * how evenly distributed teammate pairings are — lower CV means more balanced rotation.
+ *
+ * @param {Array<{_id: string, name: string}>} players - Full player list from the API.
+ * @returns {{
+ *   selectedPlayers: string[],
+ *   matchups: Array,
+ *   numberOfCombos: number,
+ *   generatedCombos: Array,
+ *   playerNumbers: Array,
+ *   crossReferenceGrid: number[][],
+ *   cvArray: number[],
+ *   overallCV: number,
+ *   teamACounts: number[],
+ *   teamAStdDev: number,
+ *   handlePlayerSelect: Function,
+ *   handleGenerateCombos: Function,
+ *   handleSelectNumberOfCombos: Function,
+ *   handleGenerateSelectedCombos: Function,
+ *   handleClearCombos: Function,
+ *   toggleCompleted: Function
+ * }}
+ */
 const useComboData = (players) => {
     const [selectedPlayers,setSelectedPlayers] = useState([]);
     const [matchups,setMatchups] = useState([]);

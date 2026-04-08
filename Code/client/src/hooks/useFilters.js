@@ -1,12 +1,39 @@
 import { useState,useMemo } from 'react';
 import { doesDateMatchFilter } from '../utils/utils';
 
+/**
+ * Returns true if the player's team won the given match.
+ * Used internally by useFilters and exposed in its return value for reuse in child hooks.
+ * @param {Object} match
+ * @param {number} playerTeamIndex - 0 or 1
+ * @returns {boolean}
+ */
 const didPlayerTeamWin = (match,playerTeamIndex) => {
     const teamScore = Number(match.scores[playerTeamIndex]);
     const opponentScore = Number(match.scores[playerTeamIndex === 0 ? 1 : 0]);
     return teamScore > opponentScore;
 };
 
+/**
+ * Central filtering and stat aggregation hook used across HomePage, MatchManagement,
+ * and AdminDashboard.
+ *
+ * Provides two independent filter groups:
+ * - **Match filters**: filter by winner IDs, loser IDs, date, and location.
+ * - **Player filters**: filter aggregated stats by date range and location.
+ *
+ * The `context` param changes behavior — in 'admin' mode, matches are hidden until
+ * a date filter is selected (to avoid loading all matches at once in the admin view).
+ *
+ * `aggregatedPlayerStats` recomputes player stats live from filtered match data,
+ * so stats update instantly when filters change without an API call.
+ *
+ * @param {Array<Object>} matches - All match documents.
+ * @param {Array<Object>} players - All player documents.
+ * @param {string} [selectedDate=''] - Pre-selected date filter (used by admin context).
+ * @param {'default'|'admin'} [context='default'] - Changes filtering behavior.
+ * @returns {Object} Filter state, setters, filtered data, and aggregated player stats.
+ */
 const useFilters = (matches = [],players = [],selectedDate = '',context = 'default') => {
     // Ensure matches and players are arrays
     matches = Array.isArray(matches) ? matches : [];

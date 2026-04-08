@@ -1,8 +1,20 @@
 import { useMemo } from 'react';
 import { groupMatchesByDate,formatDate } from '../utils/utils';
 
+/**
+ * Normalizes a location string for consistent keying (lowercase, no whitespace).
+ * e.g. "Indoor Court" → "indoorcourt"
+ * @param {string} location
+ * @returns {string}
+ */
 const normalizeLocation = (location) => location.toLowerCase().replace(/\s+/g,'');
 
+/**
+ * Calculates the median of an array of numbers.
+ * Used to compute the league-wide median winning percentage for VWAR calculation.
+ * @param {number[]} values
+ * @returns {number}
+ */
 const calculateMedian = (values) => {
     if(values.length === 0) return 0;
     values.sort((a,b) => a - b);
@@ -11,6 +23,30 @@ const calculateMedian = (values) => {
     return (values[half - 1] + values[half]) / 2.0;
 };
 
+/**
+ * Computes a comprehensive performance profile for a single player by iterating
+ * over their full match history chronologically.
+ *
+ * In a single pass over the player's matches (grouped by date), this hook builds:
+ * - **performanceOverTime**: Win %, cumulative wins, and VWAR at each date played.
+ * - **statsByLocation**: Win/loss record and point differential at grass, indoor, and beach.
+ * - **milestones**: Notable events (win streaks, games-played milestones, VWAR thresholds,
+ *   pair-based streaks with specific teammates or opponents).
+ * - Summary totals: totalWins, totalLosses, pointsFor, pointsAgainst, etc.
+ *
+ * VWAR (Volleyball Wins Above Replacement) measures how many wins a player has accumulated
+ * above what an average player would have with the same number of games, factoring in
+ * point differential. The league median winning percentage at each date is used as the baseline.
+ *
+ * Returns null if required data is not yet available (playerId missing, empty matches/players).
+ *
+ * @param {string} playerId - The player's _id to compute stats for.
+ * @param {Array<Object>} matches - All match documents (unfiltered).
+ * @param {Function} didPlayerTeamWin - From useFilters — determines if a team won a match.
+ * @param {Array<Object>} aggregatedPlayerStats - All players' computed stats (for VWAR baseline).
+ * @param {Array<Object>} players - Full player list (for name lookups in milestones).
+ * @returns {Object|null} Full performance profile, or null if data is unavailable.
+ */
 const usePlayerPerformance = (playerId,matches,didPlayerTeamWin,aggregatedPlayerStats,players) => {
     const playerStats = useMemo(() => {
         if(!playerId || !matches.length || !players.length) return null;
