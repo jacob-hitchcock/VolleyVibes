@@ -13,7 +13,6 @@ const MatchupPredictor = () => {
     const [teamA,setTeamA] = useState([]);
     const [teamB,setTeamB] = useState([]);
     const [prediction,setPrediction] = useState(null);
-    const [accuracy,setAccuracy] = useState(null);
     const [predictedScores,setPredictedScores] = useState({ teamAScore: 0,teamBScore: 0 });
 
     useEffect(() => {
@@ -165,9 +164,6 @@ const MatchupPredictor = () => {
             const z = coeffs[0] + f.reduce((acc,xi,k) => acc + xi * coeffs[k + 1],0);
             return logisticFunction(z) > 0.5 ? 1 : 0;
         });
-
-        const accuracy = ss.mean(predictions.map((p,i) => (p === testLabels[i] ? 1 : 0)));
-        setAccuracy(accuracy);
     };
 
     const predictScore = (teamAProbability,teamBProbability) => {
