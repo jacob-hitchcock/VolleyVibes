@@ -16,7 +16,6 @@ const MatchupPredictor = () => {
     const [predictedScores,setPredictedScores] = useState({ teamAScore: 0,teamBScore: 0 });
 
     useEffect(() => {
-        console.log('matches:',matches);
         if(matches.length > 0 && aggregatedPlayerStats.length > 0) {
             trainAndEvaluateModel();
         }
