@@ -133,7 +133,6 @@ const MatchupPredictor = () => {
         const testData = normalizedData.slice(splitIndex);
 
         const features = trainingData.map(d => d.features);
-        const labels = trainingData.map(d => d.label);
 
         // Train the logistic regression model
         const learningRate = 0.01;
@@ -157,9 +156,6 @@ const MatchupPredictor = () => {
                 coeffs[k] -= (learningRate / features.length) * gradients[k];
             }
         }
-
-        // Evaluate the model
-        const testFeatures = testData.map(d => d.features);
     };
 
     const predictScore = (teamAProbability,teamBProbability) => {
