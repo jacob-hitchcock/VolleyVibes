@@ -1,13 +1,7 @@
 import React,{ useState } from 'react';
 import { Link,useLocation } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { AppBar,Toolbar,Typography,IconButton,Menu,MenuItem,Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Button from '@mui/material/Button';
 import '../styles.css';
 
 function NavBar() {
@@ -47,7 +41,7 @@ function NavBar() {
                         }}
                     >
                         Home
-          </Button>
+                    </Button>
                     <Button
                         component={Link}
                         to="/combos"
@@ -62,7 +56,7 @@ function NavBar() {
                         }}
                     >
                         Combos
-          </Button>
+                    </Button>
                 </div>
                 <div className="nav-right">
                     <Button
@@ -79,7 +73,7 @@ function NavBar() {
                         }}
                     >
                         Milestones
-          </Button>
+                    </Button>
                     <Button
                         component={Link}
                         to="/matches"
@@ -94,7 +88,7 @@ function NavBar() {
                         }}
                     >
                         Matches
-          </Button>
+                    </Button>
                 </div>
                 <IconButton
                     edge="start"
@@ -138,7 +132,7 @@ function NavBar() {
                         }}
                     >
                         Home
-          </MenuItem>
+                    </MenuItem>
                     <MenuItem
                         onClick={handleMenuClose}
                         component={Link}
@@ -157,7 +151,7 @@ function NavBar() {
                         }}
                     >
                         Combos
-          </MenuItem>
+                    </MenuItem>
                     <MenuItem
                         onClick={handleMenuClose}
                         component={Link}
@@ -176,7 +170,7 @@ function NavBar() {
                         }}
                     >
                         Milestones
-          </MenuItem>
+                    </MenuItem>
                     <MenuItem
                         onClick={handleMenuClose}
                         component={Link}
@@ -195,7 +189,7 @@ function NavBar() {
                         }}
                     >
                         Matches
-          </MenuItem>
+                    </MenuItem>
                 </Menu>
             </Toolbar>
         </AppBar>

@@ -223,7 +223,7 @@ const updatePlayerStats = async (match) => {
 
 // Basic route for testing
 app.get('/',(req,res) => {
-    res.send('Hello World!');
+    res.send('Hello, VolleyVibe backend is up and running!');
 });
 
 app.listen(port,() => {

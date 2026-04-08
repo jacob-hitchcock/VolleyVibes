@@ -25,7 +25,8 @@ html {
 
 /* Scrollbar styling (optional) */
 .leaderboard-table-wrapper {
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling for iOS */
     width: 100%;
     overflow-x: auto;
 }
@@ -69,7 +70,7 @@ html {
     height: 10px;
     margin-top: -10px;
     visibility: hidden;
-    pointer-events:none;
+    pointer-events: none;
 }
 
 .logo {
@@ -93,14 +94,16 @@ html {
     margin-left: 10px;
 }
 
-.volley, .vibe {
+.volley,
+.vibe {
     font-family: 'Mahoda Display', sans-serif;
     color: #e7552b;
     font-size: 48px;
     line-height: 1;
 }
 
-.nav-left a, .nav-right a {
+.nav-left a,
+.nav-right a {
     text-decoration: none;
     color: #E7552B;
     font-family: 'Coolvetica', Arial, sans-serif;
@@ -110,13 +113,15 @@ html {
     transition: color 0.3s, background-color 0.3s;
 }
 
-.nav-left a.active, .nav-right a.active {
+.nav-left a.active,
+.nav-right a.active {
     background-color: #E7552B;
     color: #fff5d6;
     border-radius: 20px;
 }
 
-.nav-left a.active:hover, .nav-right a.active:hover {
+.nav-left a.active:hover,
+.nav-right a.active:hover {
     background-color: #e03e00;
 }
 
@@ -134,7 +139,7 @@ html {
     display: none;
     flex-direction: column;
     position: absolute;
-    background-color:#E7552B;
+    background-color: #E7552B;
     width: 100%;
     left: 0;
     top: 70px;
@@ -185,7 +190,9 @@ html {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-family: 'Coolvetica', sans-serif;
     color: #E7552B;
     margin-bottom: 20px;
@@ -211,7 +218,8 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
     border: 2px solid #E7552B;
     padding: 10px;
     text-align: left;
@@ -241,7 +249,9 @@ form div {
     margin-bottom: 10px;
 }
 
-input[type="text"], input[type="number"], input[type="date"] {
+input[type="text"],
+input[type="number"],
+input[type="date"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
@@ -277,7 +287,7 @@ li button {
     margin-top: 130px;
     margin-left: -40px;
     margin-right: -40px;
-    position:relative;
+    position: relative;
     left: 0;
     bottom: 0;
     display: flex;
@@ -454,7 +464,8 @@ li button {
     justify-content: flex-end;
     margin-bottom: 20px;
     position: relative;
-    margin-top: -70px; /* Add top margin for better alignment */
+    margin-top: -70px;
+    /* Add top margin for better alignment */
 }
 
 .search-input-container {
@@ -465,8 +476,10 @@ li button {
 
 .search-input {
     width: 200px;
-    padding: 100px; /* Add padding to the left for the icon */
-    border: 2px solid #E7552B; /* Outline color */
+    padding: 100px;
+    /* Add padding to the left for the icon */
+    border: 2px solid #E7552B;
+    /* Outline color */
     border-radius: 5px;
     background-color: #fff5d6;
     color: #E7552B;
@@ -479,7 +492,8 @@ li button {
 }
 
 .search-input:focus {
-    border-color: #e7552b; /* Outline color */
+    border-color: #e7552b;
+    /* Outline color */
     background-color: #fff;
 }
 
@@ -625,7 +639,8 @@ h2.match-title {
 .dashboard-container {
     display: flex;
     flex: 1;
-    padding-left: 0px; /* Width of the sidebar */
+    padding-left: 0px;
+    /* Width of the sidebar */
 }
 
 .dashboard-content {
@@ -645,7 +660,7 @@ h2.match-title {
     margin-bottom: 20px;
 }
 
-input[type="checkbox"]:disabled + label {
+input[type="checkbox"]:disabled+label {
     color: #999;
     cursor: not-allowed;
     text-decoration: line-through;
@@ -674,11 +689,11 @@ input[type="checkbox"]:disabled + label {
 }
 
 .yellow {
-    color:#ffc658;
+    color: #ffc658;
 }
 
 .brown {
-    color:#977e57;
+    color: #977e57;
 }
 
 .name-link {
@@ -722,7 +737,7 @@ input[type="checkbox"]:disabled + label {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -743,7 +758,7 @@ input[type="checkbox"]:disabled + label {
     width: 100%;
     max-height: 100vh;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     overflow: auto;
     padding: 20px;
 }
@@ -754,6 +769,7 @@ input[type="checkbox"]:disabled + label {
         opacity: 0;
         transform: scale(0.5);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -765,6 +781,7 @@ input[type="checkbox"]:disabled + label {
         opacity: 1;
         transform: scale(1);
     }
+
     to {
         opacity: 0;
         transform: scale(0.5);
@@ -776,6 +793,7 @@ input[type="checkbox"]:disabled + label {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -785,6 +803,7 @@ input[type="checkbox"]:disabled + label {
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
     }
@@ -849,7 +868,7 @@ input[type="checkbox"]:disabled + label {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .team-column {
@@ -868,7 +887,7 @@ input[type="checkbox"]:disabled + label {
     color: #000;
 }
 
-.team-column h3{
+.team-column h3 {
     font-size: 20px;
     margin-bottom: 10px;
 }
@@ -989,32 +1008,44 @@ input[type="checkbox"]:disabled + label {
 
 
 .date-input {
-    height: 36px; /* Match the height of the dropdown buttons */
-    width: 200px; /* Increase the width to prevent text cutoff */
-    padding: 0 10px; /* Adjust padding as needed */
-    font-size: 16px; /* Ensure the font size matches the dropdown buttons */
+    height: 36px;
+    /* Match the height of the dropdown buttons */
+    width: 200px;
+    /* Increase the width to prevent text cutoff */
+    padding: 0 10px;
+    /* Adjust padding as needed */
+    font-size: 16px;
+    /* Ensure the font size matches the dropdown buttons */
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin: 5px 0; /* Adjust margin to ensure proper spacing */
-    color: #E7552B; /* Ensure the text color matches other filters */
-    background-color: #fff5d6; /* Ensure the background color matches other filters */
+    margin: 5px 0;
+    /* Adjust margin to ensure proper spacing */
+    color: #E7552B;
+    /* Ensure the text color matches other filters */
+    background-color: #fff5d6;
+    /* Ensure the background color matches other filters */
 }
 
 .date-input::-webkit-datetime-edit {
-    color: #E7552B; /* Ensure the text color is visible */
+    color: #E7552B;
+    /* Ensure the text color is visible */
 }
 
 .date-input::-webkit-calendar-picker-indicator {
     background: transparent;
-    color: #E7552B; /* Ensure the calendar icon is visible */
+    color: #E7552B;
+    /* Ensure the calendar icon is visible */
     opacity: 0.5;
 }
 
 .date-input:hover {
-    background-color: #E7552B; /* Ensure the background color matches the hover state of other filters */
-    color: #fff5d6; /* Ensure the text color matches the hover state of other filters */
-    border: 2px solid #fff5d6; /* Ensure the border color matches the hover state of other filters */
+    background-color: #E7552B;
+    /* Ensure the background color matches the hover state of other filters */
+    color: #fff5d6;
+    /* Ensure the text color matches the hover state of other filters */
+    border: 2px solid #fff5d6;
+    /* Ensure the border color matches the hover state of other filters */
 }
 
 .date-header {
@@ -1025,7 +1056,8 @@ input[type="checkbox"]:disabled + label {
 }
 
 .filter-date input::placeholder {
-    color: #E7552B; /* Ensure the placeholder text color matches other filters */
+    color: #E7552B;
+    /* Ensure the placeholder text color matches other filters */
 }
 
 .filter-group {
@@ -1035,7 +1067,8 @@ input[type="checkbox"]:disabled + label {
 
 .filter-group .dropdown,
 .filter-group .filter-date {
-    margin-right: 10px; /* Adjust spacing between filters as needed */
+    margin-right: 10px;
+    /* Adjust spacing between filters as needed */
     z-index: 4;
 }
 
@@ -1050,14 +1083,15 @@ input[type="checkbox"]:disabled + label {
     border: 2px solid #fff5d6;
 }
 
-.filter-date input:hover{
+.filter-date input:hover {
     background-color: #E7552B;
     color: rgb(255, 255, 255);
     border: 2px solid #fff5d6;
 }
 
 .filter-date input::placeholder {
-    color: #E7552B; /* Ensure the placeholder text color matches other filters */
+    color: #E7552B;
+    /* Ensure the placeholder text color matches other filters */
 }
 
 .filter-count {
@@ -1093,7 +1127,8 @@ input[type="checkbox"]:disabled + label {
 
 .filter-summary {
     position: absolute;
-    top: 50px; /* Adjusted from 100% for better positioning */
+    top: 50px;
+    /* Adjusted from 100% for better positioning */
     right: 0;
     background-color: #fff5d6;
     border: 1px solid #E7552B;
@@ -1101,7 +1136,8 @@ input[type="checkbox"]:disabled + label {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1;
     padding: 10px;
-    transform: translateX(-50px); /* Shifted to the left */
+    transform: translateX(-50px);
+    /* Shifted to the left */
 }
 
 .filter-summary ul {
@@ -1134,24 +1170,34 @@ input[type="checkbox"]:disabled + label {
     align-items: center;
 }
 
-.dropdown-button:hover{
+.dropdown-button:hover {
     background-color: #E7552B;
     color: #fff5d6;
     border: 2px solid #fff5d6;
 }
 
 .dropdown-content {
-    min-width: 100%; /* Ensure it at least covers the button width */
-    width: auto; /* Allow it to expand based on the content */
-    white-space: nowrap; /* Ensure names take up only one line */
+    min-width: 100%;
+    /* Ensure it at least covers the button width */
+    width: auto;
+    /* Allow it to expand based on the content */
+    white-space: nowrap;
+    /* Ensure names take up only one line */
     overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis if the text overflows */
-    background-color: #fff5d6; /* Background color to match your design */
-    border: 1px solid #E7552B; /* Border color to match your design */
-    border-radius: 5px; /* Border radius to match your design */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for dropdown */
-    position: absolute; /* Positioning for dropdown */
-    z-index: 999; /* Ensure it appears above other elements */
+    text-overflow: ellipsis;
+    /* Add ellipsis if the text overflows */
+    background-color: #fff5d6;
+    /* Background color to match your design */
+    border: 1px solid #E7552B;
+    /* Border color to match your design */
+    border-radius: 5px;
+    /* Border radius to match your design */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for dropdown */
+    position: absolute;
+    /* Positioning for dropdown */
+    z-index: 999;
+    /* Ensure it appears above other elements */
 }
 
 .dropdown-content label {
@@ -1179,7 +1225,8 @@ input[type="checkbox"]:disabled + label {
 
 .combos-page .players-list {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Create two even columns */
+    grid-template-columns: 1fr 1fr;
+    /* Create two even columns */
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
@@ -1189,10 +1236,10 @@ input[type="checkbox"]:disabled + label {
     display: inline-flex;
     align-items: center;
     margin-right: 10px;
-    padding:5px 0;
+    padding: 5px 0;
 }
 
-.combos-page .player-checkbox input{
+.combos-page .player-checkbox input {
     margin-right: 5px;
 }
 
@@ -1202,7 +1249,8 @@ input[type="checkbox"]:disabled + label {
 
 .combos-page .combos-list {
     display: grid;
-    grid-template-columns: 1fr; /* Single column by default */
+    grid-template-columns: 1fr;
+    /* Single column by default */
     gap: 10px;
 }
 
@@ -1277,8 +1325,8 @@ input[type="checkbox"]:disabled + label {
 .cross-reference-grid th,
 .cross-reference-grid td {
     padding: 8px;
-    background-color: rgba(255, 255, 255,0.6);
-    color:#000;
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #000;
     border: 2px solid#fff5d6;
     border-radius: 55px;
     text-align: center;
@@ -1316,6 +1364,7 @@ input[type="checkbox"]:disabled + label {
 .num-matchups {
     font-family: 'Coolvetica', Arial, Helvetica, sans-serif;
 }
+
 .content {
     margin-left: 25%;
     padding: 20px;
@@ -1342,7 +1391,8 @@ input[type="checkbox"]:disabled + label {
 /* Ensure the parent container takes the full width */
 .leaderboard-table-wrapper {
     width: 100%;
-    overflow-x: auto; /* Allow horizontal scrolling */
+    overflow-x: auto;
+    /* Allow horizontal scrolling */
 }
 
 /* Styles for the leaderboard */
@@ -1352,7 +1402,9 @@ input[type="checkbox"]:disabled + label {
 }
 
 /* Keep the navbar, filter, and footer static */
-.navbar, .filter-bar, .footer {
+.navbar,
+.filter-bar,
+.footer {
     position: relative;
     z-index: 1;
 }
@@ -1363,43 +1415,53 @@ input[type="checkbox"]:disabled + label {
     background-color: #E7552B;
     color: #fff5d6;
     cursor: pointer;
-    padding-right: 10px; /* Extra space for sort indicator */
+    padding-right: 10px;
+    /* Extra space for sort indicator */
 }
 
 .leaderlist th.sorted {
-    background-color: #d34725; /* Slightly darker shade */
+    background-color: #d34725;
+    /* Slightly darker shade */
 }
 
 .leaderlist th:nth-child(1) {
-    width: 17%; /* Name column */
+    width: 17%;
+    /* Name column */
 }
 
 .leaderlist th:nth-child(2) {
-    width: 12%; /* Games Played column */
+    width: 12%;
+    /* Games Played column */
 }
 
 .leaderlist th:nth-child(3) {
-    width: 10%; /* Wins column */
+    width: 10%;
+    /* Wins column */
 }
 
 .leaderlist th:nth-child(4) {
-    width: 10%; /* Losses column */
+    width: 10%;
+    /* Losses column */
 }
 
 .leaderlist th:nth-child(5) {
-    width: 12%; /* Winning % column */
+    width: 12%;
+    /* Winning % column */
 }
 
 .leaderlist th:nth-child(6) {
-    width: 11%; /* Points For column */
+    width: 11%;
+    /* Points For column */
 }
 
 .leaderlist th:nth-child(7) {
-    width: 14%; /* Points Against column */
+    width: 14%;
+    /* Points Against column */
 }
 
 .leaderlist th:nth-child(8) {
-    width: 14%; /* Point Differential column */
+    width: 14%;
+    /* Point Differential column */
 }
 
 .leaderlist th .header-content {
@@ -1435,6 +1497,7 @@ input[type="checkbox"]:disabled + label {
         transform: rotateX(-90deg);
         opacity: 0;
     }
+
     to {
         transform: rotateX(0);
         opacity: 1;
@@ -1444,19 +1507,25 @@ input[type="checkbox"]:disabled + label {
 .flip-in {
     animation: flipIn 0.5s ease-out forwards;
     transform-origin: top;
-    opacity: 0; /* Ensure rows are initially hidden */
+    opacity: 0;
+    /* Ensure rows are initially hidden */
 }
 
 @media (min-width: 769px) {
+
     .leaderlist th.sticky-column,
     .leaderlist td.sticky-column {
-        position: static; /* Disable sticky behavior on larger screens */
-        z-index: initial; /* Reset z-index */
-        box-shadow: none; /* Remove box shadow */
+        position: static;
+        /* Disable sticky behavior on larger screens */
+        z-index: initial;
+        /* Reset z-index */
+        box-shadow: none;
+        /* Remove box shadow */
     }
 
     .combos-page .combos-list {
-        grid-template-columns: 1fr 1fr; /* Two columns for medium and up screens */
+        grid-template-columns: 1fr 1fr;
+        /* Two columns for medium and up screens */
     }
 }
 
@@ -1474,19 +1543,24 @@ input[type="checkbox"]:disabled + label {
     .sticky-column {
         position: sticky;
         left: 0;
-        background-color: #fff5d6; /* Ensure background matches your design */
-        z-index: 2; /* Ensure it appears above other table content */
+        background-color: #fff5d6;
+        /* Ensure background matches your design */
+        z-index: 2;
+        /* Ensure it appears above other table content */
         box-shadow: 0px 0px 0px 1px #E7552B;
     }
 
     /* Ensure the first column is sticky */
     .leaderlist th.sticky-column {
-        background-color: #E7552B; /* Ensure the header's background color matches */
-        color: #fff5d6; /* Ensure the header's text color matches */
+        background-color: #E7552B;
+        /* Ensure the header's background color matches */
+        color: #fff5d6;
+        /* Ensure the header's text color matches */
     }
 
     .leaderlist td.sticky-column {
-        background-color: #fff5d6; /* Ensure the cell's background color matches */
+        background-color: #fff5d6;
+        /* Ensure the cell's background color matches */
     }
 
     .match-details {
@@ -1528,7 +1602,8 @@ input[type="checkbox"]:disabled + label {
         flex-direction: row;
     }
 
-    .nav-left, .nav-right {
+    .nav-left,
+    .nav-right {
         display: none;
     }
 
@@ -1548,9 +1623,7 @@ input[type="checkbox"]:disabled + label {
         transition: transform 0.3s ease;
     }
 
-    .header.open + .site-content {
+    .header.open+.site-content {
         transform: translateY(200px);
     }
 }
-
-
