@@ -64,6 +64,7 @@ const Combos = () => {
             const newPredictions = getMatchupPredictions();
             setPredictions(newPredictions);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[generatedCombos,aggregatedPlayerStats]);
 
     if(error) {
