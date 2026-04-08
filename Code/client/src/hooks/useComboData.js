@@ -41,6 +41,7 @@ const useComboData = (players) => {
         if(generatedCombos.length > 0) {
             calculateCrossReferenceGrid();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[generatedCombos]);
 
     const handlePlayerSelect = (playerId) => {
