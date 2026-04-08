@@ -160,11 +160,6 @@ const MatchupPredictor = () => {
 
         // Evaluate the model
         const testFeatures = testData.map(d => d.features);
-        const testLabels = testData.map(d => d.label);
-        const predictions = testFeatures.map(f => {
-            const z = coeffs[0] + f.reduce((acc,xi,k) => acc + xi * coeffs[k + 1],0);
-            return logisticFunction(z) > 0.5 ? 1 : 0;
-        });
     };
 
     const predictScore = (teamAProbability,teamBProbability) => {
