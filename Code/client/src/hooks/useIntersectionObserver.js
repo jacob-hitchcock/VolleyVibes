@@ -6,21 +6,20 @@ const useIntersectionObserver = (options) => {
     const elementRef = useRef(null);
 
     useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            const [entry] = entries;
-            setIsVisible(entry.isIntersecting);
-        },options);
-
-        if(elementRef.current) {
-            observer.observe(elementRef.current);
+    const element = elementRef.current;
+    const observer = new IntersectionObserver((entries) => {
+        const [entry] = entries;
+        setIsVisible(entry.isIntersecting);
+    },options);
+    if(element) {
+        observer.observe(element);
+    }
+    return () => {
+        if(element) {
+            observer.unobserve(element);
         }
-
-        return () => {
-            if(elementRef.current) {
-                observer.unobserve(elementRef.current);
-            }
-        };
-    },[options]);
+    };
+},[options]);
 
     return [elementRef,isVisible];
 };
