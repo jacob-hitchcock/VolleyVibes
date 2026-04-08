@@ -18,23 +18,17 @@ import MatchDetailsModal from '../components/MatchDetailsModal';
 import { getPlayerName,formatDate,getWinners,getLosers,groupMatchesByDate,isTeamAWinner } from '../utils/utils';
 
 function HomePage() {
-    const { matches,players,loading, playerStats } = useFetchData();
-     const [initalLoadDuration, setInitialLoadDuration] = useState(2000);
+    const { matches,players,loading } = useFetchData();
+    const [initalLoadDuration,setInitialLoadDuration] = useState(2000);
 
-     useEffect(() => {
-        if (players.length > 0) {
+    useEffect(() => {
+        if(players.length > 0) {
             setInitialLoadDuration(players.length * 215);
         }
-     }, [players.length])
+    },[players.length]);
 
-     const initialLoad = useInitialLoad(initalLoadDuration);
+    const initialLoad = useInitialLoad(initalLoadDuration);
 
-
-    const mergedPlayers = players.map(player => {
-        const last10 = playerStats.find(l => l._id === player._id)?.last10 || null;
-        return {...player, last10};
-    });
-    
     const {
         filterPlayerDate,
         setFilterPlayerDate,
@@ -100,7 +94,6 @@ function HomePage() {
                             <div className="leaderboard-container">
                                 <Leaderboard
                                     players={sortedPlayers}
-                                    last10={mergedPlayers}
                                     sortConfig={sortConfig}
                                     requestSort={requestSort}
                                     getSortIndicator={getSortIndicator}

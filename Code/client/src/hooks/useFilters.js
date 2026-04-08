@@ -117,7 +117,32 @@ const useFilters = (matches = [],players = [],selectedDate = '',context = 'defau
 
             const winningPercentage = gamesPlayed ? ((wins / gamesPlayed) * 100).toFixed(3) : '0.000';
 
-            return { ...player,gamesPlayed,wins,losses,pointsFor,avgPointsPerGame,pointsAgainst,avgPointsAgainstPerGame,pointDifferential,avgPointDifferential,winningPercentage };
+            // Last-10 record: always uses all matches (ignores active filters) so the
+            // value reflects the player's true 10 most-recent games regardless of what
+            // the user has filtered the leaderboard to.
+            const allPlayerMatches = matches
+                .filter(match =>
+                    Array.isArray(match.teams) &&
+                    match.teams.some(team => Array.isArray(team) && team.includes(player._id))
+                )
+                .sort((a,b) => new Date(b.date) - new Date(a.date) || String(b._id).localeCompare(String(a._id)))
+                .slice(0,10);
+
+            let last10Wins = 0;
+            let last10Losses = 0;
+            for(const match of allPlayerMatches) {
+                const playerTeamIndex = match.teams.findIndex(team => Array.isArray(team) && team.includes(player._id));
+                const playerScore = Number(match.scores[playerTeamIndex]);
+                const opponentScore = Number(match.scores[playerTeamIndex === 0 ? 1 : 0]);
+                if(playerScore > opponentScore) last10Wins++;
+                else last10Losses++;
+            }
+
+            const last10 = allPlayerMatches.length > 0
+                ? { wins: last10Wins,losses: last10Losses,record: `${last10Wins}-${last10Losses}` }
+                : null;
+
+            return { ...player,gamesPlayed,wins,losses,pointsFor,avgPointsPerGame,pointsAgainst,avgPointsAgainstPerGame,pointDifferential,avgPointDifferential,winningPercentage,last10 };
         });
 
         const calculateRank = (key) => {
