@@ -142,10 +142,6 @@ REACT_APP_API_BASE_URL=your_backend_api_base_url
 - `PUT /api/matches/:id`: Update match information.
 - `DELETE /api/matches/:id`: Delete a match.
 
-## Contact
-
-Email: jacob.hitchcock1@gmail.com
-
 ## License
 
 This project is licensed under the MIT License.
