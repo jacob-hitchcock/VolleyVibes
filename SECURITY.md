@@ -12,7 +12,6 @@ If you discover a security vulnerability in VolleyVibes, please report it respon
 
 **To report:**
 - Open a private vulnerability report using GitHub’s [Private vulnerability reporting tool](https://github.com/jacob-hitchcock/VolleyVibes/security/advisories).
-- Or, if that’s not available, email me directly at **jacob.hitchcock1@gmail.com**.
 
 **Please include:**
 - A detailed description of the issue
