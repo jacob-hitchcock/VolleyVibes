@@ -297,7 +297,11 @@ const updatePlayerStats = async (match) => {
     }
 
     const updatePlayer = async (playerId,pointsFor,pointsAgainst) => {
-        const player = await Player.findById(playerId);
+        if (!mongoose.Types.ObjectId.isValid(playerId)) {
+            return;
+        }
+        const normalizedPlayerId = String(playerId);
+        const player = await Player.findById(normalizedPlayerId);
         if(player) {
             player.wins = player.wins || 0;
             player.pointsFor = player.pointsFor || 0;
