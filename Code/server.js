@@ -4,11 +4,18 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { body, validationResult } = require('express-validator');
+const rateLimit = require('express-rate-limit');
 const Player = require('./models/Player');
 const Match = require('./models/Match');
 const loginRoute = require('./routes/login');
 const authMiddleware = require('./middlewares/authMiddleware');
 const adminMiddleware = require('./middlewares/adminMiddleware');
+
+const writeLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: { message: 'Too many requests, please try again later.' },
+});
 
 /**
  * Checks the request for express-validator errors and responds with 400 if any exist.
@@ -76,6 +83,7 @@ app.use('/api/users',loginRoute);
 
 // Protected routes for Players
 app.post('/api/players',
+    writeLimiter,
     authMiddleware,
     [
         body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }).withMessage('Name must be 100 characters or fewer'),
@@ -95,7 +103,7 @@ app.post('/api/players',
     }
 );
 
-app.put('/api/players/:id',authMiddleware,async (req,res) => {
+app.put('/api/players/:id',writeLimiter,authMiddleware,async (req,res) => {
     const { id } = req.params;
     try {
         const player = await Player.findByIdAndUpdate(id,req.body,{ new: true,runValidators: true });
@@ -109,7 +117,7 @@ app.put('/api/players/:id',authMiddleware,async (req,res) => {
     }
 });
 
-app.delete('/api/players/:id',authMiddleware,async (req,res) => {
+app.delete('/api/players/:id',writeLimiter,authMiddleware,async (req,res) => {
     const { id } = req.params;
     try {
         const player = await Player.findByIdAndDelete(id);
@@ -125,6 +133,7 @@ app.delete('/api/players/:id',authMiddleware,async (req,res) => {
 
 // Protected routes for Matches
 app.post('/api/matches',
+    writeLimiter,
     authMiddleware,
     [
         body('teams').isArray({ min: 2, max: 2 }).withMessage('teams must be an array of exactly 2 teams'),
